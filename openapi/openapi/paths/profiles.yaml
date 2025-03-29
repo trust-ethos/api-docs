@@ -1,0 +1,277 @@
+# Profile API endpoints
+
+profiles:
+  post:
+    summary: Query Profiles
+    description: Queries profiles based on provided criteria such as profile IDs, addresses, or nicknames.
+    tags:
+      - Profiles
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              profileIds:
+                type: array
+                items:
+                  type: integer
+                description: Array of profile IDs to query (max 100)
+              addresses:
+                type: array
+                items:
+                  type: string
+                description: Array of Ethereum addresses to query (max 100)
+              nicknames:
+                type: array
+                items:
+                  type: string
+                description: Array of profile nicknames to query
+              ensNames:
+                type: array
+                items:
+                  type: string
+                description: Array of ENS names to query
+              archived:
+                type: boolean
+                description: Whether to include archived profiles
+              includeShadowProfiles:
+                type: boolean
+                description: Whether to include shadow profiles
+                default: false
+              useCache:
+                type: boolean
+                description: Whether to use cached results
+                default: true
+              pagination:
+                $ref: '../schemas/common.yaml#/PaginationParams'
+            oneOf:
+              - required: [profileIds]
+              - required: [addresses]
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '../schemas/common.yaml#/PaginatedResponse'
+                - type: object
+                  properties:
+                    values:
+                      type: array
+                      items:
+                        $ref: '../schemas/profiles.yaml#/Profile'
+      '400':
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+profiles_recent:
+  post:
+    summary: Recent Profiles
+    description: Retrieves a list of recently created profiles, ordered by creation date in descending order.
+    tags:
+      - Profiles
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              archived:
+                type: boolean
+                description: Whether to include archived profiles
+                default: false
+              limit:
+                type: integer
+                description: Maximum number of profiles to return
+                default: 10
+                maximum: 100
+              offset:
+                type: integer
+                description: Number of profiles to skip (for pagination)
+                default: 0
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '../schemas/common.yaml#/PaginatedResponse'
+                - type: object
+                  properties:
+                    values:
+                      type: array
+                      items:
+                        $ref: '../schemas/profiles.yaml#/Profile'
+
+profiles_directory:
+  get:
+    summary: Profile Directory
+    description: Retrieves a paginated directory of non-archived profiles with various sorting options.
+    tags:
+      - Profiles
+    parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 10
+          maximum: 100
+        description: Maximum number of profiles to return
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+        description: Number of profiles to skip (for pagination)
+      - name: sortField
+        in: query
+        schema:
+          type: string
+          enum: [score, xp, createdAt]
+          default: score
+        description: Field to sort by
+      - name: sortDirection
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+          default: desc
+        description: Sort direction
+      - name: archived
+        in: query
+        schema:
+          type: boolean
+          default: false
+        description: Whether to include archived profiles
+      - name: inviteFilter
+        in: query
+        schema:
+          type: string
+          enum: [hasInvites, noInvites]
+        description: Filter by invite availability
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '../schemas/common.yaml#/PaginatedResponse'
+                - type: object
+                  properties:
+                    values:
+                      type: array
+                      items:
+                        $ref: '../schemas/profiles.yaml#/ProfileWithActor'
+
+profiles_credibility_leaderboard:
+  get:
+    summary: Credibility Leaderboard
+    description: Retrieves a leaderboard of profiles sorted by credibility score, with optional ordering.
+    tags:
+      - Profiles
+    parameters:
+      - name: order
+        in: query
+        schema:
+          type: string
+          enum: [asc, desc]
+          default: desc
+        description: Sort order
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+        description: Maximum number of profiles to return
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/profiles.yaml#/CredibilityProfile'
+
+profiles_stats:
+  get:
+    summary: Profile Stats
+    description: Retrieves aggregate statistics about profiles on the network.
+    tags:
+      - Profiles
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/profiles.yaml#/ProfileStats'
+
+profiles_xp_leaderboard:
+  get:
+    summary: XP Leaderboard
+    description: Retrieves a leaderboard of profiles sorted by XP (experience points), with optional time filtering.
+    tags:
+      - Profiles
+    parameters:
+      - name: since
+        in: query
+        schema:
+          type: string
+          format: date-time
+        description: ISO date string to filter XP earned since a specific date
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/profiles.yaml#/XpProfile'
+
+profiles_with_x_attestation:
+  get:
+    summary: Profiles with X Attestation
+    description: Retrieves profiles that have a specific X (Twitter) attestation.
+    tags:
+      - Profiles
+    parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 10
+          maximum: 1000
+        description: Maximum number of profiles to return
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+        description: Number of profiles to skip (for pagination)
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: '../schemas/common.yaml#/PaginatedResponse'
+                - type: object
+                  properties:
+                    values:
+                      type: array
+                      items:
+                        $ref: '../schemas/profiles.yaml#/ProfileWithXAttestation'

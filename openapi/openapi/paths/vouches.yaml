@@ -1,0 +1,264 @@
+# Paths for Vouches API
+
+vouches_query:
+  post:
+    summary: Query Vouches
+    description: Retrieves vouches based on specified filters and pagination parameters.
+    operationId: queryVouches
+    tags:
+      - Vouches
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/vouches.yaml#/VouchQueryRequest'
+    responses:
+      '200':
+        description: Successful response with vouches data
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/vouches.yaml#/VouchQueryResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+vouches_count:
+  post:
+    summary: Count Vouches
+    description: Counts vouches based on specified filters.
+    operationId: countVouches
+    tags:
+      - Vouches
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/vouches.yaml#/VouchCountRequest'
+    responses:
+      '200':
+        description: Successful response with count of vouches
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/vouches.yaml#/VouchCountResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+vouches_stats:
+  post:
+    summary: Get Vouch Statistics
+    description: Retrieves statistics about vouches for a specific user.
+    operationId: getVouchStats
+    tags:
+      - Vouches
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/vouches.yaml#/VouchStatsRequest'
+    responses:
+      '200':
+        description: Successful response with vouch statistics
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/vouches.yaml#/VouchStatsResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '404':
+        description: User not found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+vouches_vouched_ethereum:
+  post:
+    summary: Get Vouched Ethereum
+    description: Retrieves the total amount of ETH vouched for a specific user.
+    operationId: getVouchedEthereum
+    tags:
+      - Vouches
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/vouches.yaml#/VouchedEthereumRequest'
+    responses:
+      '200':
+        description: Successful response with vouched ETH amount
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/vouches.yaml#/VouchedEthereumResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '404':
+        description: User not found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+vouches_most_credible_vouchers:
+  post:
+    summary: Get Most Credible Vouchers
+    description: Retrieves the most credible vouchers for a specific user.
+    operationId: getMostCredibleVouchers
+    tags:
+      - Vouches
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/vouches.yaml#/MostCredibleVouchersRequest'
+    responses:
+      '200':
+        description: Successful response with most credible vouchers
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/vouches.yaml#/MostCredibleVouchersResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '404':
+        description: User not found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+vouches_mutual_vouchers:
+  get:
+    summary: Get Mutual Vouchers
+    description: Retrieves users who have mutual vouches with the specified user.
+    operationId: getMutualVouchers
+    tags:
+      - Vouches
+    parameters:
+      - name: userkey
+        in: query
+        required: true
+        description: User identifier (address, profile ID, or attestation)
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: Maximum number of mutual vouchers to return
+        schema:
+          type: integer
+          default: 10
+    responses:
+      '200':
+        description: Successful response with mutual vouchers
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/vouches.yaml#/MutualVouchersResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '404':
+        description: User not found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+vouches_rewards:
+  post:
+    summary: Get Vouch Rewards
+    description: Retrieves rewards earned from vouches for specified users.
+    operationId: getVouchRewards
+    tags:
+      - Vouches
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/vouches.yaml#/VouchRewardsRequest'
+    responses:
+      '200':
+        description: Successful response with vouch rewards
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/vouches.yaml#/VouchRewardsResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'

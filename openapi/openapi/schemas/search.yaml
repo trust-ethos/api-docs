@@ -1,0 +1,125 @@
+SearchQueryRequest:
+  type: object
+  required:
+    - query
+  properties:
+    query:
+      type: string
+      description: Search query for finding profiles, users, ENS names, or addresses
+      minLength: 2
+      maxLength: 100
+      example: "alice"
+    pagination:
+      type: object
+      properties:
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+          description: Maximum number of results to return
+        offset:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Number of results to skip for pagination
+
+SearchQueryResponse:
+  type: object
+  required:
+    - values
+    - total
+    - limit
+    - offset
+  properties:
+    values:
+      type: array
+      items:
+        $ref: '../schemas/activities.yaml#/ActivityActor'
+      description: List of actors matching the search query
+    total:
+      type: integer
+      description: Total number of matches found
+      example: 42
+    limit:
+      type: integer
+      description: Maximum number of results returned in this response
+      example: 10
+    offset:
+      type: integer
+      description: Number of results skipped for pagination
+      example: 0
+
+MarketSearchQueryRequest:
+  type: object
+  properties:
+    query:
+      type: string
+      description: Optional search query for finding markets. If not provided, returns all markets.
+      example: "ethos"
+
+MarketSearchQueryResponse:
+  type: object
+  required:
+    - values
+  properties:
+    values:
+      type: array
+      items:
+        $ref: '#/MarketProfile'
+      description: List of market profiles matching the search query
+
+MarketProfile:
+  type: object
+  required:
+    - profileId
+    - name
+    - address
+    - price
+    - supply
+    - marketCap
+  properties:
+    profileId:
+      type: string
+      description: The profile ID associated with this market
+      example: "profile_abc123"
+    name:
+      type: string
+      description: The name of the profile
+      example: "Alice Johnson"
+    username:
+      type: string
+      description: The username associated with the profile, if available
+      example: "alice"
+    avatarUrl:
+      type: string
+      description: URL to the profile's avatar image
+      example: "https://example.com/avatar.png"
+    address:
+      type: string
+      description: The contract address for this market
+      example: "0x1234567890abcdef1234567890abcdef12345678"
+    price:
+      type: string
+      description: The current price of the market token
+      example: "0.125"
+    priceChange24h:
+      type: string
+      description: The price change percentage in the last 24 hours
+      example: "5.2"
+    supply:
+      type: string
+      description: The total supply of tokens
+      example: "1000"
+    holders:
+      type: integer
+      description: The number of token holders
+      example: 42
+    marketCap:
+      type: string
+      description: The market capitalization
+      example: "125.0"
+    volume24h:
+      type: string
+      description: Trading volume in the last 24 hours
+      example: "32.5"

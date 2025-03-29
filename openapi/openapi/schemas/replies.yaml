@@ -1,0 +1,141 @@
+# Schemas for Replies API
+
+Reply:
+  type: object
+  required:
+    - parentIsOriginalComment
+    - targetContract
+    - authorProfileId
+    - id
+    - parentId
+    - createdAt
+    - content
+  properties:
+    parentIsOriginalComment:
+      type: boolean
+      description: Whether the parent item is the original comment
+    targetContract:
+      type: string
+      format: address
+      description: Ethereum address of the contract that the reply is associated with
+    authorProfileId:
+      type: integer
+      description: Profile ID of the reply author
+    id:
+      type: string
+      description: Unique identifier for the reply
+    parentId:
+      type: string
+      description: ID of the parent item this reply is responding to
+    createdAt:
+      type: integer
+      format: int64
+      description: Unix timestamp when the reply was created
+    content:
+      type: string
+      description: Text content of the reply
+    metadata:
+      type: string
+      description: Additional metadata for the reply, stored as a JSON string
+
+ReplySummary:
+  type: object
+  required:
+    - count
+    - participated
+  properties:
+    count:
+      type: integer
+      description: Number of replies for the parent item
+    participated:
+      type: boolean
+      description: Whether the current user has participated in the discussion
+
+ReplyQueryRequest:
+  type: object
+  required:
+    - targetContract
+    - parentIds
+  properties:
+    targetContract:
+      type: string
+      format: address
+      description: Ethereum address of the contract that the replies are associated with
+    parentIds:
+      type: array
+      description: Array of parent item IDs to retrieve replies for
+      items:
+        type: integer
+    orderDirection:
+      type: string
+      enum: [asc, desc]
+      default: desc
+      description: Sort direction for replies
+    limit:
+      type: integer
+      minimum: 1
+      maximum: 100
+      default: 20
+      description: Maximum number of results to return
+    offset:
+      type: integer
+      minimum: 0
+      default: 0
+      description: Number of results to skip for pagination
+
+ReplyQueryResponse:
+  type: object
+  required:
+    - values
+    - limit
+    - offset
+    - total
+  properties:
+    values:
+      type: array
+      description: List of replies matching the query criteria
+      items:
+        $ref: '#/Reply'
+    limit:
+      type: integer
+      description: Maximum number of results returned
+    offset:
+      type: integer
+      description: Offset of the results
+    total:
+      type: integer
+      description: Total number of replies matching the query criteria
+
+ReplySummaryRequest:
+  type: object
+  required:
+    - targetContract
+    - parentIds
+  properties:
+    targetContract:
+      type: string
+      format: address
+      description: Ethereum address of the contract that the replies are associated with
+    parentIds:
+      type: array
+      description: Array of parent item IDs to get reply summaries for
+      items:
+        type: integer
+    orderDirection:
+      type: string
+      enum: [asc, desc]
+      default: desc
+      description: Sort direction
+    currentUserProfileId:
+      type: integer
+      nullable: true
+      description: Profile ID of the current user to check for participation
+
+ReplySummaryResponse:
+  type: object
+  description: Object containing reply summaries organized by target contract and parent ID
+  additionalProperties:
+    type: object
+    description: Reply summaries for a specific target contract, keyed by parent ID
+    additionalProperties:
+      $ref: '#/ReplySummary'

@@ -1,0 +1,67 @@
+# Paths for Replies API
+
+reply_query:
+  post:
+    summary: Query Replies
+    description: Retrieves replies based on specified filters and pagination parameters.
+    operationId: queryReplies
+    tags:
+      - Replies
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replies.yaml#/ReplyQueryRequest'
+    responses:
+      '200':
+        description: Successful response with replies data
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/replies.yaml#/ReplyQueryResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+reply_summary:
+  post:
+    summary: Get Reply Summary
+    description: Retrieves a summary of replies for the specified parent items, including the total count of replies and whether the current user has participated in the discussion.
+    operationId: getReplySummary
+    tags:
+      - Replies
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replies.yaml#/ReplySummaryRequest'
+    responses:
+      '200':
+        description: Successful response with reply summaries
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/replies.yaml#/ReplySummaryResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'

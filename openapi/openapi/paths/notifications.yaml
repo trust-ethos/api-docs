@@ -1,0 +1,49 @@
+# Paths for Notifications API
+
+user_fcm_token:
+  post:
+    summary: Update User FCM Token
+    description: |
+      Updates or creates a Firebase Cloud Messaging (FCM) token for the authenticated user's device.
+      This token is used to send push notifications to the user's device.
+      The API will store up to 10 tokens per user (for different devices).
+    operationId: updateUserFCMToken
+    tags:
+      - Notifications
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/notifications.yaml#/UpdateUserFCMTokenRequest'
+    responses:
+      '200':
+        description: Successfully processed the FCM token
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/notifications.yaml#/UpdateUserFCMTokenResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '401':
+        description: Unauthorized - user must be authenticated
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '403':
+        description: Forbidden - user must have an Ethos profile
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'

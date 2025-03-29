@@ -1,0 +1,159 @@
+# Paths for Users API
+
+user_search:
+  get:
+    summary: Search Users
+    description: |
+      Search for users by name, username, or address.
+      Results are ordered by credibility score in descending order, then by display name.
+    operationId: searchUsers
+    tags:
+      - Users
+    parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 2
+          maxLength: 100
+        description: Search query for finding users by name, username, or address
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: Maximum number of results to return
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+        description: Number of results to skip for pagination
+    responses:
+      '200':
+        description: Successful response with user search results
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/users.yaml#/UserSearchResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+user_stats:
+  get:
+    summary: Get User Stats
+    description: |
+      Retrieve comprehensive statistics for a user, including review and vouch metrics.
+      Optionally filter by date range.
+    operationId: getUserStats
+    tags:
+      - Users
+    parameters:
+      - name: userkey
+        in: path
+        required: true
+        schema:
+          type: string
+        description: User identifier (profile ID, address, or username)
+      - name: startDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: Optional start date for filtering stats (format YYYY-MM-DD)
+      - name: endDate
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date
+        description: Optional end date for filtering stats (format YYYY-MM-DD)
+    responses:
+      '200':
+        description: Successful response with user statistics
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/users.yaml#/UserStatsResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '404':
+        description: User not found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+extension_user_info:
+  get:
+    summary: Get Twitter User Info (Extension)
+    description: |
+      Retrieve comprehensive information about a Twitter user for the browser extension.
+      This endpoint returns combined data including profile details, vouch and review statistics,
+      open slashes, and market information.
+
+      This endpoint is primarily used by the Ethos browser extension and is considered deprecated.
+      New applications should use the individual endpoints for specific information.
+    operationId: getExtensionUserInfo
+    deprecated: true
+    tags:
+      - Users
+    parameters:
+      - name: twitterUsername
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Twitter (X) username to look up information for
+    responses:
+      '200':
+        description: Successful response with Twitter user information
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/users.yaml#/ExtensionUserInfoResponse'
+      '400':
+        description: Bad request - invalid parameters
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '404':
+        description: User not found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'

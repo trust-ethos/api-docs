@@ -1,0 +1,296 @@
+# Schemas for Reviews API
+
+ReviewActivity:
+  type: object
+  required:
+    - id
+    - authorProfileId
+    - score
+    - createdAt
+    - updatedAt
+  properties:
+    id:
+      type: integer
+      description: Unique identifier for the review
+    authorProfileId:
+      type: integer
+      description: Profile ID of the review author
+    subject:
+      type: string
+      description: Ethereum address of the review subject (if applicable)
+    service:
+      type: string
+      description: Service name for attestation (if applicable), e.g., "x.com"
+    account:
+      type: string
+      description: Account identifier on the service (if applicable)
+    score:
+      type: integer
+      enum: [0, 1, 2]
+      description: "Review score: 0 (negative), 1 (neutral), 2 (positive)"
+    message:
+      type: string
+      description: Review message or comment
+    createdAt:
+      type: string
+      format: date-time
+      description: Timestamp when the review was created
+    updatedAt:
+      type: string
+      format: date-time
+      description: Timestamp when the review was last updated
+    events:
+      type: array
+      description: Blockchain events associated with the review
+      items:
+        $ref: './common.yaml#/BlockchainEvent'
+
+ReviewAttestationFilter:
+  type: object
+  oneOf:
+    - type: object
+      required:
+        - service
+        - account
+      properties:
+        service:
+          type: string
+          description: Service name (e.g., "x.com")
+        account:
+          type: string
+          description: Account identifier on the service
+    - type: object
+      required:
+        - service
+        - username
+      properties:
+        service:
+          type: string
+          description: Service name (e.g., "x.com")
+        username:
+          type: string
+          description: Username on the service
+
+TimeRange:
+  type: object
+  properties:
+    startDate:
+      type: string
+      format: date-time
+      description: Start date for filtering reviews
+    endDate:
+      type: string
+      format: date-time
+      description: End date for filtering reviews
+
+ReviewQueryRequest:
+  type: object
+  required:
+    - pagination
+  properties:
+    ids:
+      type: array
+      description: Array of specific review IDs to retrieve
+      items:
+        type: integer
+    subject:
+      type: array
+      description: Array of user identifiers that received reviews
+      items:
+        type: string
+    author:
+      type: array
+      description: Array of profile IDs that authored reviews
+      items:
+        type: integer
+    attestation:
+      type: array
+      description: Array of attestation objects to filter by
+      items:
+        $ref: '#/ReviewAttestationFilter'
+    archived:
+      type: boolean
+      description: Whether to include archived reviews
+    score:
+      type: array
+      description: Array of review scores to include
+      items:
+        type: string
+        enum: [negative, neutral, positive]
+    orderBy:
+      type: object
+      description: Sorting criteria
+      additionalProperties:
+        type: string
+        enum: [asc, desc]
+    pagination:
+      type: object
+      required:
+        - limit
+        - offset
+      properties:
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+          description: Maximum number of results to return
+        offset:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Number of results to skip for pagination
+
+ReviewQueryResponse:
+  type: object
+  required:
+    - values
+    - limit
+    - offset
+    - total
+  properties:
+    values:
+      type: array
+      description: List of reviews matching the query criteria
+      items:
+        $ref: '#/ReviewActivity'
+    limit:
+      type: integer
+      description: Maximum number of results returned
+    offset:
+      type: integer
+      description: Offset of the results
+    total:
+      type: integer
+      description: Total number of reviews matching the query criteria
+
+ReviewCountRequest:
+  type: object
+  properties:
+    ids:
+      type: array
+      description: Array of specific review IDs to count
+      items:
+        type: integer
+    subject:
+      type: array
+      description: Array of user identifiers that received reviews
+      items:
+        type: string
+    author:
+      type: array
+      description: Array of profile IDs that authored reviews
+      items:
+        type: integer
+    attestation:
+      type: array
+      description: Array of attestation objects to filter by
+      items:
+        $ref: '#/ReviewAttestationFilter'
+    archived:
+      type: boolean
+      description: Whether to include archived reviews
+    score:
+      type: array
+      description: Array of review scores to include
+      items:
+        type: string
+        enum: [negative, neutral, positive]
+
+ReviewCountResponse:
+  type: object
+  required:
+    - count
+  properties:
+    count:
+      type: integer
+      description: Number of reviews matching the criteria
+
+ReviewStats:
+  type: object
+  required:
+    - received
+    - averageReviewForUser
+    - positiveReviewPercentage
+    - percentile
+    - positiveReviewCount
+    - negativeReviewCount
+    - neutralReviewCount
+  properties:
+    received:
+      type: integer
+      description: Total number of reviews received
+    averageReviewForUser:
+      type: number
+      description: Average review score (on a 0-2 scale)
+    positiveReviewPercentage:
+      type: number
+      description: Percentage of positive reviews, excluding neutral reviews
+    percentile:
+      type: number
+      description: Percentile ranking compared to other users (0-100)
+    positiveReviewCount:
+      type: integer
+      description: Number of positive reviews
+    negativeReviewCount:
+      type: integer
+      description: Number of negative reviews
+    neutralReviewCount:
+      type: integer
+      description: Number of neutral reviews
+
+ReviewStatsMap:
+  type: object
+  properties:
+    byAddress:
+      type: object
+      description: Statistics for each address
+      additionalProperties:
+        $ref: '#/ReviewStats'
+    byAttestation:
+      type: object
+      description: Statistics for each attestation
+      additionalProperties:
+        type: object
+        additionalProperties:
+          $ref: '#/ReviewStats'
+    total:
+      $ref: '#/ReviewStats'
+      description: Aggregated statistics across all addresses and attestations
+
+ReviewStatsRequest:
+  type: object
+  required:
+    - target
+  properties:
+    target:
+      type: string
+      description: User identifier (address, profile ID, or attestation)
+    timeRange:
+      $ref: '#/TimeRange'
+      description: Time range for filtering reviews
+
+ReviewStatsResponse:
+  $ref: '#/ReviewStatsMap'
+  description: Review statistics for the specified user
+
+ReviewStatsBulkRequest:
+  type: object
+  required:
+    - userkeys
+  properties:
+    userkeys:
+      type: array
+      description: Array of user identifiers
+      items:
+        type: string
+      maxItems: 500
+    timeRange:
+      $ref: '#/TimeRange'
+      description: Time range for filtering reviews
+
+ReviewStatsBulkResponse:
+  type: object
+  description: Review statistics for multiple users
+  additionalProperties:
+    $ref: '#/ReviewStatsMap'

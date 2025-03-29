@@ -1,0 +1,280 @@
+AttestationQueryRequest:
+  type: object
+  properties:
+    profileIds:
+      type: array
+      description: List of profile IDs to filter attestations by
+      items:
+        type: integer
+    attestationHashes:
+      type: array
+      description: List of attestation hashes to retrieve
+      items:
+        type: string
+    archived:
+      type: boolean
+      description: Whether to include archived attestations
+    orderBy:
+      type: object
+      description: Sorting options for the results
+      properties:
+        createdAt:
+          type: string
+          enum: [asc, desc]
+          description: Sort by creation time
+        updatedAt:
+          type: string
+          enum: [asc, desc]
+          description: Sort by update time
+    pagination:
+      type: object
+      required:
+        - limit
+        - offset
+      properties:
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+          description: Maximum number of attestations to return
+        offset:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Number of attestations to skip
+
+AttestationQueryResponse:
+  type: object
+  required:
+    - ok
+    - data
+  properties:
+    ok:
+      type: boolean
+      description: Indicates if the request was successful
+      example: true
+    data:
+      type: object
+      required:
+        - values
+        - limit
+        - offset
+        - total
+      properties:
+        values:
+          type: array
+          items:
+            $ref: '#/Attestation'
+          description: List of attestations matching the query
+        limit:
+          type: integer
+          description: Maximum number of attestations returned
+          example: 10
+        offset:
+          type: integer
+          description: Number of attestations skipped
+          example: 0
+        total:
+          type: integer
+          description: Total count of attestations matching the query
+          example: 42
+
+Attestation:
+  type: object
+  required:
+    - id
+    - hash
+    - service
+    - account
+    - profileId
+    - createdAt
+    - archived
+  properties:
+    id:
+      type: integer
+      description: Unique identifier for the attestation
+      example: 123
+    hash:
+      type: string
+      description: Unique hash of the attestation (service+account)
+      example: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+    service:
+      type: string
+      description: The service being attested to (e.g., x.com)
+      example: "x.com"
+    account:
+      type: string
+      description: The account ID on the service
+      example: "12345678"
+    profileId:
+      type: integer
+      description: Profile ID that owns this attestation
+      example: 456
+    createdAt:
+      type: integer
+      description: Unix timestamp of when the attestation was created
+      example: 1625097600
+    archived:
+      type: boolean
+      description: Whether this attestation is archived
+      example: false
+
+ExtendedAttestationQueryRequest:
+  type: object
+  properties:
+    profileIds:
+      type: array
+      description: List of profile IDs to filter attestations by
+      items:
+        type: integer
+    attestationHashes:
+      type: array
+      description: List of attestation hashes to retrieve
+      items:
+        type: string
+    archived:
+      type: boolean
+      description: Whether to include archived attestations
+    orderBy:
+      type: object
+      description: Sorting options for the results
+      properties:
+        createdAt:
+          type: string
+          enum: [asc, desc]
+          description: Sort by creation time
+        updatedAt:
+          type: string
+          enum: [asc, desc]
+          description: Sort by update time
+    pagination:
+      type: object
+      required:
+        - limit
+        - offset
+      properties:
+        limit:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+          description: Maximum number of attestations to return
+        offset:
+          type: integer
+          minimum: 0
+          default: 0
+          description: Number of attestations to skip
+
+ExtendedAttestationQueryResponse:
+  type: object
+  required:
+    - ok
+    - data
+  properties:
+    ok:
+      type: boolean
+      description: Indicates if the request was successful
+      example: true
+    data:
+      type: object
+      required:
+        - values
+        - limit
+        - offset
+        - total
+      properties:
+        values:
+          type: array
+          items:
+            $ref: '#/ExtendedAttestation'
+          description: List of extended attestations matching the query
+        limit:
+          type: integer
+          description: Maximum number of attestations returned
+          example: 10
+        offset:
+          type: integer
+          description: Number of attestations skipped
+          example: 0
+        total:
+          type: integer
+          description: Total count of attestations matching the query
+          example: 42
+
+ExtendedAttestation:
+  type: object
+  required:
+    - attestation
+    - extra
+  properties:
+    attestation:
+      $ref: '#/Attestation'
+      description: The basic attestation information
+    extra:
+      type: object
+      description: Additional information related to the attestation
+      properties:
+        username:
+          type: string
+          description: Username on the service
+          example: "alice_twitter"
+        name:
+          type: string
+          description: Display name on the service
+          example: "Alice"
+        avatar:
+          type: string
+          description: URL to the profile image
+          example: "https://pbs.twimg.com/profile_images/1234567890/avatar.jpg"
+
+CreateAttestationSignatureRequest:
+  type: object
+  required:
+    - service
+    - connectedAddress
+  properties:
+    service:
+      type: string
+      enum: [x.com]
+      description: The service to create an attestation for
+      example: "x.com"
+    connectedAddress:
+      type: string
+      description: The wallet address of the connected user
+      example: "0x1234567890abcdef1234567890abcdef12345678"
+
+CreateAttestationSignatureResponse:
+  type: object
+  required:
+    - ok
+    - data
+  properties:
+    ok:
+      type: boolean
+      description: Indicates if the request was successful
+      example: true
+    data:
+      type: object
+      required:
+        - randValue
+        - signature
+        - account
+        - evidence
+      properties:
+        randValue:
+          type: integer
+          description: Random value used for signature generation
+          example: 1234567890
+        signature:
+          type: string
+          description: The generated signature for creating the attestation
+          example: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+        account:
+          type: string
+          description: The account ID on the service being attested
+          example: "12345678"
+        evidence:
+          type: string
+          description: Evidence of the attestation in JSON format
+          example: "{\"source\":\"privy\",\"type\":\"OAuth2\",\"id\":\"user-123\",\"approver\":\"ethos.network\"}"

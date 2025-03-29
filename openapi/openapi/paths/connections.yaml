@@ -1,0 +1,66 @@
+recent_transactions:
+  post:
+    tags:
+      - Connections
+    summary: Get recent transactions between two addresses
+    description: |
+      Retrieve a list of recent transactions between a user's wallet address and another address.
+
+      This endpoint can be used to view the transaction history between two addresses, including
+      information about transaction details, amounts, and timestamps.
+    operationId: getRecentTransactions
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/connections.yaml#/RecentTransactionsRequest'
+    responses:
+      '200':
+        description: Successfully retrieved recent transactions
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/connections.yaml#/RecentTransactionsResponse'
+      '400':
+        $ref: '../components.yaml#/responses/BadRequest'
+      '401':
+        $ref: '../components.yaml#/responses/Unauthorized'
+      '403':
+        $ref: '../components.yaml#/responses/Forbidden'
+      '500':
+        $ref: '../components.yaml#/responses/InternalServerError'
+
+recent_interactions:
+  post:
+    tags:
+      - Connections
+    summary: Get recent interactions for an address
+    description: |
+      Retrieve a list of recent interactions for a given wallet address.
+
+      This endpoint returns addresses that the specified wallet has interacted with,
+      along with transaction history and potentially additional relationship data like
+      reviews and vouches.
+    operationId: getRecentInteractions
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/connections.yaml#/RecentInteractionsRequest'
+    responses:
+      '200':
+        description: Successfully retrieved recent interactions
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/connections.yaml#/RecentInteractionsResponse'
+      '400':
+        $ref: '../components.yaml#/responses/BadRequest'
+      '401':
+        $ref: '../components.yaml#/responses/Unauthorized'
+      '403':
+        $ref: '../components.yaml#/responses/Forbidden'
+      '500':
+        $ref: '../components.yaml#/responses/InternalServerError'

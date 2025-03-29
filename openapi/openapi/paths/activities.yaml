@@ -1,0 +1,331 @@
+# Activities API endpoints
+
+activity_by_id:
+  get:
+    summary: Get Activity
+    description: Retrieves a single activity by its type and ID or transaction hash. If a transaction hash is provided, it will process the blockchain event and retrieve the corresponding activity.
+    tags:
+      - Activities
+    parameters:
+      - name: type
+        in: path
+        required: true
+        schema:
+          type: string
+          enum: [vouch, review, attestation, slash, invitation-accepted, unvouch]
+        description: Type of activity
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Activity ID or transaction hash
+      - name: currentUserProfileId
+        in: query
+        schema:
+          type: integer
+        description: Profile ID of the current user (for retrieving user-specific data like votes)
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/activities.yaml#/ActivityInfo'
+      '400':
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+      '404':
+        description: Activity not found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+activities_bulk:
+  post:
+    summary: Get Multiple Activities
+    description: Retrieves multiple activities by their type and IDs. This is a bulk endpoint that allows querying for various activities at once.
+    tags:
+      - Activities
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              review:
+                type: array
+                items:
+                  type: integer
+                description: Array of review activity IDs
+              vouch:
+                type: array
+                items:
+                  type: integer
+                description: Array of vouch activity IDs
+              unvouch:
+                type: array
+                items:
+                  type: integer
+                description: Array of unvouch activity IDs
+              attestation:
+                type: array
+                items:
+                  type: integer
+                description: Array of attestation activity IDs
+              'invitation-accepted':
+                type: array
+                items:
+                  type: integer
+                description: Array of invitation accepted activity IDs
+              currentUserProfileId:
+                type: integer
+                nullable: true
+                description: Profile ID of the current user (for retrieving user-specific data like votes)
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/activities.yaml#/ActivityInfo'
+
+activities_unified:
+  post:
+    summary: Get Unified Activities
+    description: Retrieves a unified paginated list of activities based on various filters. This endpoint provides more advanced filtering and pagination options than the regular activities endpoint.
+    tags:
+      - Activities
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              filter:
+                type: array
+                items:
+                  type: string
+                  enum: [vouch, review, attestation, slash, invitation-accepted, unvouch]
+                description: Array of activity types to include (defaults to all types)
+              target:
+                type: string
+                description: User key (address, profile ID, nickname, ENS) to filter activities by
+              direction:
+                type: string
+                enum: [author, subject]
+                description: Direction of activities to retrieve - "author" (activities by the target) or "subject" (activities about the target)
+              dayRange:
+                type: integer
+                minimum: 1
+                maximum: 90
+                description: Filter activities to those created in the last N days (1-90)
+              currentUserProfileId:
+                type: integer
+                nullable: true
+                description: Profile ID of the current user (for retrieving user-specific data like votes)
+              orderBy:
+                type: object
+                required:
+                  - field
+                  - direction
+                properties:
+                  field:
+                    type: string
+                    enum: [timestamp, votes, controversial, hot, rising]
+                    default: timestamp
+                    description: Field to sort by
+                  direction:
+                    type: string
+                    enum: [asc, desc]
+                    default: desc
+                    description: Sort direction
+              pagination:
+                type: object
+                required:
+                  - limit
+                properties:
+                  limit:
+                    type: integer
+                    default: 10
+                    description: Maximum number of activities to return per type
+                  cursors:
+                    type: object
+                    additionalProperties:
+                      type: string
+                    description: Cursor tokens for pagination (keyed by activity type)
+              excludeHistorical:
+                type: boolean
+                default: false
+                description: Whether to exclude historical activities
+              cache:
+                type: boolean
+                default: false
+                description: Whether to use cached results
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                values:
+                  type: array
+                  items:
+                    $ref: '../schemas/activities.yaml#/ActivityInfo'
+                pagination:
+                  type: object
+                  properties:
+                    cursors:
+                      type: object
+                      additionalProperties:
+                        type: string
+                      description: Next cursor tokens for pagination (keyed by activity type)
+                    hasMore:
+                      type: object
+                      additionalProperties:
+                        type: boolean
+                      description: Whether there are more activities available (keyed by activity type)
+
+activity_actor:
+  get:
+    summary: Get Activity Actor
+    description: Retrieves actor information for a specific user. Actors represent users in the context of activities.
+    tags:
+      - Activities
+    parameters:
+      - name: userkey
+        in: path
+        required: true
+        schema:
+          type: string
+        description: User identifier (address, profile ID, nickname, or ENS name)
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/activities.yaml#/ActivityActor'
+      '404':
+        description: Actor not found
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/common.yaml#/Error'
+
+activities_bulk_actors:
+  post:
+    summary: Get Bulk Actors
+    description: Retrieves actor information for multiple users. This is a bulk endpoint that allows querying for various actors at once.
+    tags:
+      - Activities
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - userkeys
+            properties:
+              userkeys:
+                type: array
+                items:
+                  type: string
+                description: Array of user identifiers (addresses, profile IDs, nicknames, or ENS names)
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/activities.yaml#/ActivityActor'
+
+activities_votes:
+  post:
+    summary: Get Votes
+    description: Retrieves vote information for multiple activities. This endpoint allows clients to fetch both the vote counts and the current user's votes for various activities.
+    tags:
+      - Activities
+    requestBody:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              review:
+                type: array
+                items:
+                  type: integer
+                description: Array of review activity IDs
+              vouch:
+                type: array
+                items:
+                  type: integer
+                description: Array of vouch activity IDs
+              discussion:
+                type: array
+                items:
+                  type: integer
+                description: Array of discussion activity IDs
+              attestation:
+                type: array
+                items:
+                  type: integer
+                description: Array of attestation activity IDs
+              slash:
+                type: array
+                items:
+                  type: integer
+                description: Array of slash activity IDs
+              connectedProfile:
+                type: integer
+                description: Profile ID of the connected user (to get their votes)
+              includeArchived:
+                type: boolean
+                default: false
+                description: Whether to include archived activities
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/activities.yaml#/BulkVotes'
+
+invites_accepted_by:
+  get:
+    summary: Get Invites Accepted By
+    description: Retrieves a list of users who have accepted invitations from a specific profile.
+    tags:
+      - Activities
+    parameters:
+      - name: profileId
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: Profile ID to get accepted invites for
+      - name: limit
+        in: query
+        schema:
+          type: integer
+        description: Maximum number of results to return
+    responses:
+      '200':
+        description: Successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/activities.yaml#/ActivityActor'
