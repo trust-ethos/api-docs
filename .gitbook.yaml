@@ -1,0 +1,19 @@
+root: ./
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md
+
+redirects:
+  api/activities: content/activities.md
+  api/attestations: content/attestations.md
+  api/auth: content/auth.md
+  api/connections: content/connections.md
+  api/invitations: content/invitations.md
+  api/notifications: content/notifications.md
+  api/profiles: content/profiles.md
+  api/replies: content/replies.md
+  api/reviews: content/reviews.md
+  api/search: content/search.md
+  api/users: content/users.md
+  api/vouches: content/vouches.md 
