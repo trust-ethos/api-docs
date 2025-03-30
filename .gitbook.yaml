@@ -6,14 +6,31 @@ structure:
 
 redirects:
   api/activities: content/activities.md
+  api/addresses: content/addresses.md
   api/attestations: content/attestations.md
-  api/auth: content/auth.md
-  api/connections: content/connections.md
+  api/categories: content/categories.md
+  api/claim: content/claim.md
+  api/contracts: content/contracts.md
+  api/contributions: content/contributions.md
+  api/curated-lists: content/curated-lists.md
+  api/ens: content/ens.md
+  api/events: content/events.md
+  api/exchange-rates: content/exchange-rates.md
+  api/fees: content/fees.md
   api/invitations: content/invitations.md
+  api/markets: content/markets.md
   api/notifications: content/notifications.md
   api/profiles: content/profiles.md
   api/replies: content/replies.md
   api/reviews: content/reviews.md
+  api/scores: content/scores.md
   api/search: content/search.md
+  api/signatures: content/signatures.md
+  api/slashes: content/slashes.md
+  api/twitter: content/twitter.md
   api/users: content/users.md
-  api/vouches: content/vouches.md 
+  api/vouches: content/vouches.md
+  api/xp: content/xp.md
+  api: README.md
+  api/index: README.md
+  api/toc: SUMMARY.md 

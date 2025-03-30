@@ -1,8 +1,4 @@
-# Notifications API
-
-## Overview
-
-The Notifications API provides functionality for managing push notifications in the Ethos network. It allows users to register their devices for push notifications and enables applications to send notifications to users when specific events occur, such as receiving vouches, reviews, replies to their posts, or when their score changes.
+# Notifications
 
 ## Endpoints
 
@@ -12,107 +8,113 @@ The Notifications API provides functionality for managing push notifications in 
 POST /api/v1/notifications/user-fcm-token
 ```
 
-Registers or updates a Firebase Cloud Messaging (FCM) token for the authenticated user's device. This token is required to send push notifications to the user's device.
+**Description**: Updates or registers the Firebase Cloud Messaging (FCM) token for the authenticated user's device, enabling push notifications.
 
-The system maintains up to 10 tokens per user profile (for different devices). When that limit is reached, the oldest tokens are removed when new ones are added.
+**Authentication Required**: Yes (Requires Privy Session and Profile)
 
-#### Authentication Required
+#### Parameters
 
-This endpoint requires authentication and an Ethos profile.
+##### Path Parameters
 
-#### Request Body
+None
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| token | string | Yes | Firebase Cloud Messaging token for the user's device |
-| deviceIdentifier | string | Yes | Unique identifier for the user's device |
+##### Query Parameters
 
-#### Example Request
+None
 
-```json
-{
-  "token": "fJ9XBSehTAqBf-Vxxr5YSA:APA91bGNyhl8Yf2ePjRBR8FHJtkxw8YZ9gXh9WgJzY7Z...",
-  "deviceIdentifier": "d5e8f7g6-h5i4-j3k2-l1m0-n9o8p7q6r5s4"
-}
-```
-
-#### Success Response (200 OK)
+##### Request Body
 
 ```json
 {
-  "result": "created"
+  "token": "string", // The FCM registration token from the client device
+  "deviceIdentifier": "string" // A unique identifier for the client device/browser instance
 }
 ```
 
-The result can be one of:
-- `created`: A new FCM token was registered for the device
-- `updated`: An existing token for the device was updated
-- `unchanged`: The token was already registered and hasn't changed
+| Property           | Type   | Required | Description                                                     |
+|--------------------|--------|----------|-----------------------------------------------------------------|
+| `token`            | string | Yes      | The Firebase Cloud Messaging registration token.              |
+| `deviceIdentifier` | string | Yes      | A unique identifier for the client device/browser instance. |
 
-#### Error Responses
+#### Responses
 
-**400 Bad Request**
+##### Success Response
+
+**Code**: 200 OK
+
+Returns an object indicating the result of the operation.
+
 ```json
 {
-  "error": "Invalid parameters",
-  "code": "INVALID_PARAMETERS"
+  "ok": true,
+  "data": {
+    "result": "unchanged | updated | created"
+  }
 }
 ```
 
-**401 Unauthorized**
+| Property         | Type    | Description                                                                                              |
+|------------------|---------|----------------------------------------------------------------------------------------------------------|
+| `ok`             | boolean | Indicates if the API call itself was successful.                                                         |
+| `data`           | object  | Container for the response data.                                                                         |
+| `data.result`    | string  | Result status: 'unchanged' (token already exists for device), 'updated' (token updated), 'created' (new token/device registered). |
+
+##### Error Responses
+
+**Code**: 400 Bad Request
+
 ```json
 {
-  "error": "Authentication required",
-  "code": "AUTHENTICATION_REQUIRED"
+  "ok": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid or missing token/deviceIdentifier in request body"
+    // ... potentially other validation fields
+  }
 }
 ```
 
-**403 Forbidden**
+**Code**: 401 Unauthorized
+
 ```json
 {
-  "error": "No Ethos profile",
-  "code": "NO_PROFILE"
+  "ok": false,
+  "error": {
+    "code": "UNAUTHORIZED | NO_ETHOS_PROFILE", // Service uses Forbidden, but route might map to Unauthorized
+    "message": "Authentication required or no Ethos profile linked"
+  }
 }
 ```
 
-## Notification Types
+#### Example
 
-The Ethos platform sends various types of notifications to users:
+##### Request
 
-### Activity Notifications
+```bash
+# Needs auth token, a valid FCM token, and a device ID
+FCM_TOKEN="bk3RNwTe3H0:CI2k_HHwgIpoDKCIZheNIo..."
+DEVICE_ID="unique-browser-or-device-fingerprint"
 
-Users receive notifications for activities involving them, such as:
+http POST https://api.ethos.network/api/v1/notifications/user-fcm-token \
+  Authorization:"Bearer <AUTH_TOKEN>" \
+  token=$FCM_TOKEN \
+  deviceIdentifier=$DEVICE_ID
+```
 
-1. **Reviews** - When someone leaves a review about them
-2. **Vouches** - When someone vouches for them
-3. **Unvouches** - When someone removes a vouch from them
-4. **Replies** - When someone replies to their review, vouch, attestation, or discussion
-5. **Invitations** - When someone accepts an invitation they sent
+##### Response (Example: Token Created)
 
-### Score Change Notifications
+```json
+{
+  "ok": true,
+  "data": {
+    "result": "created"
+  }
+}
+```
 
-Users receive notifications when their credibility score changes significantly.
+#### Notes
 
-## Notification Payload Structure
-
-When the server sends a push notification, it uses the following payload structure:
-
-| Field | Description |
-|-------|-------------|
-| title | Title of the notification |
-| body | Main content of the notification |
-| image | (Optional) URL to an image to display in the notification |
-| badge | (Optional) URL to a badge icon for the notification |
-| icon | (Optional) URL to an icon for the notification |
-| url | (Optional) URL that the notification should link to when clicked |
-
-## Client Implementation Notes
-
-To implement push notifications in a client application:
-
-1. Register a service worker that can receive Firebase Cloud Messaging (FCM) notifications
-2. Request notification permission from the user
-3. Initialize Firebase Messaging and retrieve an FCM token
-4. Register the FCM token with the Ethos API using the Update User FCM Token endpoint
-5. Set up handlers for receiving notifications when the app is in the foreground
-6. Configure the service worker to display notifications when the app is in the background
+- Requires authentication.
+- Associates the provided FCM token with the authenticated user's profile and a specific device identifier.
+- Allows the backend to send push notifications to the user's device via Firebase.
+- Manages token updates and enforces a limit of 10 registered devices per profile. 

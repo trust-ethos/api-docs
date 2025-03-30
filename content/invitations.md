@@ -1,173 +1,205 @@
-# Invitations API
-
-The Invitations API allows users to manage and query invitations on the Ethos network. These invitations are used to bring new users into the Ethos ecosystem and can impact the credibility scores of both the sender and recipient.
+# Invitations
 
 ## Endpoints
 
-### POST /api/v1/invitations
+```
+POST /api/v1/invitations
+GET /api/v1/invitations/pending/:address
+```
 
-Retrieves a paginated list of invitations sent by a specific profile.
+## List Invitations Sent by a Profile
+
+```
+POST /api/v1/invitations
+```
+
+**Description**: Retrieves a list of invitations sent by a specific profile.
+
+**Authentication Required**: No
+
+### Parameters
 
 #### Request Body
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `invitedBy` | integer | Yes | The profile ID of the user who sent the invitations |
-| `pagination.limit` | integer | No | Maximum number of results to return (default: 10, max: 100) |
-| `pagination.offset` | integer | No | Number of results to skip for pagination (default: 0) |
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `invitedBy` | integer | Yes | The profile ID of the sender |
+| `pagination` | object | Yes | Pagination parameters |
+| `pagination.limit` | integer | Yes | Maximum number of results to return |
+| `pagination.offset` | integer | Yes | Number of results to skip |
 
-#### Example Request
+### Responses
+
+#### Success Response
+
+**Code**: 200 OK
 
 ```json
 {
-  "invitedBy": 123,
-  "pagination": {
+  "ok": true,
+  "data": {
     "limit": 10,
-    "offset": 0
+    "offset": 0,
+    "total": 210,
+    "values": [
+      {
+        "id": "1-0xA29f7b8E549c48435e1f5e67C30Cb1E47EEDd8A9",
+        "senderProfileId": 1,
+        "recipientAddress": "0xA29f7b8E549c48435e1f5e67C30Cb1E47EEDd8A9",
+        "status": "ACCEPTED",
+        "recipientScoreImpact": {
+          "value": 25,
+          "impact": "POSITIVE"
+        },
+        "senderScoreImpact": {
+          "value": 0,
+          "impact": "NEUTRAL"
+        },
+        "dateInvited": "2025-03-28T19:17:39.000Z",
+        "dateAccepted": "2025-03-28T19:22:43.000Z"
+      }
+    ]
   }
 }
 ```
 
-#### Success Response
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | object | Paginated response |
+| `data.limit` | integer | Maximum number of results returned |
+| `data.offset` | integer | Number of results skipped |
+| `data.total` | integer | Total number of matching invitations |
+| `data.values` | array | Array of invitation objects |
+| `data.values[].id` | string | Invitation ID (format: `${senderProfileId}-${recipientAddress}`) |
+| `data.values[].senderProfileId` | integer | Profile ID of the sender |
+| `data.values[].recipientAddress` | string | Ethereum address of the recipient |
+| `data.values[].status` | string | Status of the invitation: "INVITED", "ACCEPTED", or "ACCEPTED_OTHER_INVITATION" |
+| `data.values[].recipientScoreImpact` | object | Impact on the recipient's score |
+| `data.values[].recipientScoreImpact.value` | integer | Magnitude of the score impact |
+| `data.values[].recipientScoreImpact.impact` | string | Type of impact: "POSITIVE", "NEGATIVE", or "NEUTRAL" |
+| `data.values[].senderScoreImpact` | object | Impact on the sender's score |
+| `data.values[].senderScoreImpact.value` | integer | Magnitude of the score impact |
+| `data.values[].senderScoreImpact.impact` | string | Type of impact: "POSITIVE", "NEGATIVE", or "NEUTRAL" |
+| `data.values[].dateInvited` | string | Date the invitation was sent (ISO 8601 format) |
+| `data.values[].dateAccepted` | string | Date the invitation was accepted (ISO 8601 format), only present if accepted |
 
-The response includes a paginated list of invitations with their details.
+#### Error Response
+
+**Code**: 400 Bad Request
 
 ```json
 {
-  "values": [
-    {
-      "id": "123-0x1234567890abcdef1234567890abcdef12345678",
-      "senderProfileId": 123,
-      "recipientAddress": "0x1234567890abcdef1234567890abcdef12345678",
-      "status": "INVITED",
-      "recipientScoreImpact": {
-        "value": 10,
-        "impact": "POSITIVE"
-      },
-      "senderScoreImpact": {
-        "value": 5,
-        "impact": "POSITIVE"
-      },
-      "dateInvited": "2023-08-15T14:30:00Z"
-    },
-    {
-      "id": "123-0x8765432109abcdef8765432109abcdef87654321",
-      "senderProfileId": 123,
-      "recipientAddress": "0x8765432109abcdef8765432109abcdef87654321",
-      "status": "ACCEPTED",
-      "recipientScoreImpact": {
-        "value": 10,
-        "impact": "POSITIVE"
-      },
-      "senderScoreImpact": {
-        "value": 5,
-        "impact": "POSITIVE"
-      },
-      "dateInvited": "2023-08-10T09:15:00Z",
-      "dateAccepted": "2023-08-12T11:20:00Z"
-    }
-  ],
-  "total": 15,
-  "limit": 10,
-  "offset": 0
+  "ok": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Validation error",
+    "fields": [
+      {
+        "code": "invalid_type",
+        "expected": "number",
+        "message": "Expected number, received string",
+        "path": ["invitedBy"],
+        "received": "string"
+      }
+    ]
+  }
 }
 ```
 
-#### Error Responses
+### Example
 
-- `400 Bad Request`: Invalid parameters
-- `500 Internal Server Error`: Server-side error
+#### Request
 
-### GET /api/v1/invitations/pending/:address
+```bash
+http POST "https://api.ethos.network/api/v1/invitations" \
+  invitedBy:=1 \
+  pagination:='{"limit": 10, "offset": 0}'
+```
 
-Retrieves a list of pending invitations for a specific Ethereum address, ordered by the potential impact on the recipient's score.
-
-#### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `address` | string | Yes | The Ethereum address to check for pending invitations |
-
-#### Example Request
+## Get Pending Invitations for an Address
 
 ```
-GET /api/v1/invitations/pending/0x1234567890abcdef1234567890abcdef12345678
+GET /api/v1/invitations/pending/:address
 ```
+
+**Description**: Retrieves a list of pending invitations for a specific Ethereum address.
+
+**Authentication Required**: No
+
+### Parameters
+
+#### Path Parameters
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `address` | string | Yes | Ethereum address to check for pending invitations |
+
+### Responses
 
 #### Success Response
 
-The response includes a list of profile IDs that have invited the specified address, along with the potential score impact if the invitation is accepted.
+**Code**: 200 OK
 
 ```json
-[
-  {
-    "id": 456,
-    "impact": {
-      "value": 15,
-      "relativeValue": 15,
-      "impact": "POSITIVE",
-      "adjustedRecipientScore": 85
+{
+  "ok": true,
+  "data": [
+    {
+      "id": 42,
+      "impact": {
+        "value": 25,
+        "relativeValue": 25,
+        "impact": "POSITIVE",
+        "adjustedRecipientScore": 1025
+      }
     }
-  },
-  {
-    "id": 789,
-    "impact": {
-      "value": 10,
-      "relativeValue": 10,
-      "impact": "POSITIVE",
-      "adjustedRecipientScore": 80
-    }
-  }
-]
+  ]
+}
 ```
 
-#### Error Responses
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | array | Array of pending invitation objects |
+| `data[].id` | integer | Profile ID of the sender |
+| `data[].impact` | object | Score impact if the invitation is accepted |
+| `data[].impact.value` | integer | Absolute value of the score change |
+| `data[].impact.relativeValue` | integer | Relative value (positive or negative) |
+| `data[].impact.impact` | string | Type of impact: "POSITIVE", "NEGATIVE", or "NEUTRAL" |
+| `data[].impact.adjustedRecipientScore` | integer | The recipient's adjusted score if the invitation is accepted |
 
-- `400 Bad Request`: Invalid address format
-- `500 Internal Server Error`: Server-side error
+#### Error Response
 
-## Data Models
+**Code**: 400 Bad Request
 
-### Invitation
+```json
+{
+  "ok": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Validation error",
+    "fields": [
+      {
+        "code": "invalid_string",
+        "message": "Invalid ethereum address",
+        "path": ["address"],
+        "validation": "regex"
+      }
+    ]
+  }
+}
+```
 
-Represents an invitation to join the Ethos network.
+### Example
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | string | Yes | The unique identifier of the invitation |
-| `senderProfileId` | integer | Yes | The profile ID of the user who sent the invitation |
-| `recipientAddress` | string | Yes | The Ethereum address of the invitation recipient |
-| `status` | string | Yes | The current status of the invitation (ACCEPTED, INVITED, ACCEPTED_OTHER_INVITATION) |
-| `recipientScoreImpact` | object | No | The impact on the recipient's score if the invitation is accepted |
-| `senderScoreImpact` | object | No | The impact on the sender's score when the invitation is accepted |
-| `dateInvited` | string | Yes | The date and time when the invitation was sent |
-| `dateAccepted` | string | No | The date and time when the invitation was accepted (if applicable) |
+#### Request
 
-### ScoreChange
+```bash
+http GET "https://api.ethos.network/api/v1/invitations/pending/0xA29f7b8E549c48435e1f5e67C30Cb1E47EEDd8A9"
+```
 
-Represents the impact of a change in credibility score.
+### Notes
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `value` | integer | Yes | The absolute value of the score change |
-| `impact` | string | Yes | The type of impact (POSITIVE, NEGATIVE, NEUTRAL) |
-
-### ScoreSimulationResult
-
-Represents the simulated result of accepting an invitation on a user's score.
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `value` | integer | Yes | The absolute value of the score change |
-| `relativeValue` | integer | Yes | The relative value of the score change (positive or negative) |
-| `impact` | string | Yes | The type of impact (POSITIVE, NEGATIVE, NEUTRAL) |
-| `adjustedRecipientScore` | integer | Yes | The new score after adjustment |
-
-### PendingInvitation
-
-Represents a pending invitation with the potential impact on the recipient's score.
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `id` | integer | Yes | The profile ID of the user who sent the invitation |
-| `impact` | object | Yes | The potential impact on the recipient's score if accepted |
+- The response will be an empty array (`[]`) if there are no pending invitations for the address.
+- Invitations are sorted by the potential score impact on the recipient in descending order.

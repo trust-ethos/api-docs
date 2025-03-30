@@ -1,128 +1,134 @@
-# Replies API
-
-## Overview
-
-The Replies API allows developers to retrieve and manage replies to various content across the Ethos platform. This API provides endpoints for querying replies based on specific criteria and fetching summaries of reply activity.
+# Replies
 
 ## Endpoints
 
-### Query Replies
+```
+POST /api/v1/reply
+POST /api/v1/reply/summary
+```
+
+## Query Replies
 
 ```
-POST /api/v1/replies/query
+POST /api/v1/reply
 ```
 
-Retrieves replies based on specified filters and pagination parameters.
+**Description**: Retrieves a paginated list of replies for a specific target contract and parent IDs.
+
+**Authentication Required**: No
+
+### Parameters
 
 #### Request Body
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| targetContract | string | Yes | The contract address of the target item |
-| parentIds | string[] | Yes | Array of parent IDs to fetch replies for |
-| currentUserProfileId | string | No | Profile ID of the current user to determine participation |
-| pageSize | number | No | Number of replies to return per page (default: 10) |
-| pageNumber | number | No | Page number for pagination (default: 1) |
-| sortBy | string | No | Field to sort by (default: 'createdAt') |
-| sortDirection | string | No | Direction to sort ('asc' or 'desc', default: 'desc') |
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `targetContract` | string | Yes | Ethereum address of the target contract |
+| `parentIds` | array | Yes | Array of parent IDs to fetch replies for |
+| `limit` | integer | Yes | Maximum number of results to return (max 100) |
+| `offset` | integer | Yes | Number of results to skip |
+| `orderDirection` | string | No | Sort order: "asc" or "desc" (default: "desc") |
 
-#### Example Request
+### Responses
+
+#### Success Response
+
+**Code**: 200 OK
 
 ```json
 {
-  "targetContract": "0x1234567890abcdef1234567890abcdef12345678",
-  "parentIds": ["123", "456"],
-  "currentUserProfileId": "789",
-  "pageSize": 5,
-  "pageNumber": 1,
-  "sortBy": "createdAt",
-  "sortDirection": "desc"
+  "ok": true,
+  "data": {
+    "limit": 10,
+    "offset": 0,
+    "total": 0,
+    "values": []
+  }
 }
 ```
 
-#### Success Response (200 OK)
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | object | Paginated response |
+| `data.limit` | integer | Maximum number of results returned |
+| `data.offset` | integer | Number of results skipped |
+| `data.total` | integer | Total number of matching replies |
+| `data.values` | array | Array of reply objects |
+| `data.values[].id` | integer | Reply ID |
+| `data.values[].authorProfileId` | integer | Profile ID of the author |
+| `data.values[].content` | string | Content of the reply |
+| `data.values[].createdAt` | string | Creation timestamp (ISO 8601 format) |
+| `data.values[].targetContract` | string | Ethereum address of the target contract |
+| `data.values[].parentId` | integer | Parent ID that this reply is responding to |
+
+#### Error Response
+
+**Code**: 400 Bad Request
 
 ```json
 {
-  "replies": [
-    {
-      "id": "reply-123",
-      "parentId": "123",
-      "authorProfileId": "user-456",
-      "content": "This is a reply to the original content.",
-      "parentIsOriginalComment": true,
-      "targetContract": "0x1234567890abcdef1234567890abcdef12345678",
-      "createdAt": "2023-04-15T10:30:00Z",
-      "metadata": {
-        "editedAt": "2023-04-15T11:15:00Z"
+  "ok": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Validation error",
+    "fields": [
+      {
+        "code": "invalid_type",
+        "expected": "array",
+        "message": "Expected array, received number",
+        "path": ["parentIds"],
+        "received": "number"
       }
-    },
-    {
-      "id": "reply-124",
-      "parentId": "123",
-      "authorProfileId": "user-789",
-      "content": "Another reply to the discussion.",
-      "parentIsOriginalComment": true,
-      "targetContract": "0x1234567890abcdef1234567890abcdef12345678",
-      "createdAt": "2023-04-15T11:00:00Z"
-    }
-  ],
-  "totalCount": 15,
-  "pageSize": 5,
-  "pageNumber": 1,
-  "totalPages": 3
+    ]
+  }
 }
 ```
 
-#### Error Response (400 Bad Request)
+### Example
 
-```json
-{
-  "error": "Invalid parameters. Missing required field 'parentIds'."
-}
+#### Request
+
+```bash
+http POST "https://api.ethos.network/api/v1/reply" \
+  targetContract=0x2820b3aB3543ADB80810f11F2651f0DD9A04E801 \
+  parentIds:='[1]' \
+  limit:=10 \
+  offset:=0
 ```
 
-### Get Reply Summary
+## Get Reply Summaries
 
 ```
-POST /api/v1/replies/summary
+POST /api/v1/reply/summary
 ```
 
-Retrieves a summary of replies for the specified parent items, including the total count of replies and whether the current user has participated in the discussion.
+**Description**: Retrieves a summary of replies for specific target contracts and parent IDs, including the total count and whether the current user has participated in the discussion.
+
+**Authentication Required**: No
+
+### Parameters
 
 #### Request Body
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| targetContract | string | Yes | The contract address of the target item |
-| parentIds | string[] | Yes | Array of parent IDs to fetch summaries for |
-| currentUserProfileId | string | No | Profile ID of the current user to determine participation |
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `targetContract` | string | Yes | Ethereum address of the target contract |
+| `parentIds` | array | Yes | Array of parent IDs to fetch reply summaries for |
+| `currentUserProfileId` | integer or null | No | Profile ID of the current user to check for participation |
 
-#### Example Request
+### Responses
 
-```json
-{
-  "targetContract": "0x1234567890abcdef1234567890abcdef12345678",
-  "parentIds": ["123", "456", "789"],
-  "currentUserProfileId": "user-101"
-}
-```
+#### Success Response
 
-#### Success Response (200 OK)
+**Code**: 200 OK
 
 ```json
 {
-  "summaries": {
-    "0x1234567890abcdef1234567890abcdef12345678": {
-      "123": {
-        "count": 15,
-        "participated": true
-      },
-      "456": {
-        "count": 7,
-        "participated": false
-      },
-      "789": {
+  "ok": true,
+  "data": {
+    "0x2820b3aB3543ADB80810f11F2651f0DD9A04E801": {
+      "1": {
         "count": 0,
         "participated": false
       }
@@ -131,32 +137,51 @@ Retrieves a summary of replies for the specified parent items, including the tot
 }
 ```
 
-#### Error Response (400 Bad Request)
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | object | Map of target contracts to parent IDs to reply summaries |
+| `data[targetContract]` | object | Map of parent IDs to reply summaries for a specific target contract |
+| `data[targetContract][parentId]` | object | Reply summary for a specific parent ID |
+| `data[targetContract][parentId].count` | integer | Total number of replies |
+| `data[targetContract][parentId].participated` | boolean | Whether the current user has participated in the discussion |
+
+#### Error Response
+
+**Code**: 400 Bad Request
 
 ```json
 {
-  "error": "Invalid parameters. Target contract must be a valid address."
+  "ok": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Validation error",
+    "fields": [
+      {
+        "code": "invalid_type",
+        "expected": "number",
+        "message": "Expected number, received nan",
+        "path": ["currentUserProfileId"],
+        "received": "nan"
+      }
+    ]
+  }
 }
 ```
 
-## Data Models
+### Example
 
-### Reply
+#### Request
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| id | string | Yes | Unique identifier for the reply |
-| parentId | string | Yes | ID of the parent content this is replying to |
-| authorProfileId | string | Yes | Profile ID of the author who created the reply |
-| content | string | Yes | Text content of the reply |
-| parentIsOriginalComment | boolean | Yes | Whether the parent is the original content (true) or another reply (false) |
-| targetContract | string | Yes | Contract address of the target item |
-| createdAt | string (ISO date) | Yes | Timestamp when the reply was created |
-| metadata | object | No | Additional metadata about the reply (e.g., edits, flags) |
+```bash
+http POST "https://api.ethos.network/api/v1/reply/summary" \
+  targetContract=0x2820b3aB3543ADB80810f11F2651f0DD9A04E801 \
+  parentIds:='[1]' \
+  currentUserProfileId:=null
+```
 
-### Reply Summary
+### Notes
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| count | number | Yes | Total number of replies for the parent content |
-| participated | boolean | Yes | Whether the current user has participated in this discussion |
+- The reply summary endpoint provides an efficient way to get the total number of replies and participation status without fetching all the individual replies.
+- The structure of the response allows querying multiple target contracts and parent IDs in a single request.
+- When `currentUserProfileId` is `null`, the `participated` field will always be `false`.

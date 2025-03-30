@@ -1,147 +1,111 @@
 # Search API
 
-The Search API provides a unified search interface across different entities in the Ethos network, including profiles, users, Twitter accounts, ENS names, and Ethereum addresses.
+## Overview
+
+The Search API allows you to search for users, addresses, and service accounts in the Ethos network. It provides a unified search experience that returns results from different sources including profiles, Twitter accounts, and ENS names.
 
 ## Endpoints
 
-### GET /api/v1/search
+### Search
 
-Performs a unified search across profiles, users, Twitter accounts, and ENS names/addresses.
+```
+GET /api/v1/search
+```
+
+**Description**: Searches for users in the Ethos network based on a query string. The search looks across profile names, usernames, Ethereum addresses, ENS names, and Twitter handles.
+
+**Authentication Required**: No
 
 #### Parameters
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `query` | string | Yes | The search term (minimum 2 characters, maximum 100 characters) |
-| `limit` | integer | No | Maximum number of results to return (default: 10, max: 100) |
-| `offset` | integer | No | Number of results to skip for pagination (default: 0) |
+##### Query Parameters
 
-#### Example Request
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `query` | string | Yes | Search query (2-100 characters) |
+| `limit` | number | No | Maximum number of results to return (default: 10) |
+| `offset` | number | No | Offset for pagination (default: 0) |
 
-```
-GET /api/v1/search?query=alice&limit=5&offset=0
-```
+#### Responses
 
-#### Success Response
+##### Success Response
 
-The response includes a list of actors matching the search query, sorted by relevance.
+**Code**: 200 OK
 
 ```json
 {
-  "values": [
-    {
-      "profileId": "profile_123",
-      "name": "Alice Johnson",
-      "username": "alice",
-      "avatarUrl": "https://example.com/avatar.png",
-      "score": 95,
-      "xp": 1200,
-      "address": "0x1234567890abcdef1234567890abcdef12345678"
-    },
-    {
-      "name": "Alice Smith",
-      "username": "alicesmith",
-      "score": 85,
-      "xp": 800,
-      "address": "0x8765432109abcdef8765432109abcdef87654321"
-    }
-  ],
-  "total": 12,
-  "limit": 5,
-  "offset": 0
+  "ok": true,
+  "data": {
+    "values": [
+      {
+        "userkey": "profileId:123",
+        "avatar": "https://example.com/avatar.jpg",
+        "name": "Vitalik Buterin",
+        "username": "vitalik",
+        "description": "Ethereum co-founder",
+        "score": 95,
+        "scoreXpMultiplier": 1,
+        "profileId": 123,
+        "primaryAddress": "0x1234567890123456789012345678901234567890"
+      },
+      {
+        "userkey": "service:x.com:456789",
+        "avatar": "https://pbs.twimg.com/profile_images/1234567890/image.jpg",
+        "name": "Vitalik.eth",
+        "username": "vitalikbuterin",
+        "description": "Ethereum co-founder | vitalik.eth",
+        "score": 95,
+        "scoreXpMultiplier": 1,
+        "profileId": 124,
+        "primaryAddress": "0x9876543210987654321098765432109876543210"
+      }
+    ],
+    "limit": 10,
+    "offset": 0,
+    "total": 2
+  }
 }
 ```
 
-#### Error Responses
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | object | Response data container |
+| `data.values` | array | Array of actor objects matching the search |
+| `data.values[].userkey` | string | Userkey that uniquely identifies this actor |
+| `data.values[].avatar` | string | URL to the actor's avatar |
+| `data.values[].name` | string | Actor's display name |
+| `data.values[].username` | string | Actor's username |
+| `data.values[].description` | string | Actor's description or bio |
+| `data.values[].score` | number | Actor's credibility score |
+| `data.values[].scoreXpMultiplier` | number | Actor's XP multiplier based on score |
+| `data.values[].profileId` | number | Actor's profile ID (if available) |
+| `data.values[].primaryAddress` | string | Actor's primary Ethereum address (if available) |
+| `data.limit` | number | Number of results returned |
+| `data.offset` | number | Current pagination offset |
+| `data.total` | number | Total number of results matching the query |
 
-- `400 Bad Request`: Invalid parameters (e.g., query too short or too long)
-- `500 Internal Server Error`: Server-side error
+#### Example
 
-#### Notes on Search Algorithm
+##### Request
 
-The search algorithm prioritizes results based on several factors:
-1. Exact matches with the query
-2. Partial matches starting with the query
-3. Profiles take precedence over non-profiles
-4. Accounts with usernames take precedence over those without
-5. Accounts with real names take precedence over those with only addresses
-6. Higher credibility scores result in higher ranking
-
-### GET /api/v1/markets/search
-
-Search for markets by profile name, username, or other identifiers.
-
-#### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `query` | string | No | The search term. If not provided, returns all markets. |
-
-#### Example Request
-
-```
-GET /api/v1/markets/search?query=ethos
+```bash
+http GET "https://api.ethos.network/api/v1/search?query=vitalik&limit=10&offset=0"
 ```
 
-#### Success Response
+#### Notes
 
-The response includes a list of market profiles matching the search query.
+- The search results are sorted by multiple criteria in a cascading priority:
+  1. Profiles are ranked higher than non-profiles
+  2. Usernames exactly matching the query are prioritized
+  3. Real names exactly matching the query are prioritized
+  4. Results with usernames are ranked higher than those without
+  5. Results with real names are ranked higher than those without
+  6. Results with addresses are ranked higher than those without
+  7. Finally, results are sorted by credibility score
+  
+- The search is case-insensitive and will match partial strings.
 
-```json
-{
-  "values": [
-    {
-      "profileId": "profile_abc123",
-      "name": "Ethos Network",
-      "username": "ethos",
-      "avatarUrl": "https://example.com/avatar.png",
-      "address": "0x1234567890abcdef1234567890abcdef12345678",
-      "price": "0.125",
-      "priceChange24h": "5.2",
-      "supply": "1000",
-      "holders": 42,
-      "marketCap": "125.0",
-      "volume24h": "32.5"
-    }
-  ]
-}
-```
+- If no results are found but the query is a valid Ethereum address or ENS name, the API will attempt to look it up and return information about that address.
 
-#### Error Responses
-
-- `400 Bad Request`: Invalid parameters
-- `500 Internal Server Error`: Server-side error
-
-## Data Models
-
-### Activity Actor
-
-Represents a user or entity in the Ethos network.
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `profileId` | string | The profile ID, if the user has an Ethos profile |
-| `name` | string | The display name of the user |
-| `username` | string | The username, if available |
-| `avatarUrl` | string | URL to the user's avatar image |
-| `score` | number | The credibility score of the user |
-| `xp` | number | The experience points of the user |
-| `address` | string | The primary Ethereum address associated with the user |
-
-### Market Profile
-
-Represents a market associated with a user profile.
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `profileId` | string | Yes | The profile ID associated with this market |
-| `name` | string | Yes | The name of the profile |
-| `username` | string | No | The username associated with the profile |
-| `avatarUrl` | string | No | URL to the profile's avatar image |
-| `address` | string | Yes | The contract address for this market |
-| `price` | string | Yes | The current price of the market token |
-| `priceChange24h` | string | No | The price change percentage in the last 24 hours |
-| `supply` | string | Yes | The total supply of tokens |
-| `holders` | integer | No | The number of token holders |
-| `marketCap` | string | Yes | The market capitalization |
-| `volume24h` | string | No | Trading volume in the last 24 hours |
+- Duplicate results (same user found through different search methods) are deduplicated.

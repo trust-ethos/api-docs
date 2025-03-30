@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Vouches API provides endpoints for querying and retrieving information about vouches in the Ethos network. Vouches represent endorsements between users and may include ETH deposits.
+The Vouches API allows you to query and analyze vouches in the Ethos network. Vouches represent a stake of Ethereum that one user places on another, indicating trust and confidence in that user. The API provides endpoints for retrieving vouches, getting vouch statistics, counting vouches, and more.
 
 ## Endpoints
 
@@ -12,81 +12,129 @@ The Vouches API provides endpoints for querying and retrieving information about
 POST /api/v1/vouches
 ```
 
-Retrieves vouches based on specified filters and pagination parameters.
+**Description**: Retrieves vouches based on various filters such as IDs, author profile IDs, subject profile IDs, and more.
 
-#### Request Parameters
+**Authentication Required**: No
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| ids | number[] | No | Array of specific vouch IDs to retrieve |
-| authorProfileIds | number[] | No | Array of profile IDs that authored vouches |
-| subjectProfileIds | number[] | No | Array of profile IDs that received vouches |
-| subjectAddresses | string[] | No | Array of Ethereum addresses that received vouches |
-| subjectAttestationHashes | string[] | No | Array of attestation hashes for subjects |
-| archived | boolean | No | Whether to include archived vouches |
-| duration | string | No | Filter vouches by time period (e.g., "7d", "1w") |
-| orderBy | object | No | Sorting criteria (e.g., `{ "vouchedAt": "desc" }`) |
-| limit | number | No | Maximum number of results (default: 20, max: 100) |
-| offset | number | No | Number of results to skip for pagination |
+#### Parameters
 
-#### Response
+##### Request Body
 
 ```json
 {
-  "values": [
-    {
-      "id": 12345,
-      "authorProfileId": 1001,
-      "subjectProfileId": 2002,
-      "subjectAddress": "0x1234...",
-      "attestationHash": "0xabc...",
-      "comment": "Great contributor!",
-      "amount": "0.1",
-      "balance": "0.1",
-      "activityCheckpoints": {
-        "vouchedAt": "2023-05-01T12:34:56Z",
-        "updatedAt": "2023-05-01T12:34:56Z"
-      },
-      "mutualId": 6789,
-      "events": [
-        {
-          "id": 98765,
-          "txHash": "0x5678...",
-          "blockNumber": 123456,
-          "timestamp": "2023-05-01T12:34:56Z"
-        }
-      ],
-      "attestationDetails": {
-        "service": "x.com",
-        "account": "username"
+  "ids": [1, 2, 3],
+  "authorProfileIds": [123, 456],
+  "subjectProfileIds": [789, 101],
+  "subjectAddresses": ["0x1234...", "0x5678..."],
+  "subjectAttestationHashes": ["0xabcd...", "0xef01..."],
+  "archived": false,
+  "duration": "90d",
+  "orderBy": {
+    "vouchedAt": "desc"
+  },
+  "limit": 10,
+  "offset": 0
+}
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `ids` | array of numbers | No | Array of vouch IDs |
+| `authorProfileIds` | array of numbers | No | Array of profile IDs of vouch authors |
+| `subjectProfileIds` | array of numbers | No | Array of profile IDs of vouch subjects |
+| `subjectAddresses` | array of strings | No | Array of Ethereum addresses of vouch subjects |
+| `subjectAttestationHashes` | array of strings | No | Array of attestation hashes of vouch subjects |
+| `archived` | boolean | No | Whether to include archived vouches |
+| `duration` | string | No | Return vouches after this duration (e.g., "90d" for last 90 days) |
+| `orderBy` | object | No | Sorting options |
+| `orderBy.balance` or `orderBy.vouchedAt` or `orderBy.updatedAt` | string | No | Sort by field: "asc" or "desc" |
+| `limit` | number | No | Number of results to return (default: 10, maximum 100) |
+| `offset` | number | No | Offset for pagination (default: 0) |
+
+#### Responses
+
+##### Success Response
+
+**Code**: 200 OK
+
+```json
+{
+  "ok": true,
+  "data": {
+    "values": [
+      {
+        "id": 1,
+        "authorProfileId": 123,
+        "subjectProfileId": 789,
+        "subjectAddress": "0x1234567890123456789012345678901234567890",
+        "attestationHash": null,
+        "staked": "2000000000000000000", // 2 ETH in wei
+        "balance": "2000000000000000000",
+        "vouchedAt": 1735689600,
+        "updatedAt": 1735689600,
+        "archivedAt": null,
+        "archived": false,
+        "mutualId": 2,
+        "events": [
+          {
+            "id": 123,
+            "txHash": "0x1234567890123456789012345678901234567890123456789012345678901234",
+            "blockNumber": 12345678,
+            "createdAt": 1735689500,
+            "updatedAt": 1735689500
+          }
+        ],
+        "attestationDetails": null
       }
-    }
-  ],
-  "limit": 20,
-  "offset": 0,
-  "total": 150
+    ],
+    "limit": 10,
+    "offset": 0,
+    "total": 1
+  }
 }
 ```
 
-### Count Vouches
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | object | Response data container |
+| `data.values` | array | Array of vouch objects |
+| `data.values[].id` | number | Vouch ID |
+| `data.values[].authorProfileId` | number | Profile ID of the author |
+| `data.values[].subjectProfileId` | number | Profile ID of the subject (if applicable) |
+| `data.values[].subjectAddress` | string | Ethereum address of the subject (if applicable) |
+| `data.values[].attestationHash` | string | Attestation hash of the subject (if applicable) |
+| `data.values[].staked` | string | Amount of ETH staked in wei |
+| `data.values[].balance` | string | Current balance of the vouch in wei |
+| `data.values[].vouchedAt` | number | Unix timestamp of when the vouch was created |
+| `data.values[].updatedAt` | number | Unix timestamp of when the vouch was last updated |
+| `data.values[].archivedAt` | number | Unix timestamp of when the vouch was archived (if applicable) |
+| `data.values[].archived` | boolean | Whether the vouch is archived |
+| `data.values[].mutualId` | number | ID of the mutual vouch (if applicable) |
+| `data.values[].events` | array | Blockchain events associated with the vouch |
+| `data.values[].attestationDetails` | object | Details about the attestation (if applicable) |
+| `data.limit` | number | Number of results returned |
+| `data.offset` | number | Current pagination offset |
+| `data.total` | number | Total number of results matching the query |
 
+#### Example
+
+##### Request
+
+```bash
+http POST https://api.ethos.network/api/v1/vouches \
+  subjectProfileIds:='[789]' \
+  limit:=10 \
+  offset:=0
 ```
-POST /api/v1/vouches/count
-```
 
-Counts vouches based on specified filters.
+#### Notes
 
-#### Request Parameters
+- By default, results are sorted by vouch date in descending order (newest first).
+- The API enforces a maximum of 100 vouches that can be requested at once.
+- If a vouch references an attestation hash that corresponds to a Twitter account, the `attestationDetails` field will be populated.
 
-Same filtering parameters as the query endpoint, without pagination.
-
-#### Response
-
-```json
-{
-  "count": 150
-}
-```
+---
 
 ### Get Vouch Statistics
 
@@ -94,40 +142,168 @@ Same filtering parameters as the query endpoint, without pagination.
 POST /api/v1/vouches/stats
 ```
 
-Retrieves statistics about vouches for a specific user.
+**Description**: Retrieves statistics about vouches for a specific target (user, address, or service account).
 
-#### Request Parameters
+**Authentication Required**: No
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| target | string | Yes | User identifier (address, profile ID, or attestation in format `service:account`) |
+#### Parameters
 
-#### Response
+##### Request Body
 
 ```json
 {
-  "staked": {
-    "received": 1.5,
-    "deposited": 0.8,
-    "mutual": 0.5
-  },
-  "balance": {
-    "received": 1.2,
-    "deposited": 0.7,
-    "mutual": 0.4
-  },
-  "count": {
-    "received": 10,
-    "deposited": 5,
-    "mutual": 3
-  },
-  "percentile": {
-    "received": 85,
-    "deposited": 70,
-    "mutual": 60
+  "target": "profileId:123"
+}
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `target` | string | Yes | Userkey of the target (profileId, address, or service:x.com:username:username) |
+
+#### Responses
+
+##### Success Response
+
+**Code**: 200 OK
+
+```json
+{
+  "ok": true,
+  "data": {
+    "staked": {
+      "received": 5.0, // 5 ETH
+      "deposited": 2.0, // 2 ETH
+      "mutual": 1.5 // 1.5 ETH
+    },
+    "balance": {
+      "received": 5.0,
+      "deposited": 2.0,
+      "mutual": 1.5
+    },
+    "count": {
+      "received": 3,
+      "deposited": 2,
+      "mutual": 1
+    },
+    "percentile": {
+      "received": 85.5,
+      "deposited": 75.2,
+      "mutual": 65.3
+    }
   }
 }
 ```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | object | Vouch statistics data |
+| `data.staked` | object | Statistics about the amount of ETH staked |
+| `data.staked.received` | number | Total ETH received as vouches |
+| `data.staked.deposited` | number | Total ETH deposited as vouches |
+| `data.staked.mutual` | number | Total ETH in mutual vouches |
+| `data.balance` | object | Statistics about the current balance of vouches |
+| `data.balance.received` | number | Current balance of received vouches |
+| `data.balance.deposited` | number | Current balance of deposited vouches |
+| `data.balance.mutual` | number | Current balance of mutual vouches |
+| `data.count` | object | Statistics about the number of vouches |
+| `data.count.received` | number | Number of vouches received |
+| `data.count.deposited` | number | Number of vouches deposited |
+| `data.count.mutual` | number | Number of mutual vouches |
+| `data.percentile` | object | Percentile rankings compared to all users |
+| `data.percentile.received` | number | Percentile for received vouches (0-100) |
+| `data.percentile.deposited` | number | Percentile for deposited vouches (0-100) |
+| `data.percentile.mutual` | number | Percentile for mutual vouches (0-100) |
+
+##### Error Responses
+
+**Code**: 404 Not Found
+
+```json
+{
+  "ok": false,
+  "error": {
+    "code": "NOT_FOUND",
+    "message": "Attestation account not found"
+  }
+}
+```
+
+#### Example
+
+##### Request
+
+```bash
+http POST https://api.ethos.network/api/v1/vouches/stats \
+  target="profileId:123"
+```
+
+#### Notes
+
+- The percentile values indicate how the user's vouch stats compare to other users. Higher percentiles indicate better performance.
+- For targets without vouches, all values will be 0.
+
+---
+
+### Count Vouches
+
+```
+POST /api/v1/vouches/count
+```
+
+**Description**: Counts the number of vouches matching the specified filters.
+
+**Authentication Required**: No
+
+#### Parameters
+
+##### Request Body
+
+```json
+{
+  "authorProfileIds": [123],
+  "subjectProfileIds": [789],
+  "archived": false
+}
+```
+
+The parameters are the same as for the "Query Vouches" endpoint, except `orderBy`, `limit`, and `offset` are not used.
+
+#### Responses
+
+##### Success Response
+
+**Code**: 200 OK
+
+```json
+{
+  "ok": true,
+  "data": {
+    "count": 5
+  }
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | object | Response data |
+| `data.count` | number | Number of vouches matching the filters |
+
+#### Example
+
+##### Request
+
+```bash
+http POST https://api.ethos.network/api/v1/vouches/count \
+  subjectProfileIds:='[789]'
+```
+
+#### Notes
+
+- This endpoint is useful for efficiently getting count information without retrieving the actual vouch data.
+
+---
 
 ### Get Vouched Ethereum
 
@@ -135,21 +311,59 @@ Retrieves statistics about vouches for a specific user.
 POST /api/v1/vouches/vouched-ethereum
 ```
 
-Retrieves the total amount of ETH vouched for a specific user.
+**Description**: Calculates the total amount of Ethereum vouched for a specific target.
 
-#### Request Parameters
+**Authentication Required**: No
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| target | string | Yes | User identifier (address, profile ID, or attestation) |
+#### Parameters
 
-#### Response
+##### Request Body
 
 ```json
 {
-  "amount": "1.5"
+  "target": "profileId:123"
 }
 ```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `target` | string | Yes | Userkey of the target (profileId, address, or service:x.com:username:username) |
+
+#### Responses
+
+##### Success Response
+
+**Code**: 200 OK
+
+```json
+{
+  "ok": true,
+  "data": {
+    "vouchedEth": 5.0
+  }
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | object | Response data |
+| `data.vouchedEth` | number | Total amount of ETH vouched for the target |
+
+#### Example
+
+##### Request
+
+```bash
+http POST https://api.ethos.network/api/v1/vouches/vouched-ethereum \
+  target="profileId:123"
+```
+
+#### Notes
+
+- This endpoint calculates the total amount of ETH currently vouched for the target.
+
+---
 
 ### Get Most Credible Vouchers
 
@@ -157,30 +371,74 @@ Retrieves the total amount of ETH vouched for a specific user.
 POST /api/v1/vouches/most-credible-vouchers
 ```
 
-Retrieves the most credible vouchers for a specific user.
+**Description**: Retrieves the most credible users who have vouched for a specific target.
 
-#### Request Parameters
+**Authentication Required**: No
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| target | string | Yes | User identifier (address, profile ID, or attestation) |
-| limit | number | No | Maximum number of results (default: 10) |
+#### Parameters
 
-#### Response
+##### Request Body
 
 ```json
 {
-  "vouchers": [
+  "userkey": "profileId:123",
+  "limit": 4
+}
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `userkey` | string | Yes | Userkey of the target to find vouchers for |
+| `limit` | number | No | Maximum number of vouchers to return (default: 4, max: 50) |
+
+#### Responses
+
+##### Success Response
+
+**Code**: 200 OK
+
+```json
+{
+  "ok": true,
+  "data": [
     {
-      "profileId": 1001,
-      "name": "User Name",
-      "avatarUrl": "https://example.com/avatar.jpg",
-      "score": 85,
-      "amount": "0.5"
+      "authorProfileId": 456,
+      "vouchId": 1,
+      "score": 90
+    },
+    {
+      "authorProfileId": 789,
+      "vouchId": 2,
+      "score": 85
     }
   ]
 }
 ```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | array | Array of credible voucher information |
+| `data[].authorProfileId` | number | Profile ID of the voucher |
+| `data[].vouchId` | number | ID of the vouch |
+| `data[].score` | number | Credibility score of the voucher |
+
+#### Example
+
+##### Request
+
+```bash
+http POST https://api.ethos.network/api/v1/vouches/most-credible-vouchers \
+  userkey="profileId:123" \
+  limit:=5
+```
+
+#### Notes
+
+- The vouchers are sorted by their credibility score in descending order.
+- Only active (non-archived) vouches are considered.
+
+---
 
 ### Get Mutual Vouchers
 
@@ -188,30 +446,68 @@ Retrieves the most credible vouchers for a specific user.
 GET /api/v1/vouches/mutual-vouchers
 ```
 
-Retrieves users who have mutual vouches with the specified user.
+**Description**: Retrieves a list of users who have mutual vouches with the specified target.
 
-#### Query Parameters
+**Authentication Required**: No
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| userkey | string | Yes | User identifier (address, profile ID, or attestation) |
-| limit | number | No | Maximum number of results (default: 10) |
+#### Parameters
 
-#### Response
+##### Query Parameters
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `userkey` | string | Yes | Userkey of the target to find mutual vouchers for |
+| `limit` | number | No | Maximum number of results to return (default: 10) |
+
+#### Responses
+
+##### Success Response
+
+**Code**: 200 OK
 
 ```json
 {
-  "mutualVouchers": [
+  "ok": true,
+  "data": [
     {
-      "profileId": 2002,
-      "name": "Another User",
-      "avatarUrl": "https://example.com/avatar2.jpg",
-      "vouchId": 12345,
-      "mutualVouchId": 6789
+      "profileId": 456,
+      "outgoingVouchId": 1,
+      "incomingVouchId": 2,
+      "vouchedEth": 1.5
+    },
+    {
+      "profileId": 789,
+      "outgoingVouchId": 3,
+      "incomingVouchId": 4,
+      "vouchedEth": 1.0
     }
   ]
 }
 ```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | array | Array of mutual voucher information |
+| `data[].profileId` | number | Profile ID of the mutual voucher |
+| `data[].outgoingVouchId` | number | ID of the outgoing vouch (from target to voucher) |
+| `data[].incomingVouchId` | number | ID of the incoming vouch (from voucher to target) |
+| `data[].vouchedEth` | number | Amount of ETH in the mutual vouch |
+
+#### Example
+
+##### Request
+
+```bash
+http GET https://api.ethos.network/api/v1/vouches/mutual-vouchers?userkey=profileId:123&limit=5
+```
+
+#### Notes
+
+- Mutual vouches are pairs of vouches where two users have vouched for each other.
+- Only active (non-archived) vouches are considered.
+
+---
 
 ### Get Vouch Rewards
 
@@ -219,56 +515,59 @@ Retrieves users who have mutual vouches with the specified user.
 POST /api/v1/vouches/rewards
 ```
 
-Retrieves rewards earned from vouches for specified users.
+**Description**: Calculates the rewards earned from vouches for a specific target.
 
-#### Request Parameters
+**Authentication Required**: No
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| userkeys | string[] | Yes | Array of user identifiers |
+#### Parameters
 
-#### Response
+##### Request Body
 
 ```json
 {
-  "user1": {
-    "rewards": 0.1,
-    "lifetime": 0.5
-  },
-  "user2": {
-    "rewards": 0.05,
-    "lifetime": 0.2
+  "target": "profileId:123"
+}
+```
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `target` | string | Yes | Userkey of the target to calculate rewards for |
+
+#### Responses
+
+##### Success Response
+
+**Code**: 200 OK
+
+```json
+{
+  "ok": true,
+  "data": {
+    "earned": 0.05,
+    "potentialEarnings": 0.08,
+    "totalStaked": 5.0
   }
 }
 ```
 
-## Error Responses
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | object | Vouch rewards data |
+| `data.earned` | number | Total ETH earned from vouches |
+| `data.potentialEarnings` | number | Potential additional earnings from vouches |
+| `data.totalStaked` | number | Total ETH staked in vouches |
 
-All endpoints may return the following error responses:
+#### Example
 
-### 400 Bad Request
+##### Request
 
-```json
-{
-  "error": "Invalid parameters",
-  "code": "INVALID_PARAMETERS"
-}
+```bash
+http POST https://api.ethos.network/api/v1/vouches/rewards \
+  target="profileId:123"
 ```
 
-### 404 Not Found
+#### Notes
 
-```json
-{
-  "error": "User not found",
-  "code": "NOT_FOUND"
-}
-```
-
-### 500 Internal Server Error
-
-```json
-{
-  "error": "An unexpected error occurred",
-  "code": "INTERNAL_SERVER_ERROR"
-}
-```
+- Rewards are earned based on the protocol's reward distribution mechanism.
+- Potential earnings represent the additional rewards that could be earned in the future from existing vouches.
