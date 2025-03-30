@@ -1,12 +1,12 @@
-# Exchange Rates
+# Exchange Rates API
+
+## Overview
+
+The Exchange Rates API provides endpoints for retrieving cryptocurrency exchange rate information, specifically the current price of Ethereum (ETH) in US Dollars (USD).
 
 ## Endpoints
 
-```
-GET /api/v1/exchange-rates/eth-price
-```
-
-## Get ETH Price in USD
+### Get ETH Price in USD
 
 ```
 GET /api/v1/exchange-rates/eth-price

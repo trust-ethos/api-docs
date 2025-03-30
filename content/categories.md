@@ -1,19 +1,10 @@
-# Categories
+# Categories API
+
+## Overview
+
+The Categories API allows for the management and retrieval of user categories and the users within them. Categories can be created, updated, deleted, and queried. Users can be added to or removed from specific categories.
 
 ## Endpoints
-
-```
-GET /api/v1/categories
-GET /api/v1/categories/:id
-GET /api/v1/categories/:id/users
-PUT /api/v1/categories/:id
-POST /api/v1/categories
-DELETE /api/v1/categories/:id
-POST /api/v1/categories/:id/users
-DELETE /api/v1/categories/:id/users
-```
-
----
 
 ### Get Users in Category
 

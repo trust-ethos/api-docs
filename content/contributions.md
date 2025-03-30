@@ -1,4 +1,8 @@
-# Contributions
+# Contributions API
+
+## Overview
+
+The Contributions API provides endpoints for retrieving information about user contribution activities, bundles, and statistics within the Ethos network. These contributions often involve tasks like performing trust checks, reviewing content, or participating in scoring.
 
 ## Endpoints
 

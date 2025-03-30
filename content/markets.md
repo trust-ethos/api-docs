@@ -1,24 +1,12 @@
-# Markets
+# Markets API
+
+## Overview
+
+The Markets API provides endpoints for interacting with Ethos prediction markets. This includes searching markets, retrieving market details, viewing price and transaction history, checking holders, tracking activity, and accessing leaderboards.
 
 ## Endpoints
 
-```
-GET /api/v1/markets/search
-POST /api/v1/markets/bulk
-POST /api/v1/markets/news
-GET /api/v1/markets/:profileId
-GET /api/v1/markets/:profileId/price/history
-GET /api/v1/markets/:profileId/tx/history
-GET /api/v1/markets/:profileId/holders
-GET /api/v1/markets/activity/:address
-GET /api/v1/markets/holdings/:address
-GET /api/v1/markets/holdings/:address/total
-GET /api/v1/markets/volume/:address
-GET /api/v1/markets/leaderboard/xp
-GET /api/v1/markets/leaderboard/profit
-```
-
-## Search Markets
+### Search Markets
 
 ```
 GET /api/v1/markets/search
@@ -28,18 +16,18 @@ GET /api/v1/markets/search
 
 **Authentication Required**: No
 
-### Parameters
+#### Parameters
 
-#### Query Parameters
+##### Query Parameters
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
 | `q` | string | No | Query string to search for markets (minimum 2 characters) |
 | `limit` | integer | No | Maximum number of results to return (default: 50) |
 
-### Responses
+#### Responses
 
-#### Success Response
+##### Success Response
 
 **Code**: 200 OK
 
@@ -106,7 +94,7 @@ GET /api/v1/markets/search
 | `data[].stats.volume24hWei` | string | 24-hour trading volume in wei |
 | `data[].stats.priceChange24hPercent` | integer | 24-hour price change percentage |
 
-#### Error Response
+##### Error Response
 
 **Code**: 400 Bad Request
 
@@ -129,15 +117,15 @@ GET /api/v1/markets/search
 }
 ```
 
-### Example
+#### Example
 
-#### Request
+##### Request
 
 ```bash
 http GET "https://api.ethos.network/api/v1/markets/search?q=alice&limit=2"
 ```
 
-#### Response
+##### Response
 
 ```json
 {
@@ -201,7 +189,7 @@ http GET "https://api.ethos.network/api/v1/markets/search?q=alice&limit=2"
 }
 ```
 
-### Notes
+#### Notes
 
 - If no query (`q`) parameter is provided, the endpoint will return all markets.
 - The search matches against market profile names, Twitter usernames, and other profile information.
@@ -210,9 +198,7 @@ http GET "https://api.ethos.network/api/v1/markets/search?q=alice&limit=2"
 - Market configuration types include: VOLATILE (highest risk/reward), NORMAL (balanced), and INSULATED (lowest risk/reward).
 - All price values are returned as strings to preserve precision for large numbers.
 
----
-
-## Get Bulk Market Info by Profile IDs
+### Get Bulk Market Info by Profile IDs
 
 ```
 POST /api/v1/markets/bulk
@@ -222,9 +208,9 @@ POST /api/v1/markets/bulk
 
 **Authentication Required**: No
 
-### Parameters
+#### Parameters
 
-#### Request Body
+##### Request Body
 
 ```json
 {
@@ -236,9 +222,9 @@ POST /api/v1/markets/bulk
 |--------------|----------------|----------|-------------------------------------|
 | `profileIds` | array of numbers | Yes      | Array of profile IDs for the markets to retrieve. |
 
-### Responses
+#### Responses
 
-#### Success Response
+##### Success Response
 
 **Code**: 200 OK
 
@@ -285,7 +271,7 @@ Returns an array of market objects, with the same structure as the objects retur
 ```
 (See `GET /api/v1/markets/search` documentation for detailed field descriptions of the market object.)
 
-#### Error Response
+##### Error Response
 
 **Code**: 400 Bad Request (Example: Invalid input)
 
@@ -322,23 +308,21 @@ Returns an array of market objects, with the same structure as the objects retur
 }
 ```
 
-### Example
+#### Example
 
-#### Request
+##### Request
 
 ```bash
 http POST https://api.ethos.network/api/v1/markets/bulk \\
   profileIds:='[1, 8]'
 ```
 
-### Notes
+#### Notes
 
 - This endpoint is useful for fetching data for a specific set of markets when their profile IDs are known.
 - If any requested `profileId` does not correspond to an existing market or its associated profile cannot be found, the request may fail with a 500 error.
 
----
-
-## Get Market News (Associated Tweets)
+### Get Market News
 
 ```
 POST /api/v1/markets/news
@@ -348,9 +332,9 @@ POST /api/v1/markets/news
 
 **Authentication Required**: No
 
-### Parameters
+#### Parameters
 
-#### Request Body
+##### Request Body
 
 Expects a raw JSON array of profile IDs.
 
@@ -362,9 +346,9 @@ Expects a raw JSON array of profile IDs.
 |-----------------|----------|---------------------------------------------------|
 | array of numbers | Yes      | Array of profile IDs for the markets to retrieve associated tweets for. |
 
-### Responses
+#### Responses
 
-#### Success Response
+##### Success Response
 
 **Code**: 200 OK
 
@@ -425,7 +409,7 @@ Returns an array of objects, each mapping a `marketProfileId` to a `tweet` objec
 | `data[].tweet.impressions` | number | Number of impressions                                           |
 
 
-#### Error Response
+##### Error Response
 
 **Code**: 400 Bad Request (Example: Invalid input type)
 
@@ -448,25 +432,23 @@ Returns an array of objects, each mapping a `marketProfileId` to a `tweet` objec
 }
 ```
 
-### Example
+#### Example
 
-#### Request
+##### Request
 
 ```bash
 # Example using httpie with raw JSON body
 echo \'[1, 8, 19]\' | http POST https://api.ethos.network/api/v1/markets/news Content-Type:application/json
 ```
 
-### Notes
+#### Notes
 
 - This endpoint finds the Twitter account associated with each market's profile ID via X attestations.
 - It then attempts to retrieve a recent, popular tweet from that user's timeline.
 - Tweet data is cached for performance (currently 24 hours). If no suitable tweet is found in the cache or via a fresh fetch, `null` will be returned for that market's `tweet` field.
 - The selection criteria for "popular" tweets are based on an internal scoring mechanism considering retweets, replies, likes, and impressions.
 
----
-
-## Get Market by Profile ID
+### Get Market by Profile ID
 
 ```
 GET /api/v1/markets/:profileId
@@ -476,17 +458,17 @@ GET /api/v1/markets/:profileId
 
 **Authentication Required**: No
 
-### Parameters
+#### Parameters
 
-#### Path Parameters
+##### Path Parameters
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
 | `profileId` | integer | Yes | Profile ID of the market to retrieve. |
 
-### Responses
+#### Responses
 
-#### Success Response
+##### Success Response
 
 **Code**: 200 OK
 
@@ -526,7 +508,7 @@ Returns a market object, with the same structure as the objects returned by the 
 ```
 (See `GET /api/v1/markets/search` documentation for detailed field descriptions of the market object.)
 
-#### Error Response
+##### Error Response
 
 **Code**: 404 Not Found (Example: Market not found)
 
@@ -540,22 +522,20 @@ Returns a market object, with the same structure as the objects returned by the 
 }
 ```
 
-### Example
+#### Example
 
-#### Request
+##### Request
 
 ```bash
 http GET https://api.ethos.network/api/v1/markets/1
 ```
 
-### Notes
+#### Notes
 
 - This endpoint is useful for fetching detailed data for a specific market when its profile ID is known.
 - If the requested `profileId` does not correspond to an existing market, the request will fail with a 404 error.
 
----
-
-## Get Market Price History
+### Get Market Price History
 
 ```
 GET /api/v1/markets/:profileId/price/history
@@ -565,17 +545,17 @@ GET /api/v1/markets/:profileId/price/history
 
 **Authentication Required**: No
 
-### Parameters
+#### Parameters
 
-#### Path Parameters
+##### Path Parameters
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
 | `profileId` | integer | Yes | Profile ID of the market to retrieve price history for. |
 
-### Responses
+#### Responses
 
-#### Success Response
+##### Success Response
 
 **Code**: 200 OK
 
@@ -615,7 +595,7 @@ Returns an array of price event objects, each containing the positive/negative p
 | `data[].negativePrice` | string | Negative price in wei at this event time |
 | `data[].createdAt` | string | Timestamp of the price change event (ISO 8601 format) |
 
-#### Error Response
+##### Error Response
 
 **Code**: 404 Not Found (Example: Market not found)
 
@@ -629,24 +609,22 @@ Returns an array of price event objects, each containing the positive/negative p
 }
 ```
 
-### Example
+#### Example
 
-#### Request
+##### Request
 
 ```bash
 http GET https://api.ethos.network/api/v1/markets/1/price/history
 ```
 
-### Notes
+#### Notes
 
 - This endpoint is useful for fetching price history data for a specific market when its profile ID is known.
 - If the requested `profileId` does not correspond to an existing market, the request will fail with a 404 error.
 - The price history data is sorted by timestamp in ascending order.
 - The data reflects recorded price change events, not necessarily sampled at regular intervals.
 
----
-
-## Get Market Transaction History
+### Get Market Transaction History
 
 ```
 GET /api/v1/markets/:profileId/tx/history
@@ -656,17 +634,17 @@ GET /api/v1/markets/:profileId/tx/history
 
 **Authentication Required**: No
 
-### Parameters
+#### Parameters
 
-#### Path Parameters
+##### Path Parameters
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
 | `profileId` | integer | Yes | Profile ID of the market to retrieve transaction history for. |
 
-### Responses
+#### Responses
 
-#### Success Response
+##### Success Response
 
 **Code**: 200 OK
 
@@ -747,7 +725,7 @@ Returns a paginated list of transaction history objects for the specified market
 | `data.limit` | integer | Maximum number of transactions returned in this response |
 | `data.offset` | integer | Number of transactions skipped (for pagination) |
 
-#### Error Response
+##### Error Response
 
 **Code**: 404 Not Found (Example: Market not found)
 
@@ -761,15 +739,15 @@ Returns a paginated list of transaction history objects for the specified market
 }
 ```
 
-### Example
+#### Example
 
-#### Request
+##### Request
 
 ```bash
 http GET https://api.ethos.network/api/v1/markets/1/tx/history
 ```
 
-### Notes
+#### Notes
 
 - This endpoint is useful for fetching transaction history data for a specific market when its profile ID is known.
 - If the requested `profileId` does not correspond to an existing market, the request will fail with a 404 error.
@@ -777,9 +755,7 @@ http GET https://api.ethos.network/api/v1/markets/1/tx/history
 - Pagination parameters (`limit`, `offset`) can be added as query parameters (e.g., `?limit=10&offset=20`). The default limit is likely 50, offset 0.
 - A `voteTypeFilter` query parameter can be used to filter by 'trust' or 'distrust'.
 
----
-
-## Get Market Holders
+### Get Market Holders
 
 ```
 GET /api/v1/markets/:profileId/holders
@@ -889,9 +865,7 @@ http GET https://api.ethos.network/api/v1/markets/1/holders
 - The holder data appears to be sorted by the total amount held, in descending order.
 - The `total_amount` and `total` fields use a string representation ending in 'n', indicating BigInt values.
 
----
-
-## Get Market Activity by Address
+### Get Address Market Activity
 
 ```
 GET /api/v1/markets/activity/:address
@@ -1032,9 +1006,7 @@ http GET https://api.ethos.network/api/v1/markets/activity/0x9E2218375567BB466b8
 - Pagination parameters (`limit`, `offset`) can be added as query parameters (e.g., `?limit=10&offset=20`). The default limit is likely 50, offset 0.
 - A `voteTypeFilter` query parameter can likely be used to filter by 'trust' or 'distrust' (similar to the market tx history endpoint).
 
----
-
-## Get Market Holdings by Address
+### Get Address Market Holdings
 
 ```
 GET /api/v1/markets/holdings/:address
@@ -1150,9 +1122,7 @@ http GET https://api.ethos.network/api/v1/markets/holdings/0x9E2218375567BB466b8
 - If the requested `address` is not a valid Ethereum address, the request will fail with a 400 error.
 - The market holding data is sorted by balance in descending order.
 
----
-
-## Get Holdings Total by Address
+### Get Address Market Holdings Total Value
 
 ```
 GET /api/v1/markets/holdings/:address/total
@@ -1245,36 +1215,94 @@ http GET https://api.ethos.network/api/v1/markets/holdings/0x9E2218375567BB466b8
 - BigInt value is returned as a string ending in 'n'.
 - If the address has no holdings, the value returned is "0n".
 
----
-
-### Get Holdings by Address
+### Get Address Market Volume
 
 ```
-GET /api/v1/markets/holdings/:address
+GET /api/v1/markets/volume/:address
 ```
 
-**Description**: Retrieves the market holdings summary and details for a specific user address.
+**Description**: Retrieves the total market volume for a specific Ethereum address.
+
+**Authentication Required**: No
+
+### Parameters
+
+#### Path Parameters
+
+| Name | Type | Required | Description |
+|------|------|----------|-------------|
+| `address` | string | Yes | Ethereum address to retrieve market volume for. |
+
+### Responses
+
+#### Success Response
+
+**Code**: 200 OK
+
+Returns an object containing the total market volume in wei.
+
+```json
+{
+  "ok": true,
+  "data": {
+    "totalVolumeWei": "15000000000000000000"
+  }
+}
+```
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `ok` | boolean | Success status |
+| `data` | object | Object containing the total market volume |
+| `data.totalVolumeWei` | string | Total market volume in wei |
+
+#### Error Response
+
+**Code**: 400 Bad Request (Example: Invalid address)
+
+```json
+{
+  "error": "Invalid Ethereum address",
+  "code": "VALIDATION_ERROR"
+}
+```
+
+### Example
+
+#### Request
+
+```bash
+http GET https://api.ethos.network/api/v1/markets/volume/0x9E2218375567BB466b81E38E1a8b599b6250408C
+```
+
+### Notes
+
+- This endpoint is useful for fetching market volume data for a specific Ethereum address.
+- If the requested `address` is not a valid Ethereum address, the request will fail with a 400 error.
+
+### Get XP Leaderboard
+
+```
+GET /api/v1/markets/leaderboard/xp
+```
+
+**Description**: Retrieves a leaderboard of users ranked by their XP in the markets.
 
 **Authentication Required**: No
 
 #### Parameters
 
-##### Path Parameters
-
-| Name      | Type   | Required | Description                |
-|-----------|--------|----------|----------------------------|
-| `address` | string | Yes      | The user's wallet address. |
-
 ##### Query Parameters
 
-| Name     | Type    | Required | Description                                       |
-|----------|---------|----------|---------------------------------------------------|
-| `limit`  | integer | No       | Maximum number of holdings to return (default: ?) |
-| `offset` | integer | No       | Number of holdings to skip (for pagination)       |
+```typescript
+{
+  limit?: number;  // Optional: Max results (default 50, max 100)
+}
+```
 
-##### Request Body
-
-None
+| Parameter | Type   | Required | Default | Description                              |
+|-----------|--------|----------|---------|------------------------------------------|
+| `limit`   | number | No       | 50      | Maximum number of users to return (max 100). |
 
 #### Responses
 
@@ -1285,60 +1313,30 @@ None
 ```json
 {
   "ok": true,
-  "data": {
-    "summary": {
-      "boughtTotal": "string", // BigInt as string ending in 'n'
-      "soldTotal": "string", // BigInt as string ending in 'n'
-      "holdingTotal": "string" // BigInt as string ending in 'n'
-    },
-    "holdings": [
-      {
-        "marketProfileId": number,
-        "voteType": "trust | distrust",
-        "currentHoldingVotes": number,
-        "currentHoldingValue": "string", // BigInt as string ending in 'n'
-        "boughtTotal": "string", // BigInt as string ending in 'n'
-        "soldTotal": "string" // BigInt as string ending in 'n'
-      }
-      // ... more holding objects
-    ]
-  }
+  "data": [
+    {
+      "xp": "string", // Total XP as a string (wei)
+      "address": "string" // User's Ethereum address
+    }
+    // ... ranked users up to the limit
+  ]
 }
 ```
 
-| Property                      | Type                   | Description                                                                               |
-|-------------------------------|------------------------|-------------------------------------------------------------------------------------------|
-| `ok`                          | boolean                | Indicates if the request was successful.                                                   |
-| `data`                        | object                 | Container for the response data.                                                          |
-| `summary`                     | object                 | Summary statistics for the user's holdings across all markets.                              |
-| `summary.boughtTotal`         | string                 | Total value (in wei, as string ending in 'n') of all buys made by the user.               |
-| `summary.soldTotal`           | string                 | Total value (in wei, as string ending in 'n') of all sells made by the user.              |
-| `summary.holdingTotal`        | string                 | Current total value (in wei, as string ending in 'n') of all holdings for the user.       |
-| `holdings`                    | Array<object>          | An array of objects, each representing a holding in a specific market profile.            |
-| `holdings[].marketProfileId`  | number                 | The ID of the market profile being held.                                                  |
-| `holdings[].voteType`         | string                 | The type of holding ('trust' or 'distrust').                                              |
-| `holdings[].currentHoldingVotes`| number               | The number of votes/shares currently held.                                                 |
-| `holdings[].currentHoldingValue`| string               | The current value (in wei, as string ending in 'n') of this specific holding.             |
-| `holdings[].boughtTotal`      | string                 | Total value (in wei, as string ending in 'n') bought by the user in this market/vote type. |
-| `holdings[].soldTotal`        | string                 | Total value (in wei, as string ending in 'n') sold by the user in this market/vote type.   |
+*Note: This endpoint returns a simple array, not a paginated object.* 
 
 ##### Error Responses
 
-**Code**: 400 Bad Request
+**Code**: 400 Bad Request (Example: Invalid limit)
 
 ```json
 {
-  "error": "Invalid address format or invalid pagination parameters",
-  "code": "VALIDATION_ERROR" // Or similar
-}
-```
-
-**Code**: 404 Not Found (Potentially, if address has no holdings, though might return empty array)
-
-```json
-{
-  "error": "User not found or has no holdings",
-  "code": "NOT_FOUND" // Or similar
+  "ok": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Invalid limit parameter"
+    // details may contain Zod error info
+  }
 }
 ```
 
@@ -1347,84 +1345,37 @@ None
 ##### Request
 
 ```bash
-# Needs a sample address & pagination if desired
-http GET https://api.ethos.network/api/v1/markets/holdings/0x9E2218375567BB466b81E38E1a8b599b6250408C limit==10
+# Get the top 10 users by XP
+http GET https://api.ethos.network/api/v1/markets/leaderboard/xp limit==10
 ```
 
 ##### Response
 
 ```json
-# Needs actual example response
+# Example Response
 {
   "ok": true,
-  "data": {
-    "summary": {
-      "boughtTotal": "0n",
-      "soldTotal": "0n",
-      "holdingTotal": "0n"
+  "data": [
+    {
+      "xp": "12345678901234567890",
+      "address": "0xUserAddress1..."
     },
-    "holdings": []
-  }
+    {
+      "xp": "11000000000000000000",
+      "address": "0xUserAddress2..."
+    }
+    // ... top users up to limit
+  ]
 }
 ```
 
 #### Notes
 
-- Authentication is not required.
-- Need to confirm default `limit`.
-- BigInt values are returned as strings ending in 'n'.
-- If the address has no holdings, the `holdings` array will be empty.
+- Retrieves an XP-based leaderboard for market participants, ranked highest XP first.
+- Only the `limit` query parameter is supported (max 100).
+- Returns a simple array containing `xp` (string) and `address`.
 
----
-
-### Get Holdings Total by Address
-
-```
-GET /api/v1/markets/holdings/:address/total
-```
-
-**Description**: Retrieves the total market holdings for a specific Ethereum address.
-
-**Authentication Required**: No
-
-### Parameters
-
-#### Path Parameters
-
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `address` | string | Yes | Ethereum address to retrieve total market holdings for. |
-
-### Responses
-
-#### Success Response
-
-**Code**: 200 OK
-
-Returns an object containing the total market holdings in wei.
-
-```json
-{
-  "ok": true,
-  "data": {
-    "totalHoldingsWei": "15000000000000000000"
-  }
-}
-```
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Object containing the total market holdings |
-| `data.totalHoldingsWei` | string | Total market holdings in wei |
-
-#### Error Response
-
-**Code**: 400 Bad Request (Example: Invalid address)
-
-```
-
-### Get Market Profit Leaderboard
+### Get Profit Leaderboard
 
 ```
 GET /api/v1/markets/leaderboard/profit

@@ -1,12 +1,12 @@
-# Fees
+# Fees API
+
+## Overview
+
+The Fees API provides information about the current transaction fee structure within the Ethos network.
 
 ## Endpoints
 
-```
-GET /api/v1/fees
-```
-
-## Get Fee Information
+### Get Fee Information
 
 ```
 GET /api/v1/fees

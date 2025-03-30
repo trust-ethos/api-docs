@@ -1,12 +1,12 @@
-# Contracts
+# Contracts API
+
+## Overview
+
+The Contracts API provides information about the deployed addresses of core Ethos smart contracts on the blockchain.
 
 ## Endpoints
 
-```
-GET /api/v1/contracts
-```
-
-## Get Smart Contract Addresses
+### Get Smart Contract Addresses
 
 ```
 GET /api/v1/contracts

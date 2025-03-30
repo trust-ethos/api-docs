@@ -1,17 +1,12 @@
-# Claim
+# Claim API
+
+## Overview
+
+The Claim API provides endpoints related to user XP claims, referral bonuses, and associated statistics within the Ethos network. It also handles the Twitter OAuth flow for linking accounts during the claim process.
 
 ## Endpoints
 
-```
-GET /api/v1/claim/twitter/login
-GET /api/v1/claim/twitter/callback
-GET /api/v1/claim/stats
-GET /api/v1/claim/stats/:userkey
-GET /api/v1/claim/accepted-referrals
-DELETE /api/v1/claim
-```
-
-## Get Claim Statistics for Authenticated User
+### Get Claim Statistics for Authenticated User
 
 ```
 GET /api/v1/claim/stats
@@ -81,7 +76,7 @@ http GET https://api.ethos.network/api/v1/claim/stats \
   Cookie:"SESSION_COOKIE=your_session_cookie"
 ```
 
-## Get Claim Statistics by User
+### Get Claim Statistics by User
 
 ```
 GET /api/v1/claim/stats/:userkey
@@ -159,7 +154,7 @@ http GET https://api.ethos.network/api/v1/claim/stats/service:twitter:ethos_netw
 - For users without claim data, the endpoint returns zeros rather than an error
 - The endpoint retrieves data based on the user's Twitter ID, either directly (if using a Twitter service key) or by looking up the Twitter attestation associated with the provided userkey
 
-## Get Accepted Referrals
+### Get Accepted Referrals
 
 ```
 GET /api/v1/claim/accepted-referrals
@@ -222,7 +217,7 @@ http GET https://api.ethos.network/api/v1/claim/accepted-referrals \
   Cookie:"SESSION_COOKIE=your_session_cookie"
 ```
 
-## Twitter Login (OAuth)
+### Twitter Login (OAuth)
 
 ```
 GET /api/v1/claim/twitter/login

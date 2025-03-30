@@ -1,13 +1,12 @@
-# Replies
+# Replies API
+
+## Overview
+
+The Replies API allows querying replies associated with specific contracts and parent IDs, as well as retrieving summaries of reply counts and user participation.
 
 ## Endpoints
 
-```
-POST /api/v1/reply
-POST /api/v1/reply/summary
-```
-
-## Query Replies
+### Query Replies
 
 ```
 POST /api/v1/reply
@@ -97,7 +96,7 @@ http POST "https://api.ethos.network/api/v1/reply" \
   offset:=0
 ```
 
-## Get Reply Summaries
+### Get Reply Summaries
 
 ```
 POST /api/v1/reply/summary

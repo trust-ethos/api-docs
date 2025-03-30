@@ -1,13 +1,10 @@
-# Curated Lists
+# Curated Lists API
+
+## Overview
+
+The Curated Lists API provides access to predefined lists of users maintained within the Ethos network, such as lists for highlighted users or those in contributor mode.
 
 ## Endpoints
-
-```
-GET /api/v1/admin/curated-user-lists/:list       # Admin only
-POST /api/v1/admin/curated-user-lists/:list/:userkey # Admin only
-DELETE /api/v1/admin/curated-user-lists/:list/:userkey # Admin only
-GET /api/v1/curated-lists/:list
-```
 
 ### Get Curated List Userkeys
 

@@ -1,4 +1,8 @@
-# Signatures
+# Signatures API
+
+## Overview
+
+The Signatures API provides endpoints for generating backend signatures required for certain blockchain transactions within the Ethos network. These signatures authorize actions like creating attestations, registering addresses, or submitting slashes, ensuring that only authenticated and validated operations proceed to the smart contracts.
 
 ## Endpoints
 

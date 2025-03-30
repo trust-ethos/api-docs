@@ -1,4 +1,8 @@
-# Events
+# Events API
+
+## Overview
+
+The Events API provides endpoints for interacting with blockchain events related to Ethos network activities. Currently, it allows for the specific processing of events associated with a given transaction hash.
 
 ## Endpoints
 

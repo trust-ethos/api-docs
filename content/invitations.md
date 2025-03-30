@@ -1,13 +1,12 @@
-# Invitations
+# Invitations API
+
+## Overview
+
+The Invitations API allows querying invitations sent by specific profiles and retrieving pending invitations for a given Ethereum address.
 
 ## Endpoints
 
-```
-POST /api/v1/invitations
-GET /api/v1/invitations/pending/:address
-```
-
-## List Invitations Sent by a Profile
+### List Invitations Sent by a Profile
 
 ```
 POST /api/v1/invitations
@@ -117,7 +116,7 @@ http POST "https://api.ethos.network/api/v1/invitations" \
   pagination:='{"limit": 10, "offset": 0}'
 ```
 
-## Get Pending Invitations for an Address
+### Get Pending Invitations for an Address
 
 ```
 GET /api/v1/invitations/pending/:address

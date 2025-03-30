@@ -1,14 +1,10 @@
-# Slashes
+# Slashes API
+
+## Overview
+
+The Slashes API provides endpoints for interacting with slash events, which are community moderation actions within the Ethos network. It allows retrieving slash details, checking potential slash validity, and determining user roles in relation to a specific slash.
 
 ## Endpoints
-
-```
-GET /api/v1/slashes
-POST /api/v1/slashes/check
-GET /api/v1/slashes/:id/roles
-```
-
----
 
 ### List Slashes
 
@@ -148,8 +144,6 @@ http GET https://api.ethos.network/api/v1/slashes author=="did:privy:user123"
 - Uses standard pagination (`limit`, `offset`).
 - Supports filtering by author, subject (using userkey format), and status.
 
----
-
 ### Get Slash Roles
 
 ```
@@ -251,3 +245,7 @@ http GET https://api.ethos.network/api/v1/slashes/28/roles profileId==123 profil
 
 - Used to determine relationship of specific users to a slash.
 - Requires the numerical slash ID and at least one profile ID.
+
+### Check Slash Validity
+
+// ... existing code ...

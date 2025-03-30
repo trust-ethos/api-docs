@@ -1,4 +1,8 @@
-# Notifications
+# Notifications API
+
+## Overview
+
+The Notifications API provides endpoints for managing push notification settings for users, specifically related to Firebase Cloud Messaging (FCM) tokens.
 
 ## Endpoints
 
