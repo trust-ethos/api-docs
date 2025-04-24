@@ -20,10 +20,10 @@ GET /api/v1/claim/twitter/login
 
 ##### Query Parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `redirectUri` | string | No | The URI to redirect to after successful authentication |
-| `referrer` | string | No | The referrer ID for tracking referrals |
+| Name          | Type   | Required | Description                                            |
+| ------------- | ------ | -------- | ------------------------------------------------------ |
+| `redirectUri` | string | No       | The URI to redirect to after successful authentication |
+| `referrer`    | string | No       | The referrer ID for tracking referrals                 |
 
 #### Responses
 

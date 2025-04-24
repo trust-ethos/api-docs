@@ -47,21 +47,21 @@ POST /api/v1/reviews
 }
 ```
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `ids` | array of numbers | No | Array of review IDs |
-| `subject` | array of strings | No | Array of userkeys for review subjects |
-| `author` | array of numbers | No | Array of profile IDs of review authors |
-| `attestation` | array of objects | No | Array of attestation objects |
-| `attestation[].service` | string | Yes | Service name (e.g., "x.com") |
-| `attestation[].account` or `attestation[].username` | string | Yes | Account ID or username on the service |
-| `archived` | boolean | No | Whether to include archived reviews |
-| `score` | array of strings | No | Review scores to filter by ("positive", "neutral", "negative") |
-| `orderBy` | object | No | Sorting options |
-| `orderBy.createdAt` or `orderBy.updatedAt` | string | No | Sort by creation/update date: "asc" or "desc" |
-| `pagination` | object | Yes | Pagination parameters |
-| `pagination.limit` | number | Yes | Number of results to return (maximum 100) |
-| `pagination.offset` | number | Yes | Offset for pagination |
+| Property                                            | Type             | Required | Description                                                    |
+| --------------------------------------------------- | ---------------- | -------- | -------------------------------------------------------------- |
+| `ids`                                               | array of numbers | No       | Array of review IDs                                            |
+| `subject`                                           | array of strings | No       | Array of userkeys for review subjects                          |
+| `author`                                            | array of numbers | No       | Array of profile IDs of review authors                         |
+| `attestation`                                       | array of objects | No       | Array of attestation objects                                   |
+| `attestation[].service`                             | string           | Yes      | Service name (e.g., "x.com")                                   |
+| `attestation[].account` or `attestation[].username` | string           | Yes      | Account ID or username on the service                          |
+| `archived`                                          | boolean          | No       | Whether to include archived reviews                            |
+| `score`                                             | array of strings | No       | Review scores to filter by ("positive", "neutral", "negative") |
+| `orderBy`                                           | object           | No       | Sorting options                                                |
+| `orderBy.createdAt` or `orderBy.updatedAt`          | string           | No       | Sort by creation/update date: "asc" or "desc"                  |
+| `pagination`                                        | object           | Yes      | Pagination parameters                                          |
+| `pagination.limit`                                  | number           | Yes      | Number of results to return (maximum 100)                      |
+| `pagination.offset`                                 | number           | Yes      | Offset for pagination                                          |
 
 #### Responses
 
@@ -108,34 +108,34 @@ POST /api/v1/reviews
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Response data container |
-| `data.values` | array | Array of review objects |
-| `data.values[].id` | number | Review ID |
-| `data.values[].author` | string | Ethereum address of the author |
-| `data.values[].subject` | string | Ethereum address of the subject (if applicable) |
-| `data.values[].attestationDetails` | object | Attestation details |
-| `data.values[].attestationDetails.service` | string | Service name (if applicable) |
-| `data.values[].attestationDetails.account` | string | Account ID on the service (if applicable) |
-| `data.values[].comment` | string | Review message/comment |
-| `data.values[].score` | string | Review score ("positive", "neutral", "negative") |
-| `data.values[].createdAt` | number | Unix timestamp of when the review was created |
-| `data.values[].archived` | boolean | Whether the review is archived |
-| `data.values[].metadata` | string | JSON string containing additional metadata |
-| `data.values[].events` | array | Blockchain events associated with the review |
-| `data.values[].events[].id` | number | Event ID |
-| `data.values[].events[].txHash` | string | Transaction hash |
-| `data.values[].events[].blockNumber` | number | Block number |
-| `data.values[].events[].blockIndex` | number | Index within the block |
-| `data.values[].events[].createdAt` | number | Unix timestamp of when the event was created |
-| `data.values[].events[].updatedAt` | number | Unix timestamp of when the event was updated |
-| `data.values[].events[].contract` | string | Contract name |
-| `data.values[].events[].processed` | boolean | Whether the event has been processed |
-| `data.limit` | number | Number of results returned |
-| `data.offset` | number | Current pagination offset |
-| `data.total` | number | Total number of results matching the query |
+| Property                                   | Type    | Description                                      |
+| ------------------------------------------ | ------- | ------------------------------------------------ |
+| `ok`                                       | boolean | Success status                                   |
+| `data`                                     | object  | Response data container                          |
+| `data.values`                              | array   | Array of review objects                          |
+| `data.values[].id`                         | number  | Review ID                                        |
+| `data.values[].author`                     | string  | Ethereum address of the author                   |
+| `data.values[].subject`                    | string  | Ethereum address of the subject (if applicable)  |
+| `data.values[].attestationDetails`         | object  | Attestation details                              |
+| `data.values[].attestationDetails.service` | string  | Service name (if applicable)                     |
+| `data.values[].attestationDetails.account` | string  | Account ID on the service (if applicable)        |
+| `data.values[].comment`                    | string  | Review message/comment                           |
+| `data.values[].score`                      | string  | Review score ("positive", "neutral", "negative") |
+| `data.values[].createdAt`                  | number  | Unix timestamp of when the review was created    |
+| `data.values[].archived`                   | boolean | Whether the review is archived                   |
+| `data.values[].metadata`                   | string  | JSON string containing additional metadata       |
+| `data.values[].events`                     | array   | Blockchain events associated with the review     |
+| `data.values[].events[].id`                | number  | Event ID                                         |
+| `data.values[].events[].txHash`            | string  | Transaction hash                                 |
+| `data.values[].events[].blockNumber`       | number  | Block number                                     |
+| `data.values[].events[].blockIndex`        | number  | Index within the block                           |
+| `data.values[].events[].createdAt`         | number  | Unix timestamp of when the event was created     |
+| `data.values[].events[].updatedAt`         | number  | Unix timestamp of when the event was updated     |
+| `data.values[].events[].contract`          | string  | Contract name                                    |
+| `data.values[].events[].processed`         | boolean | Whether the event has been processed             |
+| `data.limit`                               | number  | Number of results returned                       |
+| `data.offset`                              | number  | Current pagination offset                        |
+| `data.total`                               | number  | Total number of results matching the query       |
 
 #### Example
 
@@ -255,12 +255,12 @@ POST /api/v1/reviews/stats/bulk
 }
 ```
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `userkeys` | array of strings | Yes | Array of userkeys to get statistics for (max 500) |
-| `timeRange` | object | No | Optional time range for filtering reviews |
-| `timeRange.startDate` | string | No | Start date in ISO format |
-| `timeRange.endDate` | string | No | End date in ISO format |
+| Property              | Type             | Required | Description                                       |
+| --------------------- | ---------------- | -------- | ------------------------------------------------- |
+| `userkeys`            | array of strings | Yes      | Array of userkeys to get statistics for (max 500) |
+| `timeRange`           | object           | No       | Optional time range for filtering reviews         |
+| `timeRange.startDate` | string           | No       | Start date in ISO format                          |
+| `timeRange.endDate`   | string           | No       | End date in ISO format                            |
 
 #### Responses
 
@@ -346,11 +346,11 @@ POST /api/v1/reviews/stats/bulk
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Map of userkeys to their statistics |
-| `data[userkey]` | object | Statistics for a specific userkey (same structure as single stats) |
+| Property        | Type    | Description                                                        |
+| --------------- | ------- | ------------------------------------------------------------------ |
+| `ok`            | boolean | Success status                                                     |
+| `data`          | object  | Map of userkeys to their statistics                                |
+| `data[userkey]` | object  | Statistics for a specific userkey (same structure as single stats) |
 
 #### Example
 
@@ -410,11 +410,11 @@ The parameters are the same as for the "Query Reviews" endpoint, except paginati
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Response data |
-| `data.count` | number | Number of reviews matching the filters |
+| Property     | Type    | Description                            |
+| ------------ | ------- | -------------------------------------- |
+| `ok`         | boolean | Success status                         |
+| `data`       | object  | Response data                          |
+| `data.count` | number  | Number of reviews matching the filters |
 
 #### Example
 
@@ -441,4 +441,5 @@ http POST https://api.ethos.network/api/v1/reviews/count \
 
 - This endpoint is useful for efficiently getting count information without retrieving the actual review data.
 - The count reflects the total number of reviews that match the specified filters.
-- When using the `score` filter, reviews are counted based on their score value: "positive", "neutral", or "negative".
+- When using the `score` filter, reviews are counted based on their score value:
+  "positive", "neutral", or "negative".

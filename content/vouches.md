@@ -37,19 +37,19 @@ POST /api/v1/vouches
 }
 ```
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `ids` | array of numbers | No | Array of vouch IDs |
-| `authorProfileIds` | array of numbers | No | Array of profile IDs of vouch authors |
-| `subjectProfileIds` | array of numbers | No | Array of profile IDs of vouch subjects |
-| `subjectAddresses` | array of strings | No | Array of Ethereum addresses of vouch subjects |
-| `subjectAttestationHashes` | array of strings | No | Array of attestation hashes of vouch subjects |
-| `archived` | boolean | No | Whether to include archived vouches |
-| `duration` | string | No | Return vouches after this duration (e.g., "90d" for last 90 days) |
-| `orderBy` | object | No | Sorting options |
-| `orderBy.balance` or `orderBy.vouchedAt` or `orderBy.updatedAt` | string | No | Sort by field: "asc" or "desc" |
-| `limit` | number | No | Number of results to return (default: 10, maximum 100) |
-| `offset` | number | No | Offset for pagination (default: 0) |
+| Property                                                        | Type             | Required | Description                                                       |
+| --------------------------------------------------------------- | ---------------- | -------- | ----------------------------------------------------------------- |
+| `ids`                                                           | array of numbers | No       | Array of vouch IDs                                                |
+| `authorProfileIds`                                              | array of numbers | No       | Array of profile IDs of vouch authors                             |
+| `subjectProfileIds`                                             | array of numbers | No       | Array of profile IDs of vouch subjects                            |
+| `subjectAddresses`                                              | array of strings | No       | Array of Ethereum addresses of vouch subjects                     |
+| `subjectAttestationHashes`                                      | array of strings | No       | Array of attestation hashes of vouch subjects                     |
+| `archived`                                                      | boolean          | No       | Whether to include archived vouches                               |
+| `duration`                                                      | string           | No       | Return vouches after this duration (e.g., "90d" for last 90 days) |
+| `orderBy`                                                       | object           | No       | Sorting options                                                   |
+| `orderBy.balance` or `orderBy.vouchedAt` or `orderBy.updatedAt` | string           | No       | Sort by field: "asc" or "desc"                                    |
+| `limit`                                                         | number           | No       | Number of results to return (default: 10, maximum 100)            |
+| `offset`                                                        | number           | No       | Offset for pagination (default: 0)                                |
 
 #### Responses
 
@@ -94,28 +94,28 @@ POST /api/v1/vouches
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Response data container |
-| `data.values` | array | Array of vouch objects |
-| `data.values[].id` | number | Vouch ID |
-| `data.values[].authorProfileId` | number | Profile ID of the author |
-| `data.values[].subjectProfileId` | number | Profile ID of the subject (if applicable) |
-| `data.values[].subjectAddress` | string | Ethereum address of the subject (if applicable) |
-| `data.values[].attestationHash` | string | Attestation hash of the subject (if applicable) |
-| `data.values[].staked` | string | Amount of ETH staked in wei |
-| `data.values[].balance` | string | Current balance of the vouch in wei |
-| `data.values[].vouchedAt` | number | Unix timestamp of when the vouch was created |
-| `data.values[].updatedAt` | number | Unix timestamp of when the vouch was last updated |
-| `data.values[].archivedAt` | number | Unix timestamp of when the vouch was archived (if applicable) |
-| `data.values[].archived` | boolean | Whether the vouch is archived |
-| `data.values[].mutualId` | number | ID of the mutual vouch (if applicable) |
-| `data.values[].events` | array | Blockchain events associated with the vouch |
-| `data.values[].attestationDetails` | object | Details about the attestation (if applicable) |
-| `data.limit` | number | Number of results returned |
-| `data.offset` | number | Current pagination offset |
-| `data.total` | number | Total number of results matching the query |
+| Property                           | Type    | Description                                                   |
+| ---------------------------------- | ------- | ------------------------------------------------------------- |
+| `ok`                               | boolean | Success status                                                |
+| `data`                             | object  | Response data container                                       |
+| `data.values`                      | array   | Array of vouch objects                                        |
+| `data.values[].id`                 | number  | Vouch ID                                                      |
+| `data.values[].authorProfileId`    | number  | Profile ID of the author                                      |
+| `data.values[].subjectProfileId`   | number  | Profile ID of the subject (if applicable)                     |
+| `data.values[].subjectAddress`     | string  | Ethereum address of the subject (if applicable)               |
+| `data.values[].attestationHash`    | string  | Attestation hash of the subject (if applicable)               |
+| `data.values[].staked`             | string  | Amount of ETH staked in wei                                   |
+| `data.values[].balance`            | string  | Current balance of the vouch in wei                           |
+| `data.values[].vouchedAt`          | number  | Unix timestamp of when the vouch was created                  |
+| `data.values[].updatedAt`          | number  | Unix timestamp of when the vouch was last updated             |
+| `data.values[].archivedAt`         | number  | Unix timestamp of when the vouch was archived (if applicable) |
+| `data.values[].archived`           | boolean | Whether the vouch is archived                                 |
+| `data.values[].mutualId`           | number  | ID of the mutual vouch (if applicable)                        |
+| `data.values[].events`             | array   | Blockchain events associated with the vouch                   |
+| `data.values[].attestationDetails` | object  | Details about the attestation (if applicable)                 |
+| `data.limit`                       | number  | Number of results returned                                    |
+| `data.offset`                      | number  | Current pagination offset                                     |
+| `data.total`                       | number  | Total number of results matching the query                    |
 
 #### Example
 
@@ -156,9 +156,9 @@ POST /api/v1/vouches/vouched-ethereum
 }
 ```
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `target` | string | Yes | Userkey of the target (profileId, address, or service:x.com:username:username) |
+| Property | Type   | Required | Description                                                                    |
+| -------- | ------ | -------- | ------------------------------------------------------------------------------ |
+| `target` | string | Yes      | Userkey of the target (profileId, address, or service:x.com:username:username) |
 
 #### Responses
 
@@ -175,11 +175,11 @@ POST /api/v1/vouches/vouched-ethereum
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Response data |
-| `data.vouchedEth` | number | Total amount of ETH vouched for the target |
+| Property          | Type    | Description                                |
+| ----------------- | ------- | ------------------------------------------ |
+| `ok`              | boolean | Success status                             |
+| `data`            | object  | Response data                              |
+| `data.vouchedEth` | number  | Total amount of ETH vouched for the target |
 
 #### Example
 
@@ -217,10 +217,10 @@ POST /api/v1/vouches/most-credible-vouchers
 }
 ```
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `userkey` | string | Yes | Userkey of the target to find vouchers for |
-| `limit` | number | No | Maximum number of vouchers to return (default: 4, max: 50) |
+| Property  | Type   | Required | Description                                                |
+| --------- | ------ | -------- | ---------------------------------------------------------- |
+| `userkey` | string | Yes      | Userkey of the target to find vouchers for                 |
+| `limit`   | number | No       | Maximum number of vouchers to return (default: 4, max: 50) |
 
 #### Responses
 
@@ -246,13 +246,13 @@ POST /api/v1/vouches/most-credible-vouchers
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | array | Array of credible voucher information |
-| `data[].authorProfileId` | number | Profile ID of the voucher |
-| `data[].vouchId` | number | ID of the vouch |
-| `data[].score` | number | Credibility score of the voucher |
+| Property                 | Type    | Description                           |
+| ------------------------ | ------- | ------------------------------------- |
+| `ok`                     | boolean | Success status                        |
+| `data`                   | array   | Array of credible voucher information |
+| `data[].authorProfileId` | number  | Profile ID of the voucher             |
+| `data[].vouchId`         | number  | ID of the vouch                       |
+| `data[].score`           | number  | Credibility score of the voucher      |
 
 #### Example
 
@@ -285,10 +285,10 @@ GET /api/v1/vouches/mutual-vouchers
 
 ##### Query Parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `userkey` | string | Yes | Userkey of the target to find mutual vouchers for |
-| `limit` | number | No | Maximum number of results to return (default: 10) |
+| Name      | Type   | Required | Description                                       |
+| --------- | ------ | -------- | ------------------------------------------------- |
+| `userkey` | string | Yes      | Userkey of the target to find mutual vouchers for |
+| `limit`   | number | No       | Maximum number of results to return (default: 10) |
 
 #### Responses
 
@@ -316,14 +316,14 @@ GET /api/v1/vouches/mutual-vouchers
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | array | Array of mutual voucher information |
-| `data[].profileId` | number | Profile ID of the mutual voucher |
-| `data[].outgoingVouchId` | number | ID of the outgoing vouch (from target to voucher) |
-| `data[].incomingVouchId` | number | ID of the incoming vouch (from voucher to target) |
-| `data[].vouchedEth` | number | Amount of ETH in the mutual vouch |
+| Property                 | Type    | Description                                       |
+| ------------------------ | ------- | ------------------------------------------------- |
+| `ok`                     | boolean | Success status                                    |
+| `data`                   | array   | Array of mutual voucher information               |
+| `data[].profileId`       | number  | Profile ID of the mutual voucher                  |
+| `data[].outgoingVouchId` | number  | ID of the outgoing vouch (from target to voucher) |
+| `data[].incomingVouchId` | number  | ID of the incoming vouch (from voucher to target) |
+| `data[].vouchedEth`      | number  | Amount of ETH in the mutual vouch                 |
 
 #### Example
 
@@ -360,9 +360,9 @@ POST /api/v1/vouches/rewards
 }
 ```
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `target` | string | Yes | Userkey of the target to calculate rewards for |
+| Property | Type   | Required | Description                                    |
+| -------- | ------ | -------- | ---------------------------------------------- |
+| `target` | string | Yes      | Userkey of the target to calculate rewards for |
 
 #### Responses
 
@@ -381,13 +381,13 @@ POST /api/v1/vouches/rewards
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Vouch rewards data |
-| `data.earned` | number | Total ETH earned from vouches |
-| `data.potentialEarnings` | number | Potential additional earnings from vouches |
-| `data.totalStaked` | number | Total ETH staked in vouches |
+| Property                 | Type    | Description                                |
+| ------------------------ | ------- | ------------------------------------------ |
+| `ok`                     | boolean | Success status                             |
+| `data`                   | object  | Vouch rewards data                         |
+| `data.earned`            | number  | Total ETH earned from vouches              |
+| `data.potentialEarnings` | number  | Potential additional earnings from vouches |
+| `data.totalStaked`       | number  | Total ETH staked in vouches                |
 
 #### Example
 
