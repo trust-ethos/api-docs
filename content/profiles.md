@@ -26,22 +26,19 @@ POST /api/v1/profiles
   "addresses": ["0x1234...5678", "0xabcd...ef12"],
   "archived": false,
   "useCache": true,
-  "pagination": {
-    "limit": 10,
-    "offset": 0
-  }
+  "limit": 10,
+  "offset": 0
 }
 ```
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `ids` | array of numbers | No* | Array of numeric profile IDs to query (maximum 100) |
-| `addresses` | array of strings | No* | Array of Ethereum addresses to query (maximum 100) |
-| `archived` | boolean | No | Whether to include archived profiles |
-| `useCache` | boolean | No | Whether to use cached results (defaults to true) |
-| `pagination` | object | Yes | Pagination parameters |
-| `pagination.limit` | number | Yes | Number of results to return (maximum 100) |
-| `pagination.offset` | number | Yes | Offset for pagination |
+| Property    | Type             | Required | Description                                         |
+| ----------- | ---------------- | -------- | --------------------------------------------------- |
+| `ids`       | array of numbers | No*      | Array of numeric profile IDs to query (maximum 100) |
+| `addresses` | array of strings | No*      | Array of Ethereum addresses to query (maximum 100)  |
+| `archived`  | boolean          | No       | Whether to include archived profiles                |
+| `useCache`  | boolean          | No       | Whether to use cached results (defaults to true)    |
+| `limit`     | number           | Yes      | Number of results to return (maximum 100)           |
+| `offset`    | number           | Yes      | Offset for pagination                               |
 
 *At least one of `ids` or `addresses` must be provided.
 
@@ -72,20 +69,20 @@ POST /api/v1/profiles
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Response data container |
-| `data.values` | array | Array of profile objects |
-| `data.values[].id` | number | Unique profile ID |
-| `data.values[].archived` | boolean | Whether the profile is archived |
-| `data.values[].createdAt` | number | Unix timestamp of when the profile was created |
-| `data.values[].updatedAt` | number | Unix timestamp of when the profile was last updated |
-| `data.values[].invitesAvailable` | number | Number of invites available to this profile |
-| `data.values[].invitedBy` | number | ID of the profile that invited this user |
-| `data.limit` | number | Number of results returned |
-| `data.offset` | number | Current pagination offset |
-| `data.total` | number | Total number of results matching the query |
+| Property                         | Type    | Description                                         |
+| -------------------------------- | ------- | --------------------------------------------------- |
+| `ok`                             | boolean | Success status                                      |
+| `data`                           | object  | Response data container                             |
+| `data.values`                    | array   | Array of profile objects                            |
+| `data.values[].id`               | number  | Unique profile ID                                   |
+| `data.values[].archived`         | boolean | Whether the profile is archived                     |
+| `data.values[].createdAt`        | number  | Unix timestamp of when the profile was created      |
+| `data.values[].updatedAt`        | number  | Unix timestamp of when the profile was last updated |
+| `data.values[].invitesAvailable` | number  | Number of invites available to this profile         |
+| `data.values[].invitedBy`        | number  | ID of the profile that invited this user            |
+| `data.limit`                     | number  | Number of results returned                          |
+| `data.offset`                    | number  | Current pagination offset                           |
+| `data.total`                     | number  | Total number of results matching the query          |
 
 ##### Error Responses
 
@@ -109,7 +106,8 @@ POST /api/v1/profiles
 ```bash
 http POST https://api.ethos.network/api/v1/profiles \
   ids:='[1]' \
-  pagination:='{"limit": 10, "offset": 0}'
+  limit=10 \
+  offset=0
 ```
 
 ##### Response
@@ -166,11 +164,11 @@ POST /api/v1/profiles/recent
 }
 ```
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `archived` | boolean | No | Whether to include archived profiles (defaults to false) |
-| `limit` | number | No | Number of results to return (maximum 5000) |
-| `offset` | number | No | Offset for pagination |
+| Property   | Type    | Required | Description                                              |
+| ---------- | ------- | -------- | -------------------------------------------------------- |
+| `archived` | boolean | No       | Whether to include archived profiles (defaults to false) |
+| `limit`    | number  | No       | Number of results to return (maximum 5000)               |
+| `offset`   | number  | No       | Offset for pagination                                    |
 
 #### Responses
 
@@ -207,20 +205,20 @@ POST /api/v1/profiles/recent
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Response data container |
-| `data.values` | array | Array of profile objects |
-| `data.values[].id` | number | Unique profile ID |
-| `data.values[].archived` | boolean | Whether the profile is archived |
-| `data.values[].createdAt` | number | Unix timestamp of when the profile was created |
-| `data.values[].updatedAt` | number | Unix timestamp of when the profile was last updated |
-| `data.values[].invitesAvailable` | number | Number of invites available to this profile |
-| `data.values[].invitedBy` | number | ID of the profile that invited this user |
-| `data.limit` | number | Number of results returned |
-| `data.offset` | number | Current pagination offset |
-| `data.total` | number | Total number of results matching the query |
+| Property                         | Type    | Description                                         |
+| -------------------------------- | ------- | --------------------------------------------------- |
+| `ok`                             | boolean | Success status                                      |
+| `data`                           | object  | Response data container                             |
+| `data.values`                    | array   | Array of profile objects                            |
+| `data.values[].id`               | number  | Unique profile ID                                   |
+| `data.values[].archived`         | boolean | Whether the profile is archived                     |
+| `data.values[].createdAt`        | number  | Unix timestamp of when the profile was created      |
+| `data.values[].updatedAt`        | number  | Unix timestamp of when the profile was last updated |
+| `data.values[].invitesAvailable` | number  | Number of invites available to this profile         |
+| `data.values[].invitedBy`        | number  | ID of the profile that invited this user            |
+| `data.limit`                     | number  | Number of results returned                          |
+| `data.offset`                    | number  | Current pagination offset                           |
+| `data.total`                     | number  | Total number of results matching the query          |
 
 #### Example
 
@@ -274,14 +272,14 @@ GET /api/v1/profiles/directory
 
 ##### Query Parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `archived` | boolean | No | Whether to include archived profiles (defaults to false) |
-| `sortField` | string | No | Field to sort by: 'createdAt' or 'invitesAvailable' (defaults to 'createdAt') |
-| `sortDirection` | string | No | Direction to sort: 'asc' or 'desc' (defaults to 'desc') |
-| `inviteFilter` | string | No | Filter by invite status: 'hasInvites' or 'noInvites' |
-| `limit` | number | No | Number of results to return (maximum 100) |
-| `offset` | number | No | Offset for pagination |
+| Name            | Type    | Required | Description                                                                   |
+| --------------- | ------- | -------- | ----------------------------------------------------------------------------- |
+| `archived`      | boolean | No       | Whether to include archived profiles (defaults to false)                      |
+| `sortField`     | string  | No       | Field to sort by: 'createdAt' or 'invitesAvailable' (defaults to 'createdAt') |
+| `sortDirection` | string  | No       | Direction to sort: 'asc' or 'desc' (defaults to 'desc')                       |
+| `inviteFilter`  | string  | No       | Filter by invite status: 'hasInvites' or 'noInvites'                          |
+| `limit`         | number  | No       | Number of results to return (maximum 100)                                     |
+| `offset`        | number  | No       | Offset for pagination                                                         |
 
 #### Responses
 
@@ -332,31 +330,31 @@ GET /api/v1/profiles/directory
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Response data container |
-| `data.values` | array | Array of profile objects |
-| `data.values[].id` | number | Unique profile ID |
-| `data.values[].archived` | boolean | Whether the profile is archived |
-| `data.values[].createdAt` | number | Unix timestamp of when the profile was created |
-| `data.values[].updatedAt` | number | Unix timestamp of when the profile was last updated |
-| `data.values[].invitesAvailable` | number | Number of invites available to this profile |
-| `data.values[].invitedBy` | number | ID of the profile that invited this user |
-| `data.values[].actor` | object | Actor information for the profile |
-| `data.values[].actor.userkey` | string | Unique user key |
-| `data.values[].actor.avatar` | string | URL to the user's avatar |
-| `data.values[].actor.name` | string | User's display name |
-| `data.values[].actor.username` | string | User's username (may be null) |
-| `data.values[].actor.description` | string | User's description (may be null) |
-| `data.values[].actor.score` | number | User's score |
-| `data.values[].actor.scoreXpMultiplier` | number | User's score XP multiplier |
-| `data.values[].actor.profileId` | number | User's profile ID |
-| `data.values[].actor.primaryAddress` | string | User's primary Ethereum address |
-| `data.values[].inviterActor` | object | Actor information for the inviter profile |
-| `data.limit` | number | Number of results returned |
-| `data.offset` | number | Current pagination offset |
-| `data.total` | number | Total number of results matching the query |
+| Property                                | Type    | Description                                         |
+| --------------------------------------- | ------- | --------------------------------------------------- |
+| `ok`                                    | boolean | Success status                                      |
+| `data`                                  | object  | Response data container                             |
+| `data.values`                           | array   | Array of profile objects                            |
+| `data.values[].id`                      | number  | Unique profile ID                                   |
+| `data.values[].archived`                | boolean | Whether the profile is archived                     |
+| `data.values[].createdAt`               | number  | Unix timestamp of when the profile was created      |
+| `data.values[].updatedAt`               | number  | Unix timestamp of when the profile was last updated |
+| `data.values[].invitesAvailable`        | number  | Number of invites available to this profile         |
+| `data.values[].invitedBy`               | number  | ID of the profile that invited this user            |
+| `data.values[].actor`                   | object  | Actor information for the profile                   |
+| `data.values[].actor.userkey`           | string  | Unique user key                                     |
+| `data.values[].actor.avatar`            | string  | URL to the user's avatar                            |
+| `data.values[].actor.name`              | string  | User's display name                                 |
+| `data.values[].actor.username`          | string  | User's username (may be null)                       |
+| `data.values[].actor.description`       | string  | User's description (may be null)                    |
+| `data.values[].actor.score`             | number  | User's score                                        |
+| `data.values[].actor.scoreXpMultiplier` | number  | User's score XP multiplier                          |
+| `data.values[].actor.profileId`         | number  | User's profile ID                                   |
+| `data.values[].actor.primaryAddress`    | string  | User's primary Ethereum address                     |
+| `data.values[].inviterActor`            | object  | Actor information for the inviter profile           |
+| `data.limit`                            | number  | Number of results returned                          |
+| `data.offset`                           | number  | Current pagination offset                           |
+| `data.total`                            | number  | Total number of results matching the query          |
 
 #### Example
 
@@ -434,10 +432,10 @@ GET /api/v1/profiles/credibility-leaderboard
 
 ##### Query Parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `order` | string | No | Direction to sort: 'asc' or 'desc' (defaults to 'desc') |
-| `limit` | number | No | Number of results to return (defaults to 50) |
+| Name    | Type   | Required | Description                                             |
+| ------- | ------ | -------- | ------------------------------------------------------- |
+| `order` | string | No       | Direction to sort: 'asc' or 'desc' (defaults to 'desc') |
+| `limit` | number | No       | Number of results to return (defaults to 50)            |
 
 #### Responses
 
@@ -485,19 +483,19 @@ GET /api/v1/profiles/credibility-leaderboard
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | array | Array of user objects |
-| `data[].id` | number | Unique user ID |
-| `data[].profileId` | number | Profile ID (may be null for inactive users) |
-| `data[].displayName` | string | User's display name |
-| `data[].username` | string | User's username |
-| `data[].avatarUrl` | string | URL to the user's avatar |
-| `data[].description` | string | User's description |
-| `data[].score` | number | User's credibility score |
-| `data[].status` | string | User's status (ACTIVE or INACTIVE) |
-| `data[].userkeys` | array | Array of userkeys associated with the user |
+| Property             | Type    | Description                                 |
+| -------------------- | ------- | ------------------------------------------- |
+| `ok`                 | boolean | Success status                              |
+| `data`               | array   | Array of user objects                       |
+| `data[].id`          | number  | Unique user ID                              |
+| `data[].profileId`   | number  | Profile ID (may be null for inactive users) |
+| `data[].displayName` | string  | User's display name                         |
+| `data[].username`    | string  | User's username                             |
+| `data[].avatarUrl`   | string  | URL to the user's avatar                    |
+| `data[].description` | string  | User's description                          |
+| `data[].score`       | number  | User's credibility score                    |
+| `data[].status`      | string  | User's status (ACTIVE or INACTIVE)          |
+| `data[].userkeys`    | array   | Array of userkeys associated with the user  |
 
 #### Example
 
@@ -586,12 +584,12 @@ None.
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Stats data |
-| `data.activeProfiles` | number | Total number of active (non-archived) profiles |
-| `data.invitesAvailable` | number | Total number of invites available across all profiles |
+| Property                | Type    | Description                                           |
+| ----------------------- | ------- | ----------------------------------------------------- |
+| `ok`                    | boolean | Success status                                        |
+| `data`                  | object  | Stats data                                            |
+| `data.activeProfiles`   | number  | Total number of active (non-archived) profiles        |
+| `data.invitesAvailable` | number  | Total number of invites available across all profiles |
 
 #### Example
 
@@ -629,10 +627,10 @@ GET /api/v1/profiles/xp-leaderboard
 
 ##### Query Parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `since` | string | No | Only include XP earned since this date/time (ISO date format like '2023-01-01' or duration string like '1month') |
-| `limit` | number | No | Number of results to return (defaults to 50) |
+| Name    | Type   | Required | Description                                                                                                      |
+| ------- | ------ | -------- | ---------------------------------------------------------------------------------------------------------------- |
+| `since` | string | No       | Only include XP earned since this date/time (ISO date format like '2023-01-01' or duration string like '1month') |
+| `limit` | number | No       | Number of results to return (defaults to 50)                                                                     |
 
 #### Responses
 
@@ -665,20 +663,20 @@ GET /api/v1/profiles/xp-leaderboard
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | array | Array of user objects |
-| `data[].id` | number | Unique user ID |
-| `data[].profileId` | number | Profile ID |
-| `data[].displayName` | string | User's display name |
-| `data[].username` | string | User's username |
-| `data[].avatarUrl` | string | URL to the user's avatar |
-| `data[].description` | string | User's description |
-| `data[].score` | number | User's credibility score |
-| `data[].status` | string | User's status (ACTIVE or INACTIVE) |
-| `data[].userkeys` | array | Array of userkeys associated with the user |
-| `data[].totalXp` | number | Total XP points accumulated |
+| Property             | Type    | Description                                |
+| -------------------- | ------- | ------------------------------------------ |
+| `ok`                 | boolean | Success status                             |
+| `data`               | array   | Array of user objects                      |
+| `data[].id`          | number  | Unique user ID                             |
+| `data[].profileId`   | number  | Profile ID                                 |
+| `data[].displayName` | string  | User's display name                        |
+| `data[].username`    | string  | User's username                            |
+| `data[].avatarUrl`   | string  | URL to the user's avatar                   |
+| `data[].description` | string  | User's description                         |
+| `data[].score`       | number  | User's credibility score                   |
+| `data[].status`      | string  | User's status (ACTIVE or INACTIVE)         |
+| `data[].userkeys`    | array   | Array of userkeys associated with the user |
+| `data[].totalXp`     | number  | Total XP points accumulated                |
 
 #### Example
 
@@ -740,10 +738,10 @@ GET /api/v1/profiles/with-x-attestation
 
 ##### Query Parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `limit` | number | No | Number of results to return (default: 100, maximum: 1000) |
-| `offset` | number | No | Offset for pagination (default: 0) |
+| Name     | Type   | Required | Description                                               |
+| -------- | ------ | -------- | --------------------------------------------------------- |
+| `limit`  | number | No       | Number of results to return (default: 100, maximum: 1000) |
+| `offset` | number | No       | Offset for pagination (default: 0)                        |
 
 #### Responses
 
@@ -776,18 +774,18 @@ GET /api/v1/profiles/with-x-attestation
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Response data container |
-| `data.values` | array | Array of profile objects |
-| `data.values[].profileId` | number | Profile ID |
-| `data.values[].twitterUserId` | string | X (Twitter) user ID |
-| `data.values[].twitterUsername` | string | X (Twitter) username |
-| `data.values[].address` | string | Primary Ethereum address associated with the profile |
-| `data.limit` | number | Number of results returned |
-| `data.offset` | number | Current pagination offset |
-| `data.total` | number | Total number of results matching the query |
+| Property                        | Type    | Description                                          |
+| ------------------------------- | ------- | ---------------------------------------------------- |
+| `ok`                            | boolean | Success status                                       |
+| `data`                          | object  | Response data container                              |
+| `data.values`                   | array   | Array of profile objects                             |
+| `data.values[].profileId`       | number  | Profile ID                                           |
+| `data.values[].twitterUserId`   | string  | X (Twitter) user ID                                  |
+| `data.values[].twitterUsername` | string  | X (Twitter) username                                 |
+| `data.values[].address`         | string  | Primary Ethereum address associated with the profile |
+| `data.limit`                    | number  | Number of results returned                           |
+| `data.offset`                   | number  | Current pagination offset                            |
+| `data.total`                    | number  | Total number of results matching the query           |
 
 #### Example
 

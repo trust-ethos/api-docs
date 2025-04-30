@@ -40,10 +40,8 @@ POST /api/v1/reviews
   "orderBy": {
     "createdAt": "desc"
   },
-  "pagination": {
-    "limit": 10,
-    "offset": 0
-  }
+  "limit": 10,
+  "offset": 0
 }
 ```
 
@@ -59,9 +57,8 @@ POST /api/v1/reviews
 | `score`                                             | array of strings | No       | Review scores to filter by ("positive", "neutral", "negative") |
 | `orderBy`                                           | object           | No       | Sorting options                                                |
 | `orderBy.createdAt` or `orderBy.updatedAt`          | string           | No       | Sort by creation/update date: "asc" or "desc"                  |
-| `pagination`                                        | object           | Yes      | Pagination parameters                                          |
-| `pagination.limit`                                  | number           | Yes      | Number of results to return (maximum 100)                      |
-| `pagination.offset`                                 | number           | Yes      | Offset for pagination                                          |
+| `limit`                                             | number           | Yes      | Number of results to return (maximum 100)                      |
+| `offset`                                            | number           | Yes      | Offset for pagination                                          |
 
 #### Responses
 
@@ -144,7 +141,8 @@ POST /api/v1/reviews
 ```bash
 http POST https://api.ethos.network/api/v1/reviews \
   subject:='["profileId:1"]' \
-  pagination:='{"limit": 2, "offset": 0}'
+  limit=2 \
+  offset=0
 ```
 
 ##### Response

@@ -20,12 +20,11 @@ POST /api/v1/invitations
 
 #### Request Body
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `invitedBy` | integer | Yes | The profile ID of the sender |
-| `pagination` | object | Yes | Pagination parameters |
-| `pagination.limit` | integer | Yes | Maximum number of results to return |
-| `pagination.offset` | integer | Yes | Number of results to skip |
+| Name        | Type    | Required | Description                         |
+| ----------- | ------- | -------- | ----------------------------------- |
+| `invitedBy` | integer | Yes      | The profile ID of the sender        |
+| `limit`     | integer | Yes      | Maximum number of results to return |
+| `offset`    | integer | Yes      | Number of results to skip           |
 
 ### Responses
 
@@ -62,26 +61,26 @@ POST /api/v1/invitations
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Paginated response |
-| `data.limit` | integer | Maximum number of results returned |
-| `data.offset` | integer | Number of results skipped |
-| `data.total` | integer | Total number of matching invitations |
-| `data.values` | array | Array of invitation objects |
-| `data.values[].id` | string | Invitation ID (format: `${senderProfileId}-${recipientAddress}`) |
-| `data.values[].senderProfileId` | integer | Profile ID of the sender |
-| `data.values[].recipientAddress` | string | Ethereum address of the recipient |
-| `data.values[].status` | string | Status of the invitation: "INVITED", "ACCEPTED", or "ACCEPTED_OTHER_INVITATION" |
-| `data.values[].recipientScoreImpact` | object | Impact on the recipient's score |
-| `data.values[].recipientScoreImpact.value` | integer | Magnitude of the score impact |
-| `data.values[].recipientScoreImpact.impact` | string | Type of impact: "POSITIVE", "NEGATIVE", or "NEUTRAL" |
-| `data.values[].senderScoreImpact` | object | Impact on the sender's score |
-| `data.values[].senderScoreImpact.value` | integer | Magnitude of the score impact |
-| `data.values[].senderScoreImpact.impact` | string | Type of impact: "POSITIVE", "NEGATIVE", or "NEUTRAL" |
-| `data.values[].dateInvited` | string | Date the invitation was sent (ISO 8601 format) |
-| `data.values[].dateAccepted` | string | Date the invitation was accepted (ISO 8601 format), only present if accepted |
+| Property                                    | Type    | Description                                                                     |
+| ------------------------------------------- | ------- | ------------------------------------------------------------------------------- |
+| `ok`                                        | boolean | Success status                                                                  |
+| `data`                                      | object  | Paginated response                                                              |
+| `data.limit`                                | integer | Maximum number of results returned                                              |
+| `data.offset`                               | integer | Number of results skipped                                                       |
+| `data.total`                                | integer | Total number of matching invitations                                            |
+| `data.values`                               | array   | Array of invitation objects                                                     |
+| `data.values[].id`                          | string  | Invitation ID (format: `${senderProfileId}-${recipientAddress}`)                |
+| `data.values[].senderProfileId`             | integer | Profile ID of the sender                                                        |
+| `data.values[].recipientAddress`            | string  | Ethereum address of the recipient                                               |
+| `data.values[].status`                      | string  | Status of the invitation: "INVITED", "ACCEPTED", or "ACCEPTED_OTHER_INVITATION" |
+| `data.values[].recipientScoreImpact`        | object  | Impact on the recipient's score                                                 |
+| `data.values[].recipientScoreImpact.value`  | integer | Magnitude of the score impact                                                   |
+| `data.values[].recipientScoreImpact.impact` | string  | Type of impact: "POSITIVE", "NEGATIVE", or "NEUTRAL"                            |
+| `data.values[].senderScoreImpact`           | object  | Impact on the sender's score                                                    |
+| `data.values[].senderScoreImpact.value`     | integer | Magnitude of the score impact                                                   |
+| `data.values[].senderScoreImpact.impact`    | string  | Type of impact: "POSITIVE", "NEGATIVE", or "NEUTRAL"                            |
+| `data.values[].dateInvited`                 | string  | Date the invitation was sent (ISO 8601 format)                                  |
+| `data.values[].dateAccepted`                | string  | Date the invitation was accepted (ISO 8601 format), only present if accepted    |
 
 #### Error Response
 
@@ -113,7 +112,8 @@ POST /api/v1/invitations
 ```bash
 http POST "https://api.ethos.network/api/v1/invitations" \
   invitedBy:=1 \
-  pagination:='{"limit": 10, "offset": 0}'
+  limit=10 \
+  offset=0
 ```
 
 ### Get Pending Invitations for an Address
@@ -130,9 +130,9 @@ GET /api/v1/invitations/pending/:address
 
 #### Path Parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `address` | string | Yes | Ethereum address to check for pending invitations |
+| Name      | Type   | Required | Description                                       |
+| --------- | ------ | -------- | ------------------------------------------------- |
+| `address` | string | Yes      | Ethereum address to check for pending invitations |
 
 ### Responses
 
@@ -157,15 +157,15 @@ GET /api/v1/invitations/pending/:address
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | array | Array of pending invitation objects |
-| `data[].id` | integer | Profile ID of the sender |
-| `data[].impact` | object | Score impact if the invitation is accepted |
-| `data[].impact.value` | integer | Absolute value of the score change |
-| `data[].impact.relativeValue` | integer | Relative value (positive or negative) |
-| `data[].impact.impact` | string | Type of impact: "POSITIVE", "NEGATIVE", or "NEUTRAL" |
+| Property                               | Type    | Description                                                  |
+| -------------------------------------- | ------- | ------------------------------------------------------------ |
+| `ok`                                   | boolean | Success status                                               |
+| `data`                                 | array   | Array of pending invitation objects                          |
+| `data[].id`                            | integer | Profile ID of the sender                                     |
+| `data[].impact`                        | object  | Score impact if the invitation is accepted                   |
+| `data[].impact.value`                  | integer | Absolute value of the score change                           |
+| `data[].impact.relativeValue`          | integer | Relative value (positive or negative)                        |
+| `data[].impact.impact`                 | string  | Type of impact: "POSITIVE", "NEGATIVE", or "NEUTRAL"         |
 | `data[].impact.adjustedRecipientScore` | integer | The recipient's adjusted score if the invitation is accepted |
 
 #### Error Response
