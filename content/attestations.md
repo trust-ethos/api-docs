@@ -28,24 +28,21 @@ POST /api/v1/attestations
   "orderBy": {
     "createdAt": "desc"
   },
-  "pagination": {
-    "limit": 10,
-    "offset": 0
-  }
+  "limit": 10,
+  "offset": 0
 }
 ```
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `profileIds` | array of numbers | No* | Array of profile IDs to filter by |
-| `attestationHashes` | array of strings | No* | Array of attestation hashes to filter by |
-| `archived` | boolean | No | Whether to include archived attestations |
-| `orderBy` | object | No | Sorting options |
-| `orderBy.createdAt` | string | No | Sort by creation date: "asc" or "desc" |
-| `orderBy.updatedAt` | string | No | Sort by update date: "asc" or "desc" |
-| `pagination` | object | Yes | Pagination parameters |
-| `pagination.limit` | number | Yes | Number of results to return (maximum 100) |
-| `pagination.offset` | number | Yes | Offset for pagination |
+| Property            | Type             | Required | Description                               |
+| ------------------- | ---------------- | -------- | ----------------------------------------- |
+| `profileIds`        | array of numbers | No*      | Array of profile IDs to filter by         |
+| `attestationHashes` | array of strings | No*      | Array of attestation hashes to filter by  |
+| `archived`          | boolean          | No       | Whether to include archived attestations  |
+| `orderBy`           | object           | No       | Sorting options                           |
+| `orderBy.createdAt` | string           | No       | Sort by creation date: "asc" or "desc"    |
+| `orderBy.updatedAt` | string           | No       | Sort by update date: "asc" or "desc"      |
+| `limit`             | number           | Yes      | Number of results to return (maximum 100) |
+| `offset`            | number           | Yes      | Offset for pagination                     |
 
 *At least one of `profileIds` or `attestationHashes` must be provided.
 
@@ -77,21 +74,21 @@ POST /api/v1/attestations
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Response data container |
-| `data.values` | array | Array of attestation objects |
-| `data.values[].hash` | string | Attestation hash |
-| `data.values[].profileId` | number | Profile ID |
-| `data.values[].service` | string | Service name (e.g., "x.com") |
-| `data.values[].account` | string | Account ID on the service |
-| `data.values[].createdAt` | number | Unix timestamp of when the attestation was created |
-| `data.values[].updatedAt` | number | Unix timestamp of when the attestation was last updated |
-| `data.values[].archived` | boolean | Whether the attestation is archived |
-| `data.limit` | number | Number of results returned |
-| `data.offset` | number | Current pagination offset |
-| `data.total` | number | Total number of results matching the query |
+| Property                  | Type    | Description                                             |
+| ------------------------- | ------- | ------------------------------------------------------- |
+| `ok`                      | boolean | Success status                                          |
+| `data`                    | object  | Response data container                                 |
+| `data.values`             | array   | Array of attestation objects                            |
+| `data.values[].hash`      | string  | Attestation hash                                        |
+| `data.values[].profileId` | number  | Profile ID                                              |
+| `data.values[].service`   | string  | Service name (e.g., "x.com")                            |
+| `data.values[].account`   | string  | Account ID on the service                               |
+| `data.values[].createdAt` | number  | Unix timestamp of when the attestation was created      |
+| `data.values[].updatedAt` | number  | Unix timestamp of when the attestation was last updated |
+| `data.values[].archived`  | boolean | Whether the attestation is archived                     |
+| `data.limit`              | number  | Number of results returned                              |
+| `data.offset`             | number  | Current pagination offset                               |
+| `data.total`              | number  | Total number of results matching the query              |
 
 ##### Error Responses
 
@@ -115,7 +112,8 @@ POST /api/v1/attestations
 ```bash
 http POST https://api.ethos.network/api/v1/attestations \
   profileIds:='[1]' \
-  pagination:='{"limit": 10, "offset": 0}'
+  limit=10 \
+  offset=0
 ```
 
 ##### Response
@@ -171,24 +169,21 @@ POST /api/v1/attestations/extended
   "orderBy": {
     "createdAt": "desc"
   },
-  "pagination": {
-    "limit": 10,
-    "offset": 0
-  }
+  "limit": 10,
+  "offset": 0
 }
 ```
 
-| Property | Type | Required | Description |
-|----------|------|----------|-------------|
-| `profileIds` | array of numbers | No* | Array of profile IDs to filter by |
-| `attestationHashes` | array of strings | No* | Array of attestation hashes to filter by |
-| `archived` | boolean | No | Whether to include archived attestations |
-| `orderBy` | object | No | Sorting options |
-| `orderBy.createdAt` | string | No | Sort by creation date: "asc" or "desc" |
-| `orderBy.updatedAt` | string | No | Sort by update date: "asc" or "desc" |
-| `pagination` | object | Yes | Pagination parameters |
-| `pagination.limit` | number | Yes | Number of results to return (maximum 100) |
-| `pagination.offset` | number | Yes | Offset for pagination |
+| Property            | Type             | Required | Description                               |
+| ------------------- | ---------------- | -------- | ----------------------------------------- |
+| `profileIds`        | array of numbers | No*      | Array of profile IDs to filter by         |
+| `attestationHashes` | array of strings | No*      | Array of attestation hashes to filter by  |
+| `archived`          | boolean          | No       | Whether to include archived attestations  |
+| `orderBy`           | object           | No       | Sorting options                           |
+| `orderBy.createdAt` | string           | No       | Sort by creation date: "asc" or "desc"    |
+| `orderBy.updatedAt` | string           | No       | Sort by update date: "asc" or "desc"      |
+| `limit`             | number           | Yes      | Number of results to return (maximum 100) |
+| `offset`            | number           | Yes      | Offset for pagination                     |
 
 *At least one of `profileIds` or `attestationHashes` must be provided.
 
@@ -235,34 +230,34 @@ POST /api/v1/attestations/extended
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Response data container |
-| `data.values` | array | Array of extended attestation objects |
-| `data.values[].attestation` | object | Attestation object (same as in the basic query) |
-| `data.values[].attestation.id` | number | Internal attestation ID |
-| `data.values[].attestation.hash` | string | Attestation hash |
-| `data.values[].attestation.profileId` | number | Profile ID |
-| `data.values[].attestation.service` | string | Service name (e.g., "x.com") |
-| `data.values[].attestation.account` | string | Account ID on the service |
-| `data.values[].attestation.createdAt` | number | Unix timestamp of when the attestation was created |
-| `data.values[].attestation.updatedAt` | number | Unix timestamp of when the attestation was last updated |
-| `data.values[].attestation.archived` | boolean | Whether the attestation is archived |
-| `data.values[].extra` | object | Additional information about the attestation |
-| `data.values[].extra.attestationHash` | string | Hash of the attestation |
-| `data.values[].extra.id` | string | Twitter user ID |
-| `data.values[].extra.username` | string | Twitter username |
-| `data.values[].extra.name` | string | Twitter display name |
-| `data.values[].extra.biography` | string | Twitter bio |
-| `data.values[].extra.avatar` | string | URL to the Twitter profile image |
-| `data.values[].extra.followersCount` | number | Number of followers |
-| `data.values[].extra.isBlueVerified` | boolean | Whether the account is Twitter Blue verified |
-| `data.values[].extra.joinedAt` | number | Unix timestamp of when the account joined Twitter |
-| `data.values[].extra.website` | string | Website URL from Twitter profile |
-| `data.limit` | number | Number of results returned |
-| `data.offset` | number | Current pagination offset |
-| `data.total` | number | Total number of results matching the query |
+| Property                              | Type    | Description                                             |
+| ------------------------------------- | ------- | ------------------------------------------------------- |
+| `ok`                                  | boolean | Success status                                          |
+| `data`                                | object  | Response data container                                 |
+| `data.values`                         | array   | Array of extended attestation objects                   |
+| `data.values[].attestation`           | object  | Attestation object (same as in the basic query)         |
+| `data.values[].attestation.id`        | number  | Internal attestation ID                                 |
+| `data.values[].attestation.hash`      | string  | Attestation hash                                        |
+| `data.values[].attestation.profileId` | number  | Profile ID                                              |
+| `data.values[].attestation.service`   | string  | Service name (e.g., "x.com")                            |
+| `data.values[].attestation.account`   | string  | Account ID on the service                               |
+| `data.values[].attestation.createdAt` | number  | Unix timestamp of when the attestation was created      |
+| `data.values[].attestation.updatedAt` | number  | Unix timestamp of when the attestation was last updated |
+| `data.values[].attestation.archived`  | boolean | Whether the attestation is archived                     |
+| `data.values[].extra`                 | object  | Additional information about the attestation            |
+| `data.values[].extra.attestationHash` | string  | Hash of the attestation                                 |
+| `data.values[].extra.id`              | string  | Twitter user ID                                         |
+| `data.values[].extra.username`        | string  | Twitter username                                        |
+| `data.values[].extra.name`            | string  | Twitter display name                                    |
+| `data.values[].extra.biography`       | string  | Twitter bio                                             |
+| `data.values[].extra.avatar`          | string  | URL to the Twitter profile image                        |
+| `data.values[].extra.followersCount`  | number  | Number of followers                                     |
+| `data.values[].extra.isBlueVerified`  | boolean | Whether the account is Twitter Blue verified            |
+| `data.values[].extra.joinedAt`        | number  | Unix timestamp of when the account joined Twitter       |
+| `data.values[].extra.website`         | string  | Website URL from Twitter profile                        |
+| `data.limit`                          | number  | Number of results returned                              |
+| `data.offset`                         | number  | Current pagination offset                               |
+| `data.total`                          | number  | Total number of results matching the query              |
 
 ##### Error Responses
 
@@ -298,7 +293,8 @@ POST /api/v1/attestations/extended
 ```bash
 http POST https://api.ethos.network/api/v1/attestations/extended \
   profileIds:='[1]' \
-  pagination:='{"limit": 10, "offset": 0}'
+  limit=10 \
+  offset=0
 ```
 
 ##### Response
