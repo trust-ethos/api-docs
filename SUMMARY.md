@@ -7,7 +7,6 @@
 * [Addresses](content/addresses.md)
 * [Attestations](content/attestations.md)
 * [Categories](content/categories.md)
-* [Claim](content/claim.md)
 * [Contracts](content/contracts.md)
 * [Contributions](content/contributions.md)
 * [Curated Lists](content/curated-lists.md)

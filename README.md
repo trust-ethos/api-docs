@@ -54,7 +54,6 @@ The Ethos API is organized into the following sections:
 * **[Addresses](content/addresses.md)**: Manage user addresses
 * **[Attestations](content/attestations.md)**: Query service verifications and attestations
 * **[Categories](content/categories.md)**: Manage user categories
-* **[Claim](content/claim.md)**: Handle XP claims and Twitter integration
 * **[Contracts](content/contracts.md)**: Get contract addresses
 * **[Contributions](content/contributions.md)**: Manage user contributions
 * **[Curated Lists](content/curated-lists.md)**: Manage curated user lists
