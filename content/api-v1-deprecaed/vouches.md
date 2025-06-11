@@ -1,4 +1,4 @@
-# Vouches API
+# Vouches
 
 ## Overview
 
@@ -18,7 +18,7 @@ POST /api/v1/vouches
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -53,7 +53,7 @@ POST /api/v1/vouches
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -119,7 +119,7 @@ POST /api/v1/vouches
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http POST https://api.ethos.network/api/v1/vouches \
@@ -130,11 +130,11 @@ http POST https://api.ethos.network/api/v1/vouches \
 
 #### Notes
 
-- By default, results are sorted by vouch date in descending order (newest first).
-- The API enforces a maximum of 100 vouches that can be requested at once.
-- If a vouch references an attestation hash that corresponds to a Twitter account, the `attestationDetails` field will be populated.
+* By default, results are sorted by vouch date in descending order (newest first).
+* The API enforces a maximum of 100 vouches that can be requested at once.
+* If a vouch references an attestation hash that corresponds to a Twitter account, the `attestationDetails` field will be populated.
 
----
+***
 
 ### Get Vouched Ethereum
 
@@ -148,7 +148,7 @@ POST /api/v1/vouches/vouched-ethereum
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -162,7 +162,7 @@ POST /api/v1/vouches/vouched-ethereum
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -183,7 +183,7 @@ POST /api/v1/vouches/vouched-ethereum
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http POST https://api.ethos.network/api/v1/vouches/vouched-ethereum \
@@ -192,9 +192,9 @@ http POST https://api.ethos.network/api/v1/vouches/vouched-ethereum \
 
 #### Notes
 
-- This endpoint calculates the total amount of ETH currently vouched for the target.
+* This endpoint calculates the total amount of ETH currently vouched for the target.
 
----
+***
 
 ### Get Most Credible Vouchers
 
@@ -208,7 +208,7 @@ POST /api/v1/vouches/most-credible-vouchers
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -224,7 +224,7 @@ POST /api/v1/vouches/most-credible-vouchers
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -256,7 +256,7 @@ POST /api/v1/vouches/most-credible-vouchers
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http POST https://api.ethos.network/api/v1/vouches/most-credible-vouchers \
@@ -266,10 +266,10 @@ http POST https://api.ethos.network/api/v1/vouches/most-credible-vouchers \
 
 #### Notes
 
-- The vouchers are sorted by their credibility score in descending order.
-- Only active (non-archived) vouches are considered.
+* The vouchers are sorted by their credibility score in descending order.
+* Only active (non-archived) vouches are considered.
 
----
+***
 
 ### Get Mutual Vouchers
 
@@ -283,7 +283,7 @@ GET /api/v1/vouches/mutual-vouchers
 
 #### Parameters
 
-##### Query Parameters
+**Query Parameters**
 
 | Name      | Type   | Required | Description                                       |
 | --------- | ------ | -------- | ------------------------------------------------- |
@@ -292,7 +292,7 @@ GET /api/v1/vouches/mutual-vouchers
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -327,7 +327,7 @@ GET /api/v1/vouches/mutual-vouchers
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http GET https://api.ethos.network/api/v1/vouches/mutual-vouchers?userkey=profileId:123&limit=5
@@ -335,10 +335,10 @@ http GET https://api.ethos.network/api/v1/vouches/mutual-vouchers?userkey=profil
 
 #### Notes
 
-- Mutual vouches are pairs of vouches where two users have vouched for each other.
-- Only active (non-archived) vouches are considered.
+* Mutual vouches are pairs of vouches where two users have vouched for each other.
+* Only active (non-archived) vouches are considered.
 
----
+***
 
 ### Get Vouch Rewards
 
@@ -352,7 +352,7 @@ POST /api/v1/vouches/rewards
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -366,7 +366,7 @@ POST /api/v1/vouches/rewards
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -391,7 +391,7 @@ POST /api/v1/vouches/rewards
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http POST https://api.ethos.network/api/v1/vouches/rewards \
@@ -400,5 +400,5 @@ http POST https://api.ethos.network/api/v1/vouches/rewards \
 
 #### Notes
 
-- Rewards are earned based on the protocol's reward distribution mechanism.
-- Potential earnings represent the additional rewards that could be earned in the future from existing vouches.
+* Rewards are earned based on the protocol's reward distribution mechanism.
+* Potential earnings represent the additional rewards that could be earned in the future from existing vouches.

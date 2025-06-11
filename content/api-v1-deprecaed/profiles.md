@@ -1,4 +1,4 @@
-# Profiles API
+# Profiles
 
 ## Overview
 
@@ -18,7 +18,7 @@ POST /api/v1/profiles
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -33,18 +33,18 @@ POST /api/v1/profiles
 
 | Property    | Type             | Required | Description                                         |
 | ----------- | ---------------- | -------- | --------------------------------------------------- |
-| `ids`       | array of numbers | No*      | Array of numeric profile IDs to query (maximum 100) |
-| `addresses` | array of strings | No*      | Array of Ethereum addresses to query (maximum 100)  |
+| `ids`       | array of numbers | No\*     | Array of numeric profile IDs to query (maximum 100) |
+| `addresses` | array of strings | No\*     | Array of Ethereum addresses to query (maximum 100)  |
 | `archived`  | boolean          | No       | Whether to include archived profiles                |
 | `useCache`  | boolean          | No       | Whether to use cached results (defaults to true)    |
 | `limit`     | number           | Yes      | Number of results to return (maximum 100)           |
 | `offset`    | number           | Yes      | Offset for pagination                               |
 
-*At least one of `ids` or `addresses` must be provided.
+\*At least one of `ids` or `addresses` must be provided.
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -84,7 +84,7 @@ POST /api/v1/profiles
 | `data.offset`                    | number  | Current pagination offset                           |
 | `data.total`                     | number  | Total number of results matching the query          |
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request
 
@@ -101,7 +101,7 @@ POST /api/v1/profiles
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http POST https://api.ethos.network/api/v1/profiles \
@@ -110,7 +110,7 @@ http POST https://api.ethos.network/api/v1/profiles \
   offset=0
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -135,12 +135,12 @@ http POST https://api.ethos.network/api/v1/profiles \
 
 #### Notes
 
-- The API enforces a maximum of 100 profiles that can be requested at once.
-- Results are returned in descending order by creation date (newest first).
-- For performance reasons, it's recommended to use the `useCache` parameter.
-- Timestamps are returned in Unix epoch format (seconds since January 1, 1970).
+* The API enforces a maximum of 100 profiles that can be requested at once.
+* Results are returned in descending order by creation date (newest first).
+* For performance reasons, it's recommended to use the `useCache` parameter.
+* Timestamps are returned in Unix epoch format (seconds since January 1, 1970).
 
----
+***
 
 ### Recent Profiles
 
@@ -154,7 +154,7 @@ POST /api/v1/profiles/recent
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -172,7 +172,7 @@ POST /api/v1/profiles/recent
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -222,13 +222,13 @@ POST /api/v1/profiles/recent
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http POST https://api.ethos.network/api/v1/profiles/recent limit:=10 offset:=0
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -253,10 +253,10 @@ http POST https://api.ethos.network/api/v1/profiles/recent limit:=10 offset:=0
 
 #### Notes
 
-- The API returns profiles in descending order by creation date (newest first).
-- Timestamps are returned in Unix epoch format (seconds since January 1, 1970).
+* The API returns profiles in descending order by creation date (newest first).
+* Timestamps are returned in Unix epoch format (seconds since January 1, 1970).
 
----
+***
 
 ### Directory
 
@@ -270,7 +270,7 @@ GET /api/v1/profiles/directory
 
 #### Parameters
 
-##### Query Parameters
+**Query Parameters**
 
 | Name            | Type    | Required | Description                                                                   |
 | --------------- | ------- | -------- | ----------------------------------------------------------------------------- |
@@ -283,7 +283,7 @@ GET /api/v1/profiles/directory
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -358,13 +358,13 @@ GET /api/v1/profiles/directory
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http GET https://api.ethos.network/api/v1/profiles/directory limit:=5 offset:=0
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -411,12 +411,12 @@ http GET https://api.ethos.network/api/v1/profiles/directory limit:=5 offset:=0
 
 #### Notes
 
-- By default, results are sorted by creation date in descending order (newest first).
-- You can sort by invite availability using the `sortField` parameter.
-- You can filter to only show profiles with or without invites using the `inviteFilter` parameter.
-- Timestamps are returned in Unix epoch format (seconds since January 1, 1970).
+* By default, results are sorted by creation date in descending order (newest first).
+* You can sort by invite availability using the `sortField` parameter.
+* You can filter to only show profiles with or without invites using the `inviteFilter` parameter.
+* Timestamps are returned in Unix epoch format (seconds since January 1, 1970).
 
----
+***
 
 ### Profile Stats
 
@@ -434,7 +434,7 @@ None.
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -457,13 +457,13 @@ None.
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http GET https://api.ethos.network/api/v1/profiles/stats
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -475,7 +475,7 @@ http GET https://api.ethos.network/api/v1/profiles/stats
 }
 ```
 
----
+***
 
 ### XP Leaderboard
 
@@ -489,7 +489,7 @@ GET /api/v1/profiles/xp-leaderboard
 
 #### Parameters
 
-##### Query Parameters
+**Query Parameters**
 
 | Name    | Type   | Required | Description                                                                                                      |
 | ------- | ------ | -------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -498,7 +498,7 @@ GET /api/v1/profiles/xp-leaderboard
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -544,13 +544,13 @@ GET /api/v1/profiles/xp-leaderboard
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http GET https://api.ethos.network/api/v1/profiles/xp-leaderboard since:='2023-01-01' limit:=5
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -579,14 +579,14 @@ http GET https://api.ethos.network/api/v1/profiles/xp-leaderboard since:='2023-0
 
 #### Notes
 
-- By default, results are sorted by total XP in descending order (highest first).
-- Limited to the top 50 profiles by default.
-- The `since` parameter can be specified either as an ISO date string (e.g., '2023-01-01') or as a duration string (e.g., '1month', '1week').
-- When using the `since` parameter, the API returns only users who have earned XP during the specified period. If no users have earned XP in that period, an empty array is returned.
-- Results are cached for 5 minutes for better performance.
-- Certain profiles, such as the main Ethos Network profile and administrative profiles, are excluded from the leaderboard.
+* By default, results are sorted by total XP in descending order (highest first).
+* Limited to the top 50 profiles by default.
+* The `since` parameter can be specified either as an ISO date string (e.g., '2023-01-01') or as a duration string (e.g., '1month', '1week').
+* When using the `since` parameter, the API returns only users who have earned XP during the specified period. If no users have earned XP in that period, an empty array is returned.
+* Results are cached for 5 minutes for better performance.
+* Certain profiles, such as the main Ethos Network profile and administrative profiles, are excluded from the leaderboard.
 
----
+***
 
 ### Profiles with Attestation
 
@@ -600,7 +600,7 @@ GET /api/v1/profiles/with-x-attestation
 
 #### Parameters
 
-##### Query Parameters
+**Query Parameters**
 
 | Name     | Type   | Required | Description                                               |
 | -------- | ------ | -------- | --------------------------------------------------------- |
@@ -609,7 +609,7 @@ GET /api/v1/profiles/with-x-attestation
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -653,13 +653,13 @@ GET /api/v1/profiles/with-x-attestation
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http GET https://api.ethos.network/api/v1/profiles/with-x-attestation limit:=2 offset:=0
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -688,8 +688,8 @@ http GET https://api.ethos.network/api/v1/profiles/with-x-attestation limit:=2 o
 
 #### Notes
 
-- Results are sorted by profile ID in ascending order.
-- Only non-archived attestations are included.
-- For each profile, only the first (primary) address is returned.
-- The limit parameter has a maximum value of 1000.
-- This endpoint is useful for querying which profiles have connected their X (Twitter) accounts.
+* Results are sorted by profile ID in ascending order.
+* Only non-archived attestations are included.
+* For each profile, only the first (primary) address is returned.
+* The limit parameter has a maximum value of 1000.
+* This endpoint is useful for querying which profiles have connected their X (Twitter) accounts.

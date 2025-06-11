@@ -1,4 +1,4 @@
-# Notifications API
+# Notifications
 
 ## Overview
 
@@ -18,15 +18,15 @@ POST /api/v1/notifications/user-fcm-token
 
 #### Parameters
 
-##### Path Parameters
+**Path Parameters**
 
 None
 
-##### Query Parameters
+**Query Parameters**
 
 None
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -35,14 +35,14 @@ None
 }
 ```
 
-| Property           | Type   | Required | Description                                                     |
-|--------------------|--------|----------|-----------------------------------------------------------------|
-| `token`            | string | Yes      | The Firebase Cloud Messaging registration token.              |
+| Property           | Type   | Required | Description                                                 |
+| ------------------ | ------ | -------- | ----------------------------------------------------------- |
+| `token`            | string | Yes      | The Firebase Cloud Messaging registration token.            |
 | `deviceIdentifier` | string | Yes      | A unique identifier for the client device/browser instance. |
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -57,13 +57,13 @@ Returns an object indicating the result of the operation.
 }
 ```
 
-| Property         | Type    | Description                                                                                              |
-|------------------|---------|----------------------------------------------------------------------------------------------------------|
-| `ok`             | boolean | Indicates if the API call itself was successful.                                                         |
-| `data`           | object  | Container for the response data.                                                                         |
-| `data.result`    | string  | Result status: 'unchanged' (token already exists for device), 'updated' (token updated), 'created' (new token/device registered). |
+| Property      | Type    | Description                                                                                                                       |
+| ------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `ok`          | boolean | Indicates if the API call itself was successful.                                                                                  |
+| `data`        | object  | Container for the response data.                                                                                                  |
+| `data.result` | string  | Result status: 'unchanged' (token already exists for device), 'updated' (token updated), 'created' (new token/device registered). |
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request
 
@@ -92,7 +92,7 @@ Returns an object indicating the result of the operation.
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 # Needs auth token, a valid FCM token, and a device ID
@@ -105,7 +105,7 @@ http POST https://api.ethos.network/api/v1/notifications/user-fcm-token \
   deviceIdentifier=$DEVICE_ID
 ```
 
-##### Response (Example: Token Created)
+**Response (Example: Token Created)**
 
 ```json
 {
@@ -118,7 +118,7 @@ http POST https://api.ethos.network/api/v1/notifications/user-fcm-token \
 
 #### Notes
 
-- Requires authentication.
-- Associates the provided FCM token with the authenticated user's profile and a specific device identifier.
-- Allows the backend to send push notifications to the user's device via Firebase.
-- Manages token updates and enforces a limit of 10 registered devices per profile. 
+* Requires authentication.
+* Associates the provided FCM token with the authenticated user's profile and a specific device identifier.
+* Allows the backend to send push notifications to the user's device via Firebase.
+* Manages token updates and enforces a limit of 10 registered devices per profile.

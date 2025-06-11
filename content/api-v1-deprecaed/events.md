@@ -1,4 +1,4 @@
-# Events API
+# Events
 
 ## Overview
 
@@ -18,23 +18,23 @@ GET /api/v1/events/process
 
 #### Parameters
 
-##### Query Parameters
+**Query Parameters**
 
-| Name     | Type   | Required | Description                       |
-|----------|--------|----------|-----------------------------------|
+| Name     | Type   | Required | Description                      |
+| -------- | ------ | -------- | -------------------------------- |
 | `txHash` | string | Yes      | The transaction hash to process. |
 
-##### Path Parameters
+**Path Parameters**
 
 None
 
-##### Request Body
+**Request Body**
 
 None
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -49,15 +49,15 @@ None
 }
 ```
 
-| Property                | Type    | Description                                                                          |
-|-------------------------|---------|--------------------------------------------------------------------------------------|
-| `ok`                    | boolean | Indicates if the API call itself was successful.                                     |
-| `data`                  | object  | Container for the response data.                                                     |
-| `data.success`          | boolean | Indicates if the event processing for the given `txHash` was successful.           |
-| `data.transaction`      | object  | The transaction receipt object (from Viem's `getTransactionReceipt`). Null if not found. |
-| `data.event`            | object  | The corresponding record from the `BlockchainEvent` table in the database. Null if not found. |
+| Property           | Type    | Description                                                                                   |
+| ------------------ | ------- | --------------------------------------------------------------------------------------------- |
+| `ok`               | boolean | Indicates if the API call itself was successful.                                              |
+| `data`             | object  | Container for the response data.                                                              |
+| `data.success`     | boolean | Indicates if the event processing for the given `txHash` was successful.                      |
+| `data.transaction` | object  | The transaction receipt object (from Viem's `getTransactionReceipt`). Null if not found.      |
+| `data.event`       | object  | The corresponding record from the `BlockchainEvent` table in the database. Null if not found. |
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request
 
@@ -98,7 +98,7 @@ None
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 # Needs authentication token and a valid txHash
@@ -109,7 +109,7 @@ AUTH_TOKEN="your_auth_token"
 http GET https://api.ethos.network/api/v1/events/process txHash==$TX_HASH "Authorization: Bearer $AUTH_TOKEN"
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -148,7 +148,7 @@ http GET https://api.ethos.network/api/v1/events/process txHash==$TX_HASH "Autho
 
 #### Notes
 
-- This endpoint allows forcing the processing of events for a specific transaction, bypassing the normal queue.
-- Requires authentication (likely internal/admin).
-- The `transaction` and `event` fields can be `null` if the transaction or corresponding event record are not found.
-- The exact structure of the `transaction` (Viem Receipt) and `event` (Prisma Model) objects should be referenced for full details.
+* This endpoint allows forcing the processing of events for a specific transaction, bypassing the normal queue.
+* Requires authentication (likely internal/admin).
+* The `transaction` and `event` fields can be `null` if the transaction or corresponding event record are not found.
+* The exact structure of the `transaction` (Viem Receipt) and `event` (Prisma Model) objects should be referenced for full details.

@@ -1,4 +1,4 @@
-# Reviews API
+# Reviews
 
 ## Overview
 
@@ -18,7 +18,7 @@ POST /api/v1/reviews
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -62,7 +62,7 @@ POST /api/v1/reviews
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -136,7 +136,7 @@ POST /api/v1/reviews
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http POST https://api.ethos.network/api/v1/reviews \
@@ -145,7 +145,7 @@ http POST https://api.ethos.network/api/v1/reviews \
   offset=0
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -214,21 +214,22 @@ http POST https://api.ethos.network/api/v1/reviews \
 
 #### Notes
 
-- By default, results are sorted by creation date in descending order (newest first).
-- The API enforces a maximum of 100 reviews that can be requested at once.
-- When searching by `subject` with a `profileId`, the API finds reviews for all addresses and attestations linked to that profile.
-- The `score` field in the response is returned as a string ("positive", "neutral", "negative") rather than a number (2, 1, 0).
-- The `metadata` field typically contains a JSON string with a "description" field that provides additional context for the review.
-- Reviews can be filtered by score type using the `score` parameter, which accepts an array of score types.
-- If no filters are provided, the endpoint will return the most recent reviews across all subjects.
+* By default, results are sorted by creation date in descending order (newest first).
+* The API enforces a maximum of 100 reviews that can be requested at once.
+* When searching by `subject` with a `profileId`, the API finds reviews for all addresses and attestations linked to that profile.
+* The `score` field in the response is returned as a string ("positive", "neutral", "negative") rather than a number (2, 1, 0).
+* The `metadata` field typically contains a JSON string with a "description" field that provides additional context for the review.
+* Reviews can be filtered by score type using the `score` parameter, which accepts an array of score types.
+* If no filters are provided, the endpoint will return the most recent reviews across all subjects.
 
----
+***
 
 ### Get Bulk Review Statistics
 
 ```
 ```
----
+
+***
 
 ### Count Reviews
 
@@ -242,7 +243,7 @@ POST /api/v1/reviews/count
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -256,7 +257,7 @@ The parameters are the same as for the "Query Reviews" endpoint, except paginati
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -277,7 +278,7 @@ The parameters are the same as for the "Query Reviews" endpoint, except paginati
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http POST https://api.ethos.network/api/v1/reviews/count \
@@ -285,7 +286,7 @@ http POST https://api.ethos.network/api/v1/reviews/count \
   score:='["positive"]'
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -298,7 +299,7 @@ http POST https://api.ethos.network/api/v1/reviews/count \
 
 #### Notes
 
-- This endpoint is useful for efficiently getting count information without retrieving the actual review data.
-- The count reflects the total number of reviews that match the specified filters.
-- When using the `score` filter, reviews are counted based on their score value:
+* This endpoint is useful for efficiently getting count information without retrieving the actual review data.
+* The count reflects the total number of reviews that match the specified filters.
+* When using the `score` filter, reviews are counted based on their score value:\
   "positive", "neutral", or "negative".

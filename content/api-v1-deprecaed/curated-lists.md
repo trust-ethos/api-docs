@@ -1,4 +1,4 @@
-# Curated Lists API
+# Curated Lists
 
 ## Overview
 
@@ -18,13 +18,13 @@ GET /api/v1/curated-lists/:list
 
 #### Parameters
 
-##### Path Parameters
+**Path Parameters**
 
-| Parameter | Type   | Description                                                                          |
-|-----------|--------|--------------------------------------------------------------------------------------|
+| Parameter | Type   | Description                                                                      |
+| --------- | ------ | -------------------------------------------------------------------------------- |
 | `list`    | string | The identifier of the curated list (e.g., `'contributor_mode'`, `'highlights'`). |
 
-##### Query Parameters
+**Query Parameters**
 
 ```typescript
 {
@@ -32,13 +32,13 @@ GET /api/v1/curated-lists/:list
 }
 ```
 
-| Parameter | Type   | Required | Description                                  |
-|-----------|--------|----------|----------------------------------------------|
+| Parameter | Type   | Required | Description                                      |
+| --------- | ------ | -------- | ------------------------------------------------ |
 | `limit`   | number | Yes      | Maximum number of userkeys to return (max 1000). |
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -54,7 +54,7 @@ GET /api/v1/curated-lists/:list
 }
 ```
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request (Example: Missing/invalid list or limit)
 
@@ -71,14 +71,14 @@ GET /api/v1/curated-lists/:list
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 # Get up to 10 random userkeys from the 'highlights' list
 http GET https://api.ethos.network/api/v1/curated-lists/highlights limit==10
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -96,8 +96,8 @@ http GET https://api.ethos.network/api/v1/curated-lists/highlights limit==10
 
 #### Notes
 
-- Retrieves a list of userkeys from a named public curated list.
-- The `list` parameter must be one of the predefined list names (e.g., `contributor_mode`, `highlights`).
-- The `limit` parameter is required.
-- Returns userkeys in a random order.
-- Does not support pagination offsets or return total counts.
+* Retrieves a list of userkeys from a named public curated list.
+* The `list` parameter must be one of the predefined list names (e.g., `contributor_mode`, `highlights`).
+* The `limit` parameter is required.
+* Returns userkeys in a random order.
+* Does not support pagination offsets or return total counts.

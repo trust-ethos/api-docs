@@ -1,4 +1,4 @@
-# Contracts API
+# Contracts
 
 ## Overview
 
@@ -20,9 +20,9 @@ GET /api/v1/contracts
 
 #### Query Parameters
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `targetContracts` | string | Yes | Must be set to "all" to retrieve all contracts |
+| Name              | Type   | Required | Description                                    |
+| ----------------- | ------ | -------- | ---------------------------------------------- |
+| `targetContracts` | string | Yes      | Must be set to "all" to retrieve all contracts |
 
 ### Responses
 
@@ -51,14 +51,14 @@ GET /api/v1/contracts
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | array | Array of contract objects |
-| `data[].name` | string | Name of the smart contract |
-| `data[].configAddress` | string | Configured Ethereum address of the contract |
-| `data[].managedAddress` | string | Address managed by the contract address manager |
-| `data[].isProxy` | boolean | Whether the contract uses a proxy pattern |
+| Property                | Type    | Description                                     |
+| ----------------------- | ------- | ----------------------------------------------- |
+| `ok`                    | boolean | Success status                                  |
+| `data`                  | array   | Array of contract objects                       |
+| `data[].name`           | string  | Name of the smart contract                      |
+| `data[].configAddress`  | string  | Configured Ethereum address of the contract     |
+| `data[].managedAddress` | string  | Address managed by the contract address manager |
+| `data[].isProxy`        | boolean | Whether the contract uses a proxy pattern       |
 
 #### Error Response
 
@@ -104,7 +104,7 @@ http GET "https://api.ethos.network/api/v1/contracts?targetContracts=all"
 
 ### Notes
 
-- The API currently only supports retrieving all contracts with `targetContracts=all`.
-- The implementation suggests support for specifying an array of specific contracts, but this doesn't appear to work in the current version.
-- The returned contracts include core Ethos functionality such as Profile, Attestation, Review, Vote, and Vouch contracts.
-- Use these addresses to directly interact with Ethos smart contracts via Web3 libraries or blockchain explorers.
+* The API currently only supports retrieving all contracts with `targetContracts=all`.
+* The implementation suggests support for specifying an array of specific contracts, but this doesn't appear to work in the current version.
+* The returned contracts include core Ethos functionality such as Profile, Attestation, Review, Vote, and Vouch contracts.
+* Use these addresses to directly interact with Ethos smart contracts via Web3 libraries or blockchain explorers.

@@ -1,4 +1,4 @@
-# Exchange Rates API
+# Exchange Rates
 
 ## Overview
 
@@ -35,11 +35,11 @@ None
 }
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `ok` | boolean | Success status |
-| `data` | object | Price data |
-| `data.price` | number | Current ETH price in USD |
+| Property     | Type    | Description              |
+| ------------ | ------- | ------------------------ |
+| `ok`         | boolean | Success status           |
+| `data`       | object  | Price data               |
+| `data.price` | number  | Current ETH price in USD |
 
 #### Error Response
 
@@ -65,7 +65,7 @@ http GET https://api.ethos.network/api/v1/exchange-rates/eth-price
 
 ### Notes
 
-- This endpoint provides the current ETH price in USD.
-- The price is cached for 10 minutes to prevent excessive API calls to the underlying data provider.
-- The data is sourced from the CryptoCompare API.
-- If the external price service is unavailable, the endpoint will return the last cached price if available.
+* This endpoint provides the current ETH price in USD.
+* The price is cached for 10 minutes to prevent excessive API calls to the underlying data provider.
+* The data is sourced from the CryptoCompare API.
+* If the external price service is unavailable, the endpoint will return the last cached price if available.

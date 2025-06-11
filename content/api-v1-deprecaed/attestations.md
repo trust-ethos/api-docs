@@ -1,4 +1,4 @@
-# Attestations API
+# Attestations
 
 ## Overview
 
@@ -18,7 +18,7 @@ POST /api/v1/attestations
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -35,8 +35,8 @@ POST /api/v1/attestations
 
 | Property            | Type             | Required | Description                               |
 | ------------------- | ---------------- | -------- | ----------------------------------------- |
-| `profileIds`        | array of numbers | No*      | Array of profile IDs to filter by         |
-| `attestationHashes` | array of strings | No*      | Array of attestation hashes to filter by  |
+| `profileIds`        | array of numbers | No\*     | Array of profile IDs to filter by         |
+| `attestationHashes` | array of strings | No\*     | Array of attestation hashes to filter by  |
 | `archived`          | boolean          | No       | Whether to include archived attestations  |
 | `orderBy`           | object           | No       | Sorting options                           |
 | `orderBy.createdAt` | string           | No       | Sort by creation date: "asc" or "desc"    |
@@ -44,11 +44,11 @@ POST /api/v1/attestations
 | `limit`             | number           | Yes      | Number of results to return (maximum 100) |
 | `offset`            | number           | Yes      | Offset for pagination                     |
 
-*At least one of `profileIds` or `attestationHashes` must be provided.
+\*At least one of `profileIds` or `attestationHashes` must be provided.
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -90,7 +90,7 @@ POST /api/v1/attestations
 | `data.offset`             | number  | Current pagination offset                               |
 | `data.total`              | number  | Total number of results matching the query              |
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request
 
@@ -107,7 +107,7 @@ POST /api/v1/attestations
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http POST https://api.ethos.network/api/v1/attestations \
@@ -116,7 +116,7 @@ http POST https://api.ethos.network/api/v1/attestations \
   offset=0
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -142,10 +142,10 @@ http POST https://api.ethos.network/api/v1/attestations \
 
 #### Notes
 
-- By default, results are sorted by creation date in descending order (newest first).
-- The API enforces a maximum of 100 attestations that can be requested at once.
+* By default, results are sorted by creation date in descending order (newest first).
+* The API enforces a maximum of 100 attestations that can be requested at once.
 
----
+***
 
 ### Query Extended Attestations
 
@@ -159,7 +159,7 @@ POST /api/v1/attestations/extended
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -176,8 +176,8 @@ POST /api/v1/attestations/extended
 
 | Property            | Type             | Required | Description                               |
 | ------------------- | ---------------- | -------- | ----------------------------------------- |
-| `profileIds`        | array of numbers | No*      | Array of profile IDs to filter by         |
-| `attestationHashes` | array of strings | No*      | Array of attestation hashes to filter by  |
+| `profileIds`        | array of numbers | No\*     | Array of profile IDs to filter by         |
+| `attestationHashes` | array of strings | No\*     | Array of attestation hashes to filter by  |
 | `archived`          | boolean          | No       | Whether to include archived attestations  |
 | `orderBy`           | object           | No       | Sorting options                           |
 | `orderBy.createdAt` | string           | No       | Sort by creation date: "asc" or "desc"    |
@@ -185,11 +185,11 @@ POST /api/v1/attestations/extended
 | `limit`             | number           | Yes      | Number of results to return (maximum 100) |
 | `offset`            | number           | Yes      | Offset for pagination                     |
 
-*At least one of `profileIds` or `attestationHashes` must be provided.
+\*At least one of `profileIds` or `attestationHashes` must be provided.
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -259,7 +259,7 @@ POST /api/v1/attestations/extended
 | `data.offset`                         | number  | Current pagination offset                               |
 | `data.total`                          | number  | Total number of results matching the query              |
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request
 
@@ -288,7 +288,7 @@ POST /api/v1/attestations/extended
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http POST https://api.ethos.network/api/v1/attestations/extended \
@@ -297,7 +297,7 @@ http POST https://api.ethos.network/api/v1/attestations/extended \
   offset=0
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -338,6 +338,6 @@ http POST https://api.ethos.network/api/v1/attestations/extended \
 
 #### Notes
 
-- Currently, this endpoint only provides extended information for X (Twitter) attestations.
-- For non-Twitter attestations, the extended information may be limited or not available.
-- The extended information includes the Twitter username, display name, bio, and profile image URL.
+* Currently, this endpoint only provides extended information for X (Twitter) attestations.
+* For non-Twitter attestations, the extended information may be limited or not available.
+* The extended information includes the Twitter username, display name, bio, and profile image URL.

@@ -1,4 +1,4 @@
-# Twitter API
+# Twitter
 
 ## Overview
 
@@ -18,7 +18,7 @@ GET /api/v1/claim/twitter/login
 
 #### Parameters
 
-##### Query Parameters
+**Query Parameters**
 
 | Name          | Type   | Required | Description                                            |
 | ------------- | ------ | -------- | ------------------------------------------------------ |
@@ -31,7 +31,7 @@ This endpoint redirects the user to Twitter's OAuth authorization page. Upon suc
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 http GET "https://api.ethos.network/api/v1/claim/twitter/login?redirectUri=https://app.ethos.network/dashboard&referrer=123"
@@ -39,7 +39,7 @@ http GET "https://api.ethos.network/api/v1/claim/twitter/login?redirectUri=https
 
 #### Notes
 
-- This endpoint sets cookies to maintain the user's session and track referrals.
-- After successful authentication, users can claim XP and participate in Ethos's referral program.
-- The referrer parameter allows for tracking who referred the user for bonus distribution.
-- This endpoint is part of the user onboarding flow in the Ethos application.
+* This endpoint sets cookies to maintain the user's session and track referrals.
+* After successful authentication, users can claim XP and participate in Ethos's referral program.
+* The referrer parameter allows for tracking who referred the user for bonus distribution.
+* This endpoint is part of the user onboarding flow in the Ethos application.

@@ -1,4 +1,4 @@
-# Categories API
+# Categories
 
 ## Overview
 
@@ -18,13 +18,13 @@ GET /api/v1/categories/:id/users
 
 #### Parameters
 
-##### Path Parameters
+**Path Parameters**
 
-| Parameter | Type   | Description                       |
-|-----------|--------|-----------------------------------|
-| `id`      | number | The ID of the category.           |
+| Parameter | Type   | Description             |
+| --------- | ------ | ----------------------- |
+| `id`      | number | The ID of the category. |
 
-##### Query Parameters
+**Query Parameters**
 
 ```typescript
 {
@@ -34,15 +34,15 @@ GET /api/v1/categories/:id/users
 }
 ```
 
-| Parameter    | Type   | Required | Default | Description                                         |
-|--------------|--------|----------|---------|-----------------------------------------------------|
-| `searchText` | string | No       | -       | Filter users by `displayName` or `username`.        |
-| `limit`      | number | No       | 50      | Maximum number of users to return (max 100).        |
-| `offset`     | number | No       | 0       | Number of users to skip for pagination.             |
+| Parameter    | Type   | Required | Default | Description                                  |
+| ------------ | ------ | -------- | ------- | -------------------------------------------- |
+| `searchText` | string | No       | -       | Filter users by `displayName` or `username`. |
+| `limit`      | number | No       | 50      | Maximum number of users to return (max 100). |
+| `offset`     | number | No       | 0       | Number of users to skip for pagination.      |
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -74,7 +74,7 @@ GET /api/v1/categories/:id/users
 }
 ```
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request (Example: Invalid pagination or ID)
 
@@ -103,14 +103,14 @@ GET /api/v1/categories/:id/users
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 # Get the first 10 users containing "dev" in category 5
 http GET https://api.ethos.network/api/v1/categories/5/users limit==10 searchText==dev
 ```
 
-##### Response
+**Response**
 
 ```json
 # Example response for category ID 1
@@ -142,5 +142,5 @@ http GET https://api.ethos.network/api/v1/categories/5/users limit==10 searchTex
 
 #### Notes
 
-- Retrieves users belonging to a specific category ID.
-- The structure of the returned user object includes basic user info, status, userkeys, and when they were added to the category.
+* Retrieves users belonging to a specific category ID.
+* The structure of the returned user object includes basic user info, status, userkeys, and when they were added to the category.

@@ -1,4 +1,4 @@
-# Slashes API
+# Slashes
 
 ## Overview
 
@@ -18,7 +18,7 @@ GET /api/v1/slashes
 
 #### Parameters
 
-##### Query Parameters
+**Query Parameters**
 
 ```typescript
 {
@@ -30,17 +30,17 @@ GET /api/v1/slashes
 }
 ```
 
-| Parameter | Type                  | Required | Default | Description                                                     |
-|-----------|-----------------------|----------|---------|-----------------------------------------------------------------|
-| `author`  | string (Userkey)      | No       | -       | Filter slashes created by this author.                          |
-| `subject` | string (Userkey)      | No       | -       | Filter slashes targeting this subject.                          |
-| `status`  | `'open'` \| `'closed'` | No       | all     | Filter slashes by their status (`open` or `closed`).            |
-| `limit`   | number                | No       | 50      | Maximum number of slashes to return. Max 100.                 |
-| `offset`  | number                | No       | 0       | Number of slashes to skip for pagination.                       |
+| Parameter | Type                   | Required | Default | Description                                          |
+| --------- | ---------------------- | -------- | ------- | ---------------------------------------------------- |
+| `author`  | string (Userkey)       | No       | -       | Filter slashes created by this author.               |
+| `subject` | string (Userkey)       | No       | -       | Filter slashes targeting this subject.               |
+| `status`  | `'open'` \| `'closed'` | No       | all     | Filter slashes by their status (`open` or `closed`). |
+| `limit`   | number                 | No       | 50      | Maximum number of slashes to return. Max 100.        |
+| `offset`  | number                 | No       | 0       | Number of slashes to skip for pagination.            |
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -75,9 +75,9 @@ GET /api/v1/slashes
 }
 ```
 
-*Note: The exact structure of the `subject` object and other fields within the `values` array depends on the `convert.toSlash` function and needs confirmation via testing.* 
+_Note: The exact structure of the `subject` object and other fields within the `values` array depends on the `convert.toSlash` function and needs confirmation via testing._
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request
 
@@ -94,7 +94,7 @@ GET /api/v1/slashes
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 # Get the 5 most recent open slashes
@@ -104,7 +104,7 @@ http GET https://api.ethos.network/api/v1/slashes status==open limit==5
 http GET https://api.ethos.network/api/v1/slashes author=="did:privy:user123"
 ```
 
-##### Response
+**Response**
 
 ```json
 # Example Response (Structure Confirmed, Values Illustrative)
@@ -140,9 +140,9 @@ http GET https://api.ethos.network/api/v1/slashes author=="did:privy:user123"
 
 #### Notes
 
-- Returns slashes ordered by creation date descending.
-- Uses standard pagination (`limit`, `offset`).
-- Supports filtering by author, subject (using userkey format), and status.
+* Returns slashes ordered by creation date descending.
+* Uses standard pagination (`limit`, `offset`).
+* Supports filtering by author, subject (using userkey format), and status.
 
 ### Get Slash Roles
 
@@ -156,13 +156,13 @@ GET /api/v1/slashes/:id/roles
 
 #### Parameters
 
-##### Path Parameters
+**Path Parameters**
 
-| Parameter | Type   | Description        |
-|-----------|--------|--------------------|
+| Parameter | Type   | Description          |
+| --------- | ------ | -------------------- |
 | `id`      | number | The ID of the slash. |
 
-##### Query Parameters
+**Query Parameters**
 
 ```typescript
 {
@@ -170,13 +170,13 @@ GET /api/v1/slashes/:id/roles
 }
 ```
 
-| Parameter   | Type           | Required | Description                                      |
-|-------------|----------------|----------|--------------------------------------------------|
-| `profileId` | number | number[] | Yes      | One or more profile IDs to get the roles for. |
+| Parameter   | Type   | Required  | Description |
+| ----------- | ------ | --------- | ----------- |
+| `profileId` | number | number\[] | Yes         |
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -190,14 +190,14 @@ GET /api/v1/slashes/:id/roles
 }
 ```
 
-| Role          | Description                                           |
-|---------------|-------------------------------------------------------|
-| `slasher`     | The profile authored the slash.                     |
-| `defender`    | The profile is the subject of the slash.              |
-| `voted_slash` | The profile upvoted the slash (supported slasher).    |
-| `voted_defend`| The profile downvoted the slash (supported defender). |
+| Role           | Description                                           |
+| -------------- | ----------------------------------------------------- |
+| `slasher`      | The profile authored the slash.                       |
+| `defender`     | The profile is the subject of the slash.              |
+| `voted_slash`  | The profile upvoted the slash (supported slasher).    |
+| `voted_defend` | The profile downvoted the slash (supported defender). |
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request (Example: Missing profileId)
 
@@ -225,14 +225,14 @@ GET /api/v1/slashes/:id/roles
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 # Get roles for profile 123 and 456 regarding slash 28
 http GET https://api.ethos.network/api/v1/slashes/28/roles profileId==123 profileId==456
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -243,8 +243,8 @@ http GET https://api.ethos.network/api/v1/slashes/28/roles profileId==123 profil
 
 #### Notes
 
-- Used to determine relationship of specific users to a slash.
-- Requires the numerical slash ID and at least one profile ID.
+* Used to determine relationship of specific users to a slash.
+* Requires the numerical slash ID and at least one profile ID.
 
 ### Check Slash Validity
 

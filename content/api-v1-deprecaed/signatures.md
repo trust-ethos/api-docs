@@ -1,4 +1,4 @@
-# Signatures API
+# Signatures
 
 ## Overview
 
@@ -18,7 +18,7 @@ POST /api/v1/signatures/create-attestation
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -27,14 +27,14 @@ POST /api/v1/signatures/create-attestation
 }
 ```
 
-| Property           | Type   | Required | Description                                                            |
-|--------------------|--------|----------|------------------------------------------------------------------------|
-| `service`          | string | Yes      | The service name being attested (currently must be `x.com`).           |
-| `connectedAddress` | string | Yes      | The wallet address connected via Privy, matching the session.        |
+| Property           | Type   | Required | Description                                                   |
+| ------------------ | ------ | -------- | ------------------------------------------------------------- |
+| `service`          | string | Yes      | The service name being attested (currently must be `x.com`).  |
+| `connectedAddress` | string | Yes      | The wallet address connected via Privy, matching the session. |
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -51,7 +51,7 @@ POST /api/v1/signatures/create-attestation
 ```
 
 | Property         | Type    | Description                                                                                    |
-|------------------|---------|------------------------------------------------------------------------------------------------|
+| ---------------- | ------- | ---------------------------------------------------------------------------------------------- |
 | `ok`             | boolean | Indicates if the API call itself was successful.                                               |
 | `data`           | object  | Container for the response data.                                                               |
 | `data.randValue` | number  | A random nonce value (timestamp) included in the signed message.                               |
@@ -59,7 +59,7 @@ POST /api/v1/signatures/create-attestation
 | `data.account`   | string  | The account identifier (e.g., Twitter User ID) retrieved from the user's linked Privy account. |
 | `data.evidence`  | string  | A JSON string containing details about the attestation source (Privy OAuth2).                  |
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request
 
@@ -99,7 +99,7 @@ POST /api/v1/signatures/create-attestation
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 # Needs auth token and connected wallet address
@@ -110,7 +110,7 @@ http POST https://api.ethos.network/api/v1/signatures/create-attestation \
   connectedAddress=$CONNECTED_WALLET
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -126,13 +126,13 @@ http POST https://api.ethos.network/api/v1/signatures/create-attestation \
 
 #### Notes
 
-- Requires authentication.
-- The user must have linked the specified `service` (Twitter) to their Privy account beforehand.
-- Checks if the `connectedAddress` matches the authenticated user's Privy session.
-- Verifies that an attestation doesn't already exist for this profile/service/account.
-- The returned `signature` and `randValue`, along with other details, are used as parameters when calling the `createAttestation` function on the Ethos Attestation smart contract.
+* Requires authentication.
+* The user must have linked the specified `service` (Twitter) to their Privy account beforehand.
+* Checks if the `connectedAddress` matches the authenticated user's Privy session.
+* Verifies that an attestation doesn't already exist for this profile/service/account.
+* The returned `signature` and `randValue`, along with other details, are used as parameters when calling the `createAttestation` function on the Ethos Attestation smart contract.
 
----
+***
 
 ### Create Register Address Signature
 
@@ -150,7 +150,7 @@ None (The address to register is the `smartWallet` derived from the authenticate
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -164,14 +164,14 @@ None (The address to register is the `smartWallet` derived from the authenticate
 }
 ```
 
-| Property         | Type    | Description                                                                                     |
-|------------------|---------|-------------------------------------------------------------------------------------------------|
-| `ok`             | boolean | Indicates if the API call itself was successful.                                                |
-| `data`           | object  | Container for the response data.                                                                |
-| `data.randValue` | number  | A random nonce value (timestamp) included in the signed message.                                |
+| Property         | Type    | Description                                                                                                  |
+| ---------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
+| `ok`             | boolean | Indicates if the API call itself was successful.                                                             |
+| `data`           | object  | Container for the response data.                                                                             |
+| `data.randValue` | number  | A random nonce value (timestamp) included in the signed message.                                             |
 | `data.signature` | string  | The signature generated by the backend signer over the registration details (profileId, address, randValue). |
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request
 
@@ -211,7 +211,7 @@ None (The address to register is the `smartWallet` derived from the authenticate
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 # Needs auth token
@@ -219,7 +219,7 @@ http POST https://api.ethos.network/api/v1/signatures/register-address \
   Authorization:"Bearer <AUTH_TOKEN>"
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -233,13 +233,13 @@ http POST https://api.ethos.network/api/v1/signatures/register-address \
 
 #### Notes
 
-- Requires authentication.
-- Retrieves the user's `smartWallet` address from their Privy session.
-- Checks that the smart wallet isn't already registered to the profile.
-- Creates a signature that the user needs to use when calling the `registerAddress` function on the Ethos Profile smart contract.
-- This signature proves the backend authorizes the registration of the user's smart wallet to their profile ID.
+* Requires authentication.
+* Retrieves the user's `smartWallet` address from their Privy session.
+* Checks that the smart wallet isn't already registered to the profile.
+* Creates a signature that the user needs to use when calling the `registerAddress` function on the Ethos Profile smart contract.
+* This signature proves the backend authorizes the registration of the user's smart wallet to their profile ID.
 
----
+***
 
 ### Create Slash Signature
 
@@ -253,7 +253,7 @@ POST /api/v1/signatures/create-slash
 
 #### Parameters
 
-##### Request Body
+**Request Body**
 
 ```json
 {
@@ -268,21 +268,21 @@ POST /api/v1/signatures/create-slash
 }
 ```
 
-| Property               | Type   | Required | Description                                                            |
-|------------------------|--------|----------|------------------------------------------------------------------------|
-| `subject`              | string | No*      | Ethereum address of the subject being slashed (null if using attestation). |
-| `amount`               | number | Yes      | Positive integer representing the severity/amount of the slash.        |
-| `comment`              | string | Yes      | Description of why the slash was created (min length 1).               |
-| `metadata`             | string | Yes      | JSON string with additional metadata about the slash.                  |
-| `attestationDetails`   | object | Yes      | Details about the attestation if slashing by service/account.          |
-| `attestationDetails.service` | string | Yes | Service name (e.g., "x.com").                                       |
-| `attestationDetails.account` | string | Yes | Account identifier for the service.                                  |
+| Property                     | Type   | Required | Description                                                                |
+| ---------------------------- | ------ | -------- | -------------------------------------------------------------------------- |
+| `subject`                    | string | No\*     | Ethereum address of the subject being slashed (null if using attestation). |
+| `amount`                     | number | Yes      | Positive integer representing the severity/amount of the slash.            |
+| `comment`                    | string | Yes      | Description of why the slash was created (min length 1).                   |
+| `metadata`                   | string | Yes      | JSON string with additional metadata about the slash.                      |
+| `attestationDetails`         | object | Yes      | Details about the attestation if slashing by service/account.              |
+| `attestationDetails.service` | string | Yes      | Service name (e.g., "x.com").                                              |
+| `attestationDetails.account` | string | Yes      | Account identifier for the service.                                        |
 
-*Either `subject` (for address-based slashes) or valid `attestationDetails` (for attestation-based slashes) must be provided.
+\*Either `subject` (for address-based slashes) or valid `attestationDetails` (for attestation-based slashes) must be provided.
 
 #### Responses
 
-##### Success Response
+**Success Response**
 
 **Code**: 200 OK
 
@@ -296,14 +296,14 @@ POST /api/v1/signatures/create-slash
 }
 ```
 
-| Property         | Type    | Description                                                                                     |
-|------------------|---------|-------------------------------------------------------------------------------------------------|
-| `ok`             | boolean | Indicates if the API call itself was successful.                                                |
-| `data`           | object  | Container for the response data.                                                                |
-| `data.randValue` | number  | A random nonce value (timestamp) included in the signed message.                                |
-| `data.signature` | string  | The signature generated by the backend signer over the slash details.                           |
+| Property         | Type    | Description                                                           |
+| ---------------- | ------- | --------------------------------------------------------------------- |
+| `ok`             | boolean | Indicates if the API call itself was successful.                      |
+| `data`           | object  | Container for the response data.                                      |
+| `data.randValue` | number  | A random nonce value (timestamp) included in the signed message.      |
+| `data.signature` | string  | The signature generated by the backend signer over the slash details. |
 
-##### Error Responses
+**Error Responses**
 
 **Code**: 400 Bad Request
 
@@ -346,7 +346,7 @@ POST /api/v1/signatures/create-slash
 
 #### Example
 
-##### Request
+**Request**
 
 ```bash
 # Needs auth token
@@ -359,7 +359,7 @@ http POST https://api.ethos.network/api/v1/signatures/create-slash \
   attestationDetails:='{"service":"x.com","account":"1234567890"}'
 ```
 
-##### Response
+**Response**
 
 ```json
 {
@@ -373,11 +373,11 @@ http POST https://api.ethos.network/api/v1/signatures/create-slash \
 
 #### Notes
 
-- Requires authentication.
-- The user must have permission to create slashes (authorization checked by the `canSlash` function).
-- The returned `signature` and `randValue` are used as parameters when calling the `createSlash` function on the Ethos Slash smart contract.
-- For address-based slashes, provide the `subject` parameter with an Ethereum address.
-- For attestation-based slashes (e.g., Twitter accounts), set `subject` to null and provide valid `attestationDetails`.
-- The signature combines the authenticated user's profile ID, a random value, and all slash parameters.
+* Requires authentication.
+* The user must have permission to create slashes (authorization checked by the `canSlash` function).
+* The returned `signature` and `randValue` are used as parameters when calling the `createSlash` function on the Ethos Slash smart contract.
+* For address-based slashes, provide the `subject` parameter with an Ethereum address.
+* For attestation-based slashes (e.g., Twitter accounts), set `subject` to null and provide valid `attestationDetails`.
+* The signature combines the authenticated user's profile ID, a random value, and all slash parameters.
 
----
+***
