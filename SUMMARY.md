@@ -14,7 +14,7 @@
           kind: openapi
           spec: ethos-api
     ```
-* [API v1 (deprecated)](content/api-v1-deprecated/index.md)
+* [API v1 (deprecated)](content/api-v1-deprecated/README.md)
   * [Activities](content/api-v1-deprecated/activities.md)
   * [Addresses](content/api-v1-deprecated/addresses.md)
   * [Attestations](content/api-v1-deprecated/attestations.md)
