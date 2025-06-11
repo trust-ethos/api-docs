@@ -1,4 +1,4 @@
-# Summary
+# Table of contents
 
 ## API Documentation
 
@@ -33,3 +33,17 @@
 ## Whitepaper
 
 * [Whitepaper](https://whitepaper.ethos.network)
+
+## Group 1
+
+* [API v2](group-1/api-v2/README.md)
+  * ```yaml
+    type: builtin:openapi
+    props:
+      models: true
+    dependencies:
+      spec:
+        ref:
+          kind: openapi
+          spec: ethos-api
+    ```
