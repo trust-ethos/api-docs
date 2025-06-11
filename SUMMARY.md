@@ -7,17 +7,7 @@
   * ```yaml
     type: builtin:openapi
     props:
-      models: true
-    dependencies:
-      spec:
-        ref:
-          kind: openapi
-          spec: ethos-api
-    ```
-  * ```yaml
-    props:
-      models: true
-    type: builtin:openapi
+      models: false
     dependencies:
       spec:
         ref:
