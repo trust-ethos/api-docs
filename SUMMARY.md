@@ -14,6 +14,16 @@
           kind: openapi
           spec: ethos-api
     ```
+  * ```yaml
+    props:
+      models: true
+    type: builtin:openapi
+    dependencies:
+      spec:
+        ref:
+          kind: openapi
+          spec: ethos-api
+    ```
 * [API v1 (deprecated)](content/api-v1-deprecaed/index.md)
   * [Activities](content/api-v1-deprecaed/activities.md)
   * [Addresses](content/api-v1-deprecaed/addresses.md)
