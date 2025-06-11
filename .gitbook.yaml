@@ -3,34 +3,3 @@ root: ./
 structure:
   readme: README.md
   summary: SUMMARY.md
-
-redirects:
-  api/v1/activities: content/api-v1-deprecaed/activities.md
-  api/v1/addresses: content/api-v1-deprecaed/addresses.md
-  api/v1/attestations: content/api-v1-deprecaed/attestations.md
-  api/v1/categories: content/api-v1-deprecaed/categories.md
-  api/v1/claim: content/api-v1-deprecaed/claim.md
-  api/v1/contracts: content/api-v1-deprecaed/contracts.md
-  api/v1/contributions: content/api-v1-deprecaed/contributions.md
-  api/v1/curated-lists: content/api-v1-deprecaed/curated-lists.md
-  api/v1/ens: content/api-v1-deprecaed/ens.md
-  api/v1/events: content/api-v1-deprecaed/events.md
-  api/v1/exchange-rates: content/api-v1-deprecaed/exchange-rates.md
-  api/v1/fees: content/api-v1-deprecaed/fees.md
-  api/v1/invitations: content/api-v1-deprecaed/invitations.md
-  api/v1/markets: content/api-v1-deprecaed/markets.md
-  api/v1/notifications: content/api-v1-deprecaed/notifications.md
-  api/v1/profiles: content/api-v1-deprecaed/profiles.md
-  api/v1/replies: content/api-v1-deprecaed/replies.md
-  api/v1/reviews: content/api-v1-deprecaed/reviews.md
-  api/v1/scores: content/api-v1-deprecaed/scores.md
-  api/v1/search: content/api-v1-deprecaed/search.md
-  api/v1/signatures: content/api-v1-deprecaed/signatures.md
-  api/v1/slashes: content/api-v1-deprecaed/slashes.md
-  api/v1/twitter: content/api-v1-deprecaed/twitter.md
-  api/v1/users: content/api-v1-deprecaed/users.md
-  api/v1/vouches: content/api-v1-deprecaed/vouches.md
-  api/v1/xp: content/api-v1-deprecaed/xp.md
-  api: README.md
-  api/index: README.md
-  api/toc: SUMMARY.md
