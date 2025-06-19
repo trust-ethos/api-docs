@@ -1,8 +1,8 @@
-# Ethos API Documentation
+# Introduction
 
 Welcome to the official API documentation for Ethos Network. This documentation provides detailed information about the Ethos API endpoints, request/response formats, and data models.
 
-These docs are available at <https://developers.ethos.network/> and <https://github.com/trust-ethos/api-docs>.
+These docs are available at [https://developers.ethos.network/](https://developers.ethos.network/) and [https://github.com/trust-ethos/api-docs](https://github.com/trust-ethos/api-docs).
 
 ## Getting Started
 
@@ -27,6 +27,26 @@ Most API endpoints require authentication using Privy authentication tokens. Inc
 ```
 Authorization: Bearer <your_privy_token>
 ```
+
+### Client Identification
+
+To help us monitor and manage usage across different integrations, all API requests must include the `X-Ethos-Client` header.
+
+This header should contain the name of your product or integration, and may optionally include a version number (e.g., `my-app` or `my-app@1.0.0`).
+
+```http
+X-Ethos-Client: my-cool-app@1.2.3
+```
+
+{% hint style="warning" %}
+Required: Requests without this header may be subject to rate limiting.
+{% endhint %}
+
+Including this header helps us:
+
+* Attribute traffic to your app
+* Diagnose issues faster
+* Ensure fair and efficient resource allocation
 
 ### Userkeys
 
