@@ -55,5 +55,7 @@ Some APIs accept a `userkey` as a user identifier. Below are the supported forma
 * `profileId:<id>` — Ethos profile ID (e.g., `profileId:10`)
 * `address:<address>` — Ethereum address (e.g., `address:0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045`)
 * `service:discord:<discordUserId>` — Discord user ID (e.g., `service:discord:797130033613242441`)
+* `service:farcaster:<farcasterUserId>` — Farcaster user ID (e.g., `service:farcaster:1112412`)
+* `service:telegram:<telegramUserId>` — Telegram user ID (e.g., `service:telegram:167380455`)
 * `service:x.com:<twitterUserId>` — Twitter (x.com) user ID (e.g., `service:x.com:295218901`)
 * `service:x.com:username:<twitterUsername>` — Twitter (x.com) username (e.g., `service:x.com:username:VitalikButerin`)
