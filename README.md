@@ -54,14 +54,3 @@ Some APIs accept a `userkey` as a user identifier. Below are the supported forma
 
 <table><thead><tr><th width="325.59375">Format</th><th>Description</th></tr></thead><tbody><tr><td><code>profileId:&#x3C;id></code></td><td>Ethos profile ID<br><em>Ex.:</em> <code>profileId:10</code></td></tr><tr><td><code>address:&#x3C;address></code></td><td><p>Ethereum address  </p><p><em>Ex.:</em> <code>address:0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045</code></p></td></tr><tr><td><code>service:discord:&#x3C;id></code></td><td>Discord user ID<br><em>Ex.:</em> <code>service:discord:797130033613242441</code></td></tr><tr><td><code>service:farcaster:&#x3C;id></code></td><td>Farcaster user ID<br><em>Ex.:</em> <code>service:farcaster:1112412</code></td></tr><tr><td><code>service:telegram:&#x3C;id></code></td><td>Telegram user ID<br><em>Ex.:</em> <code>service:telegram:167380455</code></td></tr><tr><td><code>service:x.com:&#x3C;id></code></td><td>Twitter (x.com) user ID<br><em>Ex.:</em> <code>service:x.com:295218901</code></td></tr><tr><td><code>service:x.com:username:&#x3C;username></code></td><td><p>Twitter (x.com) username</p><p><em>Ex.:</em> <code>service:x.com:username:VitalikButerin</code></p></td></tr></tbody></table>
 
-
-
-
-
-
-
-
-
-\| \`service:x.com:username:\<twitterUsername>\` | Twitter (x.com) username &#x20;
-
-→ \_Example:\_ \`service:x.com:username:VitalikButerin\` |
