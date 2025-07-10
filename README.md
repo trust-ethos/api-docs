@@ -22,11 +22,20 @@ https://api.ethos.network
 
 ### Authentication
 
-Most API endpoints require authentication using Privy authentication tokens. Include the token in the Authorization header:
+Some API endpoints require authentication using a Privy token. These are usually endpoints meant to be used in the context of an active user session — for example, when performing actions tied to the currently logged-in user.
 
-```
+If authentication is required, you must include a valid token in the Authorization header:
+
+```http
 Authorization: Bearer <your_privy_token>
 ```
+
+The token is stored in a `privy-token` cookie under the `app.ethos.network` domain. Note, this token is short-lived and expires after 1 hour.
+
+#### ⚠️ Important notes:
+
+* Most developers won’t need to use this token directly — many endpoints are public or free to use.
+* Tokens are tied to the current user session and are only needed when working within that user’s authenticated context.
 
 ### Client Identification
 
