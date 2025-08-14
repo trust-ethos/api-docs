@@ -39,6 +39,7 @@
   * [Users](content/api-v1-deprecated/users.md)
   * [Vouches](content/api-v1-deprecated/vouches.md)
   * [XP](content/api-v1-deprecated/xp.md)
+* [Changelog](content/changelog.md)
 
 ## Whitepaper
 
